@@ -1,6 +1,7 @@
+import MainLayout from "../components/MainLayout";
 
 export default function Home() {
   return (
-    <div>Home</div>
+    <MainLayout />
   );
 }
