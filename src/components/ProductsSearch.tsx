@@ -5,7 +5,7 @@ import {SearchOutlined} from "@ant-design/icons";
 const ProductsSearch = () => {
     return (
         <>
-            <Input size="large" placeholder="Search product..." prefix={<SearchOutlined />} style={{maxWidth: "30%"}} />
+            <Input size="middle" placeholder="Search product..." prefix={<SearchOutlined />} style={{maxWidth: "30%"}} />
         </>
     );
 };
