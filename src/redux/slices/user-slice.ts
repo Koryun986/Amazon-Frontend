@@ -7,7 +7,9 @@ interface UserState {
     user: IUser | null;
 };
 
-const initialState: UserState;
+const initialState: UserState = {
+    user: null,
+};
 
 export const refreshUser = createAsyncThunk(
     "user/refresh",
