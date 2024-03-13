@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {IUser} from "../types/IUser";
-import api from "../api/index";
-import {AuthResponse} from "../types/response/auth-response";
+import {IUser} from "../../types/IUser";
+import api from "../../api/index";
+import {AuthResponse} from "../../types/response/auth-response";
 
 interface UserState {
     user: IUser | null;
@@ -9,7 +9,7 @@ interface UserState {
 
 const initialState: UserState;
 
-const refreshUser = createAsyncThunk(
+export const refreshUser = createAsyncThunk(
     "user/refresh",
     async () => {
         const response = await api.get<AuthResponse>("/auth/refresh", {withCredentials: true});
@@ -33,3 +33,5 @@ const userSlice = createSlice<UserState>({
         })
     }
 });
+
+export default userSlice.reducer;
