@@ -2,8 +2,9 @@
 import {Avatar, Button, Flex, Layout, Space, Typography} from "antd";
 import ProductsSearch from "./ProductsSearch";
 import {useAppSelector} from "../hooks/store-hooks";
-import {UserOutlined} from "@ant-design/icons";
+import {HeartOutlined, UserOutlined} from "@ant-design/icons";
 import Link from "next/link";
+import HeaderNav from "./HeaderNav";
 
 const { Header: HeaderAntd } = Layout;
 const { Title } = Typography;
@@ -20,14 +21,7 @@ const Header = () => {
                     user ? (
                         <Avatar size={40} icon={<UserOutlined />} />
                     ) : (
-                        <Space>
-                            <Link href={"/auth/login"}>
-                                <Button>Login</Button>
-                            </Link>
-                            <Link href={"/auth/registration"}>
-                                <Button>Register</Button>
-                            </Link>
-                        </Space>
+                        <HeaderNav />
                     )
                 }
             </div>
