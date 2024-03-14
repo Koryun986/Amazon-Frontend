@@ -1,12 +1,11 @@
 import axios, {CreateAxiosDefaults} from "axios";
 import {LocalStorageConstants} from "../constants/localstorage-constants";
 import {AuthResponse} from "../types/response/auth-response";
-
-const API_URL = "http://localhost:5000";
+import {ApiConstants} from "./api-constants";
 
 const api = axios.create({
     withCredentials: true,
-    baseURL: API_URL,
+    baseURL: ApiConstants.BASE_URL,
 } as CreateAxiosDefaults);
 
 api.interceptors.request.use((config) => {
@@ -21,12 +20,10 @@ api.interceptors.response.use((config) => {
     if (error.response.status == 401 && error.config && !error.config._isRetry) {
         originalRequest._isRetry = true;
         try {
-            const response = await axios.get<AuthResponse>(`${API_URL}/auth/refresh`, {withCredentials: true})
+            const response = await axios.get<AuthResponse>(ApiConstants.AUTH_REFRESH, {withCredentials: true})
             localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, response.data.access_token);
             return api.request(originalRequest);
-        } catch (e) {
-            console.log('НЕ АВТОРИЗОВАН')
-        }
+        } catch (e) {}
     }
     throw error;
 });

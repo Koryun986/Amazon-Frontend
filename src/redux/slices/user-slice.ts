@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {IUser} from "../../types/IUser";
 import api from "../../api/index";
 import {AuthResponse} from "../../types/response/auth-response";
+import {ApiConstants} from "../../api/api-constants";
 
 interface UserState {
     user: IUser | null;
@@ -11,10 +12,10 @@ const initialState: UserState = {
     user: null,
 };
 
-export const refreshUser = createAsyncThunk(
-    "user/refresh",
+export const getUser = createAsyncThunk(
+    "user/get-user",
     async () => {
-        const response = await api.get<AuthResponse>("/auth/refresh", {withCredentials: true});
+        const response = await api.get<AuthResponse>(ApiConstants.AUTH_GET_USER, {withCredentials: true});
         return response.data;
     }
 );
@@ -26,7 +27,7 @@ const userSlice = createSlice<UserState>({
 
     },
     extraReducers: (builder) => {
-        builder.addCase(refreshUser.fulfilled, (state, action) => {
+        builder.addCase(getUser.fulfilled, (state, action) => {
             try {
               state.user = action.payload;
             } catch (e) {
