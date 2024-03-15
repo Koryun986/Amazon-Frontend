@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IUser} from "../../types/IUser";
 import api from "../../api/index";
 import {AuthResponse} from "../../types/response/auth-response";
@@ -24,17 +24,21 @@ const userSlice = createSlice<UserState>({
     name: "user",
     initialState,
     reducers: {
-
+        setUser: (state: UserState, action: PayloadAction<IUser | null>) => {
+            state.user = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getUser.fulfilled, (state, action) => {
             try {
               state.user = action.payload;
             } catch (e) {
+                console.log("error", e)
                 state.user = null;
             }
         })
     }
 });
 
+export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,12 +1,16 @@
 "use client"
+import {Suspense} from "react";
 import {Layout} from "antd";
 import Header from "./Header";
+import Spinner from "../shared/Spinner";
 
 const MainLayout = () => {
     return (
-        <Layout>
-            <Header />
-        </Layout>
+        <Suspense fallback={<Spinner />}>
+            <Layout>
+                <Header />
+            </Layout>
+        </Suspense>
     );
 };
 
