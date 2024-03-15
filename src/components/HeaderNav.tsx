@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {useEffect} from "react";
-import {HeartOutlined, ShoppingOutlined, UserOutlined} from "@ant-design/icons";
+import {HeartOutlined, ShoppingOutlined} from "@ant-design/icons";
 import {Flex} from "antd";
 import {useAppDispatch, useAppSelector} from "../hooks/store-hooks";
 import api from "../api/index";
@@ -11,9 +11,9 @@ import {LocalStorageConstants} from "../constants/localstorage-constants";
 import {setUser} from "../redux/slices/user-slice";
 import type {AuthResponse} from "../types/response/auth-response";
 import type {IUser} from "../types/IUser";
+import {getUser} from "../api/requests/auth-requests";
 
 const Button = dynamic(() => import("antd").then(antd => antd.Button), {ssr: false});
-const Avatar = dynamic(() => import("antd").then(antd => antd.Avatar), {ssr: false});
 
 const HeaderNav = () => {
     const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ const HeaderNav = () => {
 
     const getUserDispatch = async () => {
         try {
-            const {data} = await api.get<AuthResponse>(ApiConstants.AUTH_GET_USER, {withCredentials: true});
+            const {data} = await getUser();
             const user: IUser = {
                 first_name: data.first_name,
                 last_name: data.last_name,
@@ -46,20 +46,16 @@ const HeaderNav = () => {
                 <HeartOutlined style={{color: "white", fontSize: "25px"}} />
             </Link>
             <div className={"text-white"}>
-                {
-                    user ? (
-                        <Avatar size={40} icon={<UserOutlined style={{cursor: "pointer"}}/>} />
-                    ) : (
-                        <>
-                            <Link href={"/auth/login"}>
-                                <Button>Login</Button>
-                            </Link>
-                            <Link href={"/auth/registration"}>
-                                <Button>Register</Button>
-                            </Link>
-                        </>
-                    )
-                }
+                {!user && (
+                    <>
+                        <Link href={"/auth/login"}>
+                            <Button>Login</Button>
+                        </Link>
+                        <Link href={"/auth/registration"}>
+                            <Button>Register</Button>
+                        </Link>
+                    </>
+                )}
             </div>
         </Flex>
     )

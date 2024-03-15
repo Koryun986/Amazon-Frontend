@@ -8,6 +8,7 @@ import api from "../api/index";
 import {ApiConstants} from "../api/api-constants";
 import {LocalStorageConstants} from "../constants/localstorage-constants";
 import type {AuthResponse} from "../types/response/auth-response";
+import {loginAccount} from "../api/requests/auth-requests";
 
 type FieldType = {
     email: string;
@@ -52,7 +53,7 @@ const LoginForm = () => {
     };
 
     const loginToAccount = async (userData: FieldType) => {
-        const {data} = await api.post<AuthResponse>(ApiConstants.AUTH_LOGIN, userData, {withCredentials: true});
+        const {data} = await loginAccount(userData);
         localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
         console.log(data)
     };

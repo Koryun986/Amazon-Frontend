@@ -9,6 +9,7 @@ import {ApiConstants} from "../api/api-constants";
 import {LocalStorageConstants} from "../constants/localstorage-constants";
 import type {AuthResponse} from "../types/response/auth-response";
 import type {NamePath} from "rc-field-form/es/interface";
+import {registerAccount} from "../api/requests/auth-requests";
 
 type FieldType = {
     first_name: string;
@@ -63,7 +64,7 @@ export const RegistrationForm = () => {
     };
 
     const createAccount = async (userData: Omit<FieldType, "confirm_password">) => {
-        const {data} = await api.post<AuthResponse>(ApiConstants.AUTH_REGISTRATION, userData, {withCredentials: true});
+        const {data} = await registerAccount(userData);
         localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
         console.log(data)
     };
