@@ -1,6 +1,6 @@
 import MainLayout from "../components/MainLayout";
 
-export default async function Home() {
+export default function Home() {
   return (
     <MainLayout />
   );

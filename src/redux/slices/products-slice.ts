@@ -10,8 +10,8 @@ interface ProductsState {
 
 export const fetchAllProducts = createAsyncThunk(
     "products/get-all",
-    async () => {
-        const response = await getAllProducts();
+    async (query: string = "") => {
+        const response = await getAllProducts(query);
         return response.data;
     }
 )
@@ -34,6 +34,7 @@ const productsSlice = createSlice<ProductsState>({
         })
         builder.addCase(fetchAllProducts.rejected, (state) => {
             state.isLoading = false;
+            state.products = [];
             state.error = "Oops! Something went wrong";
         })
         builder.addCase(fetchAllProducts.fulfilled, (state, action) => {

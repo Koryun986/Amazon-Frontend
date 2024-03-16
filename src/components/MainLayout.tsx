@@ -10,8 +10,10 @@ import {LocalStorageConstants} from "../constants/localstorage-constants";
 import {setUser} from "../redux/slices/user-slice";
 import type {IUser} from "../types/IUser";
 import {fetchAllProducts} from "../redux/slices/products-slice";
+import {useSearchParams} from "next/navigation";
 
 const MainLayout = () => {
+    const searchParams = useSearchParams();
     const dispatch = useAppDispatch();
 
     const getUserDispatch = async () => {
@@ -31,8 +33,12 @@ const MainLayout = () => {
 
     useEffect(() => {
         getUserDispatch()
-        dispatch(fetchAllProducts());
     }, []);
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams);
+        dispatch(fetchAllProducts(params.toString()));
+    }, [searchParams])
 
     return (
         <Layout style={{minHeight: "100vh"}}>

@@ -9,7 +9,7 @@ const Products = () => {
     const {isLoading, products} = useAppSelector(state => state.products);
     const itemsInRow = 8;
     const currentProductList = products.slice((currentPage - 1) * itemsInRow, (currentPage - 1) * itemsInRow + itemsInRow);
-
+    console.log(products)
     const handlePageChange: PaginationProps['onChange'] = (page) => {;
         setCurrentPage(page);
     };
