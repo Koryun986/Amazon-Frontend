@@ -1,8 +1,7 @@
 "use client"
-import {Suspense, useEffect} from "react";
+import {useEffect} from "react";
 import {Layout} from "antd";
 import Header from "./Header";
-import Spinner from "../shared/Spinner";
 import {MainLayoutSideBar} from "./MainLayoutSideBar";
 import Products from "./Products";
 import {useAppDispatch} from "../hooks/store-hooks";
@@ -36,15 +35,13 @@ const MainLayout = () => {
     }, []);
 
     return (
-        <Suspense fallback={<Spinner />}>
-            <Layout style={{minHeight: "100vh"}}>
-                <Header />
-                <Layout>
-                    <MainLayoutSideBar />
-                    <Products />
-                </Layout>
+        <Layout style={{minHeight: "100vh"}}>
+            <Header />
+            <Layout>
+                <MainLayoutSideBar />
+                <Products />
             </Layout>
-        </Suspense>
+        </Layout>
     );
 };
 
