@@ -1,5 +1,5 @@
 "use client"
-import {Avatar, Button, Flex, Layout, Space, Typography} from "antd";
+import {Layout, Typography} from "antd";
 import ProductsSearch from "./ProductsSearch";
 import HeaderNav from "./HeaderNav";
 

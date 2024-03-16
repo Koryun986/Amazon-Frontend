@@ -18,18 +18,6 @@ const HeaderNav = () => {
             <Link href={"/favorites"} >
                 <HeartOutlined style={{color: "white", fontSize: "25px"}} />
             </Link>
-            <div className={"text-white"}>
-                {!user && (
-                    <>
-                        <Link href={"/auth/login"}>
-                            <Button>Login</Button>
-                        </Link>
-                        <Link href={"/auth/registration"}>
-                            <Button>Register</Button>
-                        </Link>
-                    </>
-                )}
-            </div>
         </Flex>
     )
 };

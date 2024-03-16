@@ -5,11 +5,12 @@ import Header from "./Header";
 import Spinner from "../shared/Spinner";
 import {MainLayoutSideBar} from "./MainLayoutSideBar";
 import Products from "./Products";
-import {useAppDispatch, useAppSelector} from "../hooks/store-hooks";
+import {useAppDispatch} from "../hooks/store-hooks";
 import {getUser} from "../api/requests/auth-requests";
 import {LocalStorageConstants} from "../constants/localstorage-constants";
 import {setUser} from "../redux/slices/user-slice";
 import type {IUser} from "../types/IUser";
+import {fetchAllProducts} from "../redux/slices/products-slice";
 
 const MainLayout = () => {
     const dispatch = useAppDispatch();
@@ -31,6 +32,7 @@ const MainLayout = () => {
 
     useEffect(() => {
         getUserDispatch()
+        dispatch(fetchAllProducts());
     }, []);
 
     return (

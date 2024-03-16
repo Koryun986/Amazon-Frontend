@@ -8,7 +8,7 @@ interface ProductsState {
     error: string | null;
 };
 
-const fetchAllProducts = createAsyncThunk(
+export const fetchAllProducts = createAsyncThunk(
     "products/get-all",
     async () => {
         const response = await getAllProducts();
