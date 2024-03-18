@@ -1,8 +1,7 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {IAddress} from "../types/IAddress";
 import useModal from "../hooks/modal-hook";
-import {useAppDispatch, useAppSelector} from "../hooks/store-hooks";
-import {fetchAddresses} from "../redux/slices/user-address-slice";
+import {useAppSelector} from "../hooks/store-hooks";
 import {Button, Menu, MenuProps, Modal, Tag} from "antd";
 import AddressForm from "./forms/AddressForm";
 
