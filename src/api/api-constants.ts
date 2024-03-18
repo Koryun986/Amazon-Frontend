@@ -5,5 +5,6 @@ export enum ApiConstants {
     AUTH_REFRESH = "/auth/refresh",
     AUTH_GET_USER = "/auth/get-user",
     PRODUCTS_GET_ALL = "/products",
-    PUBLIC_ASSETS_URL = BASE_URL + "/public/"
+    PUBLIC_ASSETS_URL = BASE_URL + "/public/",
+    ADDRESSES_GET_ALL = "/addresses/get-addresses",
 }
