@@ -9,3 +9,7 @@ export async function getAddresses() {
 export async function updateAddress(address: IAddress) {
     return await api.put<IAddress>(ApiConstants.ADDRESS_UPDATE, address);
 }
+
+export async function createAddress(address: Omit<IAddress, "id">) {
+    return await api.post<IAddress>(ApiConstants.ADDRESS_CREATE, address);
+}

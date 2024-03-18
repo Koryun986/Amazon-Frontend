@@ -40,7 +40,7 @@ const AddressMenu = () => {
                 {address.street_address} / {address.zip_code}   {address.is_default_address && <Tag style={{backgroundColor: "transparent", color: "gray"}}>main</Tag>}
             </div>
         ), address.id, null)),
-        getItem(<Button style={{width: "100%"}}>Add</Button>, "add-address"),
+        getItem(<Button style={{width: "100%"}} onClick={openModal}>Add</Button>, "add-address"),
     ];
 
     const menuItems: MenuItem[] = [

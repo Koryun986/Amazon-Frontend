@@ -4,7 +4,7 @@ import {IAddress} from "../../types/IAddress";
 import {ChangeEvent, FC, useState} from "react";
 import {Button, Form, Input, Space, Switch} from "antd";
 import {useAppDispatch} from "../../hooks/store-hooks";
-import {updateAddress} from "../../api/requests/address-requests";
+import {createAddress, updateAddress} from "../../api/requests/address-requests";
 import {fetchAddresses} from "../../redux/slices/user-address-slice";
 
 interface AddressFormProps {
@@ -29,13 +29,18 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
     };
 
     const handleSubmitButtonClick = async () => {
-        if (address)  {
-            await updateAddress({...localAddress, id: address.id});
+        try {
+            if (address)  {
+                await updateAddress({...localAddress, id: address.id});
+            } else {
+                await createAddress(localAddress);
+            }
             dispatch(fetchAddresses());
-        } else {
-
+        } catch (e) {
+            console.log(e)
+        } finally {
+            onCancel();
         }
-        onCancel();
     }
 
     return (
