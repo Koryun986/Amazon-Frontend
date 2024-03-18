@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getAddresses} from "../../api/requests/address-requests";
+import {getAllCategories} from "../../api/requests/category-request";
 import type {ICategory} from "../../types/ICategory";
 
 interface CategoryState {
@@ -9,7 +9,7 @@ interface CategoryState {
 export const fetchCategories = createAsyncThunk(
     "category/fetch_all",
     async () => {
-        const response = await getAddresses();
+        const response = await getAllCategories();
         return response.data;
     }
 );
