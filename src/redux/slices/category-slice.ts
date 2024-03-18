@@ -15,7 +15,7 @@ export const fetchCategories = createAsyncThunk(
 );
 
 const initialState: CategoryState = {
-    categories: [];
+    categories: [],
 };
 
 const userAddressSlice = createSlice<CategoryState>({
