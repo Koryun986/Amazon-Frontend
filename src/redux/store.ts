@@ -4,6 +4,7 @@ import productsSlice from "./slices/products-slice";
 import userAddressSlice from "./slices/user-address-slice";
 import categorySlice from "./slices/category-slice";
 import colorSlice from "./slices/color-slice";
+import sizeSlice from "./slices/size-slice";
 
 const makeStore = () => {
     return configureStore({
@@ -12,7 +13,8 @@ const makeStore = () => {
             products: productsSlice,
             user_address: userAddressSlice,
             category: categorySlice,
-            color: colorSlice
+            color: colorSlice,
+            size: sizeSlice,
         },
     })
 };
