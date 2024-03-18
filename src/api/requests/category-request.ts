@@ -20,5 +20,5 @@ export async function updateCategory(category: CategoryPostForm & {id: number}) 
 }
 
 export async function deleteCategory(id) {
-    return await api.delete(`${ApiConstants.ADDRESS_DELETE}/${id}`);
+    return await api.delete(`${ApiConstants.CATEGORY_DELETE}/${id}`);
 }

@@ -18,7 +18,7 @@ const initialState: CategoryState = {
     categories: [],
 };
 
-const userAddressSlice = createSlice<CategoryState>({
+const categorySlice = createSlice<CategoryState>({
     name: "category",
     initialState,
     reducers: {
@@ -34,4 +34,4 @@ const userAddressSlice = createSlice<CategoryState>({
     })
 });
 
-export default userAddressSlice.reducer;
+export default categorySlice.reducer;

@@ -13,5 +13,9 @@ export enum ApiConstants {
     CATEGORIES_GET_ALL = "/categories/",
     CATEGORY_CREATE = "/categories/create",
     CATEGORY_UPDATE = "/categories/update",
-    CATEGORY_DELETE = "/categories/delete"
+    CATEGORY_DELETE = "/categories/delete",
+    COLORS_GET_ALL = "/colors/",
+    COLOR_CREATE = "/colors/create",
+    COLOR_UPDATE = "/colors/update",
+    COLOR_DELETE = "/colors/delete",
 }
