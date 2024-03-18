@@ -18,4 +18,8 @@ export enum ApiConstants {
     COLOR_CREATE = "/colors/create",
     COLOR_UPDATE = "/colors/update",
     COLOR_DELETE = "/colors/delete",
+    SIZES_GET_ALL = "/sizes/",
+    SIZE_CREATE = "/sizes/create",
+    SIZE_UPDATE = "/sizes/update",
+    SIZE_DELETE = "/sizes/delete",
 }
