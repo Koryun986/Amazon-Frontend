@@ -9,5 +9,9 @@ export enum ApiConstants {
     ADDRESSES_GET_ALL = "/addresses/get-addresses",
     ADDRESS_UPDATE = "/addresses/update",
     ADDRESS_CREATE = "/addresses/create",
-    ADDRESS_DELETE = "/addresses/delete"
+    ADDRESS_DELETE = "/addresses/delete",
+    CATEGORIES_GET_ALL = "/categories/",
+    CATEGORY_CREATE = "/categories/create",
+    CATEGORY_UPDATE = "/categories/update",
+    CATEGORY_DELETE = "/categories/delete"
 }
