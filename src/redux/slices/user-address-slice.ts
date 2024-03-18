@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getAllProducts} from "../../api/requests/product-requests";
 import {IAddress} from "../../types/IAddress";
 import {getAddresses} from "../../api/requests/address-requests";
 
@@ -13,7 +12,7 @@ export const fetchAddresses = createAsyncThunk(
         const response = await getAddresses();
         return response.data;
     }
-)
+);
 
 const initialState: UserAddressState = {
     addresses: []

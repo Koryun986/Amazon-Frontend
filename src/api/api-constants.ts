@@ -7,4 +7,5 @@ export enum ApiConstants {
     PRODUCTS_GET_ALL = "/products",
     PUBLIC_ASSETS_URL = BASE_URL + "/public/",
     ADDRESSES_GET_ALL = "/addresses/get-addresses",
+    ADDRESS_UPDATE = "/addresses/update"
 }
