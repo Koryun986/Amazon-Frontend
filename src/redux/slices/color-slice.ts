@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getAllCategories} from "../../api/requests/category-request";
 import type {IColor} from "../../types/IColor";
+import {getColors} from "../../api/requests/color-request";
 
 interface ColorState {
     colors: IColor[];
@@ -9,7 +9,7 @@ interface ColorState {
 export const fetchColors = createAsyncThunk(
     "color/fetch_all",
     async () => {
-        const response = await getAllCategories();
+        const response = await getColors();
         return response.data;
     }
 );
