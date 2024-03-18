@@ -2,9 +2,9 @@
 
 import {IAddress} from "../../types/IAddress";
 import {ChangeEvent, FC, useState} from "react";
-import {Button, Form, Input, Space, Switch} from "antd";
+import {Button, Flex, Form, Input, Popconfirm, Space, Switch} from "antd";
 import {useAppDispatch} from "../../hooks/store-hooks";
-import {createAddress, updateAddress} from "../../api/requests/address-requests";
+import {createAddress, deleteAddress, updateAddress} from "../../api/requests/address-requests";
 import {fetchAddresses} from "../../redux/slices/user-address-slice";
 
 interface AddressFormProps {
@@ -35,6 +35,17 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
             } else {
                 await createAddress(localAddress);
             }
+            dispatch(fetchAddresses());
+        } catch (e) {
+            console.log(e)
+        } finally {
+            onCancel();
+        }
+    };
+    
+    const handleDeleteAddress = async () => {
+        try {
+            await deleteAddress(address.id);
             dispatch(fetchAddresses());
         } catch (e) {
             console.log(e)
@@ -134,7 +145,7 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                 <Switch defaultValue={localAddress.is_default_address} onChange={(checked => setLocalAddress(prevState => ({...prevState, is_default_address: checked})))} />
             </Space>
 
-            <Form.Item>
+            <Flex justify={"space-between"}>
                 <Space>
                     <Button htmlType="button" onClick={onCancel}>
                         Cancel
@@ -143,7 +154,18 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                         {address ? "Edit" : "Add"}
                     </Button>
                 </Space>
-            </Form.Item>
+                {!!address && (
+                    <Popconfirm
+                        title="Delete the address"
+                        description="Are you sure to delete this address?"
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={handleDeleteAddress}
+                    >
+                        <Button danger>Delete</Button>
+                    </Popconfirm>
+                )}
+            </Flex>
         </Form>
     );
 };

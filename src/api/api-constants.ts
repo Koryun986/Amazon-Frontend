@@ -8,5 +8,6 @@ export enum ApiConstants {
     PUBLIC_ASSETS_URL = BASE_URL + "/public/",
     ADDRESSES_GET_ALL = "/addresses/get-addresses",
     ADDRESS_UPDATE = "/addresses/update",
-    ADDRESS_CREATE = "/addresses/create"
+    ADDRESS_CREATE = "/addresses/create",
+    ADDRESS_DELETE = "/addresses/delete"
 }

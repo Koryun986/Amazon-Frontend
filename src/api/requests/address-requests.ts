@@ -13,3 +13,7 @@ export async function updateAddress(address: IAddress) {
 export async function createAddress(address: Omit<IAddress, "id">) {
     return await api.post<IAddress>(ApiConstants.ADDRESS_CREATE, address);
 }
+
+export async function deleteAddress(id: IAddress["id"]) {
+    return await api.delete(`${ApiConstants.ADDRESS_DELETE}/${id}`);
+}
