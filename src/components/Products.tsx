@@ -1,7 +1,7 @@
 import {Content} from "antd/es/layout/layout";
 import {useAppSelector} from "../hooks/store-hooks";
 import ProductItem from "./ProductItem";
-import {Col, Pagination, PaginationProps, Row, Spin} from "antd";
+import {Col, Empty, Pagination, PaginationProps, Row, Spin} from "antd";
 import {useState} from "react";
 
 const Products = () => {
@@ -23,14 +23,14 @@ const Products = () => {
     }
     return (
         <Content className={"p-5"}>
-            {!!products.length && (
+            {!!products.length ? (
                 <>
                     <Row gutter={[16, 16]}>
                         {currentProductList.map(product => (<Col xs={{span: 24}} md={{span: 12}} lg={{span: 6}} key={product.id}><ProductItem product={product} /></Col> ))}
                     </Row>
                     <Pagination current={currentPage} onChange={handlePageChange} total={Math.ceil(products.length/itemsInRow)} style={{marginTop: "20px",textAlign: "center"}} />
                 </>
-            )}
+            ) : <Empty />}
         </Content>
     )
 };
