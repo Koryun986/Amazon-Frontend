@@ -1,14 +1,34 @@
 "use client"
 import Sider from "antd/es/layout/Sider";
 import {useState} from "react";
-import {Button, Space} from "antd";
+import {Button, Menu, MenuProps, Space} from "antd";
 import {useAppSelector} from "../hooks/store-hooks";
 import Link from "next/link";
-import {MenuOutlined, UserOutlined} from "@ant-design/icons";
+import {MenuOutlined} from "@ant-design/icons";
+
+type MenuItem = Required<MenuProps>['items'][number];
+function getItem(
+    label: React.ReactNode,
+    key?: React.Key | null,
+    icon?: React.ReactNode,
+    children?: MenuItem[],
+    type?: 'group',
+): MenuItem {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        type,
+    } as MenuItem;
+}
 
 export const MainLayoutSideBar = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const user = useAppSelector(state => state.user.user);
+    const menuItems: MenuItem[] = [
+        getItem(user ? "Addresses" : null, "Addresses", null),
+    ]
 
     return (
         <Sider
@@ -34,6 +54,11 @@ export const MainLayoutSideBar = () => {
                                 </Link>
                             </>
                         )}
+                        <Menu
+                            mode={"vertical"}
+                            items={menuItems}
+                            theme={"dark"}
+                        />
                     </Space>
                 ): (
                     <MenuOutlined style={{fontSize: "30px", cursor: "pointer"}} onClick={() => setCollapsed(false)} />
