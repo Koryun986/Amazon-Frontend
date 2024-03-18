@@ -7,6 +7,9 @@ import dynamic from "next/dynamic";
 import {fetchCategories} from "../redux/slices/category-slice";
 import {ICategory} from "../types/ICategory";
 import useFilterByParams from "../hooks/filter-by-params-hook";
+import {fetchColors} from "../redux/slices/color-slice";
+import ColorsSelect from "./ColorsSelect";
+import CategorySelect from "./CategorySelect";
 
 const AddressMenu = dynamic(() => import("./AddressMenu"));
 
@@ -30,61 +33,22 @@ function getItem(
 const { SHOW_CHILD } = TreeSelect;
 
 const SideBarMenu = () => {
-    const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user.user);
-    const categories = useAppSelector(state => state.category.categories);
-    useFilterByParams(filteredCategories, "category");
+
     useEffect(() => {
         if (user) {
             dispatch(fetchAddresses());
         }
         dispatch(fetchCategories());
+        dispatch(fetchColors());
     }, [user]);
-
-    const menuItems: MenuItem[] = [
-        getItem("Colors", "Colors", null),
-        getItem("Sizes", "Sizes", null),
-    ];
-
-    function transformCategories(categories: ICategory[]) {
-        return categories.map(category => {
-            const transformedCategory = {
-                title: category.name,
-                value: category.id,
-                key: category.id,
-                children: []
-            };
-
-            if (category.children && category.children.length > 0) {
-                transformedCategory.children = transformCategories(category.children);
-            }
-
-            return transformedCategory;
-        });
-    }
-
-    const handleCategoryChange = (newValue: string[]) => {
-        setFilteredCategories(newValue);
-    };
 
     return (
         <>
             {!!user && <AddressMenu />}
-            <Menu
-                mode={"inline"}
-                items={menuItems}
-                theme={"dark"}
-            />
-            <TreeSelect
-                style={{width: "100%"}}
-                value={filteredCategories}
-                placeholder={"Select categories"}
-                treeData={transformCategories(categories)}
-                onChange={handleCategoryChange}
-                showCheckedStrategy={SHOW_CHILD}
-                treeCheckable={true}
-            />
+            <ColorsSelect />
+            <CategorySelect />
         </>
     );
 };

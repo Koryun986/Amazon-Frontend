@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import type {IColor} from "../../types/IColor";
 import {getColors} from "../../api/requests/color-request";
+import type {IColor} from "../../types/IColor";
 
 interface ColorState {
     colors: IColor[];
