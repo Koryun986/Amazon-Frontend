@@ -34,7 +34,11 @@ const SideBarMenu = () => {
         }
     }, [user]);
 
-    const menuItems: MenuItem[] = [];
+    const menuItems: MenuItem[] = [
+        getItem("Categories", "Categories", null),
+        getItem("Colors", "Colors", null),
+        getItem("Sizes", "Sizes", null),
+    ];
 
     return (
         <>
