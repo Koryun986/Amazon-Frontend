@@ -1,10 +1,11 @@
 "use client"
 import Sider from "antd/es/layout/Sider";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Menu, MenuProps, Space} from "antd";
-import {useAppSelector} from "../hooks/store-hooks";
+import {useAppDispatch, useAppSelector} from "../hooks/store-hooks";
 import Link from "next/link";
 import {MenuOutlined} from "@ant-design/icons";
+import {fetchAddresses} from "../redux/slices/user-address-slice";
 
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -25,9 +26,23 @@ function getItem(
 
 export const MainLayoutSideBar = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
+    const addresses = useAppSelector(state => state.user_address.addresses);
     const user = useAppSelector(state => state.user.user);
+
+    useEffect(() => {
+        if (user) {
+            dispatch(fetchAddresses());
+        }
+    }, [user]);
+
+    const addressItems: MenuItem[] = [
+        ...addresses.map(address => getItem(<Link href={`/address/${address.id}`}>{address.street_address} / {address.zip_code}</Link>, address.id, null)),
+        getItem(<Link href="address/create"><Button style={{width: "100%"}}>Add</Button></Link>, "add-address"),
+    ];
+
     const menuItems: MenuItem[] = [
-        getItem(user ? "Addresses" : null, "Addresses", null),
+        getItem( "Addresses", "Addresses", null, addressItems),
     ]
 
     return (
@@ -56,7 +71,7 @@ export const MainLayoutSideBar = () => {
                         )}
                         <Menu
                             mode={"vertical"}
-                            items={menuItems}
+                            items={user ? menuItems : menuItems.slice(1)}
                             theme={"dark"}
                         />
                     </Space>
