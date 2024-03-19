@@ -10,15 +10,15 @@ export default function useFavorites() {
     const dispatch = useAppDispatch();
 
     const fetchFavorites = async () => {
+        let favorites;
         if (user) {
             try {
-                const favorites = await getFavorites();
-                dispatch(setFavorites(favorites));
+                favorites = await getFavorites();
             } catch (e) {}
         } else {
-            const favorites = (localStorage.getItem(LocalStorageConstants.FAVORITES) ? JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES)!): []) as IFavorite[];
-            dispatch(setFavorites(favorites))
+            favorites = (localStorage.getItem(LocalStorageConstants.FAVORITES) ? JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES)!): []) as IFavorite[];
         }
+        dispatch(setFavorites(favorites));
     }
 
     const addFavorite = async (id: number) => {
