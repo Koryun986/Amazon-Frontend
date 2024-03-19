@@ -13,7 +13,7 @@ export default function useFavorites() {
         if (user) {
             try {
                 const favorites = await getFavorites();
-                dispatch(favorites);
+                dispatch(setFavorites(favorites));
             } catch (e) {}
         } else {
             const favorites = (localStorage.getItem(LocalStorageConstants.FAVORITES) ? JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES)!): []) as IFavorite[];

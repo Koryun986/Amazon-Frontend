@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import type {ICartItem} from "../../types/ICartItem";
 
 interface CartItemsState {
-    cartItems: ICartItem["id"][];
+    cartItems: Omit<ICartItem,"id">[];
 }
 
 const initialState: CartItemsState = {

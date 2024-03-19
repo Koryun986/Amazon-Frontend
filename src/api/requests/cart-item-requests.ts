@@ -6,11 +6,11 @@ export async function getCartItems() {
     return (await api.get(ApiConstants.CART_ITEMS_GET_ALL)).data;
 }
 
-export async function addCartItemRequest(cartItem: ICartItem["id"]) {
-    return (await api.post(ApiConstants.CART_ITEM_ADD, cartItem)).data;
+export async function addCartItemRequest(productId: number) {
+    return (await api.post(`${ApiConstants.CART_ITEM_ADD}/${productId}`)).data;
 }
 
-export async function addManyCartItemsRequest(cartItems: ICartItem["id"[]]) {
+export async function addManyCartItemsRequest(cartItems: Omit<ICartItem, "id">[]) {
     return (await api.post(ApiConstants.CART_ITEM_ADD_MANY, cartItems)).data;
 }
 
