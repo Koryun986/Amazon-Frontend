@@ -3,10 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 import {Avatar, Button, Card, Divider} from "antd";
 import {ApiConstants} from "../api/api-constants";
-import {HeartFilled, HeartOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import {HeartFilled, HeartOutlined, MinusCircleFilled, PlusCircleFilled, ShoppingCartOutlined} from "@ant-design/icons";
 import {useAppSelector} from "../hooks/store-hooks";
 import useFavorites from "../hooks/favorite-hooks";
 import type {IProduct} from "../types/IProduct";
+import useCartItems from "../hooks/cart-item-hooks";
 
 interface ProductItemProps {
     product: IProduct;
@@ -14,12 +15,25 @@ interface ProductItemProps {
 
 const ProductItem = ({product}: ProductItemProps) => {
     const favorites = useAppSelector(state => state.favorites.favorites);
+    const cartItems = useAppSelector(state => state.cart_items.cartItems);
     const { toggleFavorite } = useFavorites();
+    const { addCartItem, removeCartItem } = useCartItems();
     const isFavorite = favorites.includes(product.id);
 
     const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         await toggleFavorite(product.id);
+    }
+
+    const handleIncrease = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        console.log("increase")
+        await addCartItem(product.id);
+    }
+
+    const handleDecrease = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        await removeCartItem(product.id);
     }
 
     return (
@@ -39,7 +53,11 @@ const ProductItem = ({product}: ProductItemProps) => {
             >
                 <div className="flex justify-between items-center mb-4">
                     <Button onClick={handleToggleFavorite}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
-                    <Button><ShoppingCartOutlined style={{fontSize: "20px"}} /></Button>
+                    <div className="flex gap-4">
+                        <MinusCircleFilled style={{fontSize: "20px"}} onClick={handleDecrease}/>
+                        <div>{cartItems.find(cartItem => cartItem.product_id === product.id) ? cartItems.find(cartItem => cartItem.product_id === product.id).count : 0}</div>
+                        <PlusCircleFilled style={{fontSize: "20px"}} onClick={handleIncrease}/>
+                    </div>
                 </div>
                 <div className="text-lg font-bold">{product.name}</div>
                 <div className="flex gap-4 justify-between items-center">
