@@ -11,6 +11,7 @@ import type {AuthResponse} from "../../types/response/auth-response";
 import type {NamePath} from "rc-field-form/es/interface";
 import {registerAccount} from "../../api/requests/auth-requests";
 import {addManyFavoritesRequest} from "../../api/requests/favorite-requests";
+import {addManyCartItemsRequest} from "../../api/requests/cart-item-requests";
 
 type FieldType = {
     first_name: string;
@@ -68,8 +69,12 @@ export const RegistrationForm = () => {
         const {data} = await registerAccount(userData);
         localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
         const favorites = localStorage.getItem(LocalStorageConstants.FAVORITES) ? JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES)!) : null;
+        const cartItems = localStorage.getItem(LocalStorageConstants.CART_ITEMS) ? JSON.parse(localStorage.getItem(LocalStorageConstants.CART_ITEMS)!) : null;
         if (favorites) {
             await addManyFavoritesRequest(favorites);
+        }
+        if (cartItems) {
+            await addManyCartItemsRequest(cartItems);
         }
     };
 
