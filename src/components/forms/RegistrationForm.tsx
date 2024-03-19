@@ -10,6 +10,7 @@ import {LocalStorageConstants} from "../../constants/localstorage-constants";
 import type {AuthResponse} from "../../types/response/auth-response";
 import type {NamePath} from "rc-field-form/es/interface";
 import {registerAccount} from "../../api/requests/auth-requests";
+import {addManyFavoritesRequest} from "../../api/requests/favorite-requests";
 
 type FieldType = {
     first_name: string;
@@ -66,7 +67,10 @@ export const RegistrationForm = () => {
     const createAccount = async (userData: Omit<FieldType, "confirm_password">) => {
         const {data} = await registerAccount(userData);
         localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
-        console.log(data)
+        const favorites = localStorage.getItem(LocalStorageConstants.FAVORITES) ? JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES)!) : null;
+        if (favorites) {
+            await addManyFavoritesRequest(favorites);
+        }
     };
 
     return (
