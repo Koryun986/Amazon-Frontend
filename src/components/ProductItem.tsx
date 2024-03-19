@@ -1,8 +1,11 @@
 "use client"
 import Link from "next/link";
 import Image from "next/image";
-import {Avatar, Card, Divider} from "antd";
+import {Avatar, Button, Card, Divider} from "antd";
 import {ApiConstants} from "../api/api-constants";
+import {HeartFilled, HeartOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import {useAppSelector} from "../hooks/store-hooks";
+import useFavorites from "../hooks/favorite-hooks";
 import type {IProduct} from "../types/IProduct";
 
 interface ProductItemProps {
@@ -10,6 +13,19 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({product}: ProductItemProps) => {
+    const favorites = useAppSelector(state => state.favorites.favorites);
+    const {addFavorite, removeFavorite} = useFavorites();
+    const isFavorite = favorites.includes(product.id);
+
+    const toggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if (isFavorite) {
+            await removeFavorite(product.id);
+            return;
+        }
+        await addFavorite(product.id);
+    }
+
     return (
         <Link href={`/products/${product.id}`}>
             <Card
@@ -25,6 +41,10 @@ const ProductItem = ({product}: ProductItemProps) => {
                     />
                 }
             >
+                <div className="flex justify-between items-center mb-4">
+                    <Button onClick={toggleFavorite}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
+                    <Button><ShoppingCartOutlined style={{fontSize: "20px"}} /></Button>
+                </div>
                 <div className="text-lg font-bold">{product.name}</div>
                 <div className="flex gap-4 justify-between items-center">
                     <div className="text-md">Price<div className="font-semibold">${product.price}</div></div>

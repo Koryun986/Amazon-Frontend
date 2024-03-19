@@ -11,14 +11,13 @@ import {setUser} from "../redux/slices/user-slice";
 import type {IUser} from "../types/IUser";
 import {fetchAllProducts} from "../redux/slices/products-slice";
 import {useSearchParams} from "next/navigation";
-import type {IFavorite} from "../types/IFavorite";
-import {setFavorites} from "../redux/slices/favorites-slice";
-import {getFavorites} from "../api/requests/favorite-requests";
+import useFavorites from "../hooks/favorite-hooks";
 
 const MainLayout = () => {
     const searchParams = useSearchParams();
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user.user);
+    const {fetchFavorites} = useFavorites();
 
     const getUserDispatch = async () => {
         try {
@@ -35,24 +34,12 @@ const MainLayout = () => {
         }
     };
 
-    const fetchFavorites = async () => {
-        try {
-            const favorites = await getFavorites();
-            dispatch(favorites);
-        } catch (e) {}
-    }
-
     useEffect(() => {
         getUserDispatch()
     }, []);
 
     useEffect(() => {
-        if (user) {
-            fetchFavorites();
-        } else {
-            const favorites = (localStorage.getItem(LocalStorageConstants.FAVORITES) ? localStorage.getItem(LocalStorageConstants.FAVORITES): []) as IFavorite[];
-            dispatch(setFavorites(favorites))
-        }
+        fetchFavorites()
     }, [user])
 
     useEffect(() => {

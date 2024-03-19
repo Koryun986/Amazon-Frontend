@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import type {IFavorite} from "../../types/IFavorite";
 
 interface FavoritesState {
-    favorites: IFavorite[];
+    favorites: IFavorite["product_id"][];
 }
 
 const initialState: FavoritesState = {
@@ -20,7 +20,7 @@ const favoritesSlice = createSlice<FavoritesState>({
             state.favorites = [...state.favorites, action.payload];
         },
         removeFavorite: (state: FavoritesState, action) =>{
-            state.favorites = state.favorites.filter(favorite => favorite.product_id !== action.payload);
+            state.favorites = state.favorites.filter(favorite => favorite !== action.payload);
         },
     }
 });
