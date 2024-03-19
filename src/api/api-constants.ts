@@ -25,5 +25,9 @@ export enum ApiConstants {
     FAVORITES_GET_ALL = "/favorite-products/",
     FAVORITE_ADD = "/favorite-products/add",
     FAVORITE_ADD_MANY = "/favorite-products/add-many",
-    FAVORITE_REMOVE = "/favorite-products/remove"
+    FAVORITE_REMOVE = "/favorite-products/remove",
+    CART_ITEMS_GET_ALL = "/cart-items/",
+    CART_ITEM_ADD = "/cart-items/add",
+    CART_ITEM_ADD_MANY = "/cart-items/add-many",
+    CART_ITEM_REMOVE = "/cart-items/remove"
 }
