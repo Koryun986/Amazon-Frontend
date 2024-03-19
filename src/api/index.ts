@@ -9,7 +9,9 @@ const api = axios.create({
 } as CreateAxiosDefaults);
 
 api.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN)}`;
+    if (typeof localStorage !== "undefined") {
+        config.headers.Authorization = `Bearer ${localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN)}`;
+    }
     return config;
 });
 
@@ -17,7 +19,7 @@ api.interceptors.response.use((config) => {
     return config;
 },async (error) => {
     const originalRequest = error.config;
-    if (error.response.status == 401 && error.config && !error.config._isRetry) {
+    if (error.response?.status == 401 && error.config && !error.config._isRetry) {
         originalRequest._isRetry = true;
         try {
             const response = await axios.get<AuthResponse>(ApiConstants.AUTH_REFRESH, {withCredentials: true})

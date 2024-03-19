@@ -1,9 +1,9 @@
 "use client"
+import Link from "next/link";
 import Image from "next/image";
 import {Avatar, Card, Divider} from "antd";
 import {ApiConstants} from "../api/api-constants";
 import type {IProduct} from "../types/IProduct";
-import Link from "next/link";
 
 interface ProductItemProps {
     product: IProduct;
@@ -11,7 +11,7 @@ interface ProductItemProps {
 
 const ProductItem = ({product}: ProductItemProps) => {
     return (
-        <Link href={`/product/${product.id}`}>
+        <Link href={`/products/${product.id}`}>
             <Card
                 size="small"
                 cover={
