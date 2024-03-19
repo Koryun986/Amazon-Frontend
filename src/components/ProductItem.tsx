@@ -14,16 +14,12 @@ interface ProductItemProps {
 
 const ProductItem = ({product}: ProductItemProps) => {
     const favorites = useAppSelector(state => state.favorites.favorites);
-    const {addFavorite, removeFavorite} = useFavorites();
+    const { toggleFavorite } = useFavorites();
     const isFavorite = favorites.includes(product.id);
 
-    const toggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        if (isFavorite) {
-            await removeFavorite(product.id);
-            return;
-        }
-        await addFavorite(product.id);
+        await toggleFavorite(product.id);
     }
 
     return (
@@ -42,7 +38,7 @@ const ProductItem = ({product}: ProductItemProps) => {
                 }
             >
                 <div className="flex justify-between items-center mb-4">
-                    <Button onClick={toggleFavorite}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
+                    <Button onClick={handleToggleFavorite}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
                     <Button><ShoppingCartOutlined style={{fontSize: "20px"}} /></Button>
                 </div>
                 <div className="text-lg font-bold">{product.name}</div>

@@ -43,9 +43,18 @@ export default function useFavorites() {
         dispatch(removeFavoriteAction(id));
     }
 
+    const toggleFavorite = async (id: number) => {
+        if (favoritesStore.includes(id)) {
+            await removeFavorite(id);
+            return;
+        }
+        await addFavorite(id);
+    }
+
     return {
         fetchFavorites,
         addFavorite,
         removeFavorite,
+        toggleFavorite
     }
 }
