@@ -4,17 +4,21 @@ import {Layout} from "antd";
 import Header from "./Header";
 import {MainLayoutSideBar} from "./MainLayoutSideBar";
 import Products from "./Products";
-import {useAppDispatch} from "../hooks/store-hooks";
+import {useAppDispatch, useAppSelector} from "../hooks/store-hooks";
 import {getUser} from "../api/requests/auth-requests";
 import {LocalStorageConstants} from "../constants/localstorage-constants";
 import {setUser} from "../redux/slices/user-slice";
 import type {IUser} from "../types/IUser";
 import {fetchAllProducts} from "../redux/slices/products-slice";
 import {useSearchParams} from "next/navigation";
+import type {IFavorite} from "../types/IFavorite";
+import {setFavorites} from "../redux/slices/favorites-slice";
+import {getFavorites} from "../api/requests/favorite-requests";
 
 const MainLayout = () => {
     const searchParams = useSearchParams();
     const dispatch = useAppDispatch();
+    const user = useAppSelector(state => state.user.user);
 
     const getUserDispatch = async () => {
         try {
@@ -31,9 +35,25 @@ const MainLayout = () => {
         }
     };
 
+    const fetchFavorites = async () => {
+        try {
+            const favorites = await getFavorites();
+            dispatch(favorites);
+        } catch (e) {}
+    }
+
     useEffect(() => {
         getUserDispatch()
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            fetchFavorites();
+        } else {
+            const favorites = (localStorage.getItem(LocalStorageConstants.FAVORITES) ? localStorage.getItem(LocalStorageConstants.FAVORITES): []) as IFavorite[];
+            dispatch(setFavorites(favorites))
+        }
+    }, [user])
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
