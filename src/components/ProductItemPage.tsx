@@ -4,7 +4,9 @@ import {useRouter} from "next/navigation";
 import {Avatar, Button, FloatButton, Image} from "antd";
 import {ApiConstants} from "../api/api-constants";
 import type {IProduct} from "../types/IProduct";
-import {HeartOutlined, LeftOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import {HeartFilled, HeartOutlined, LeftOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import {useAppSelector} from "../hooks/store-hooks";
+import useFavorites from "../hooks/favorite-hooks";
 
 const {PreviewGroup} = Image;
 
@@ -13,6 +15,9 @@ interface ProductItemPageProps {
 }
 
 const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
+    const favorites = useAppSelector(state => state.favorites.favorites);
+    const { toggleFavorite } = useFavorites();
+    const isFavorite = favorites.includes(product.id);
     const router = useRouter();
 
     const handleGoBack = () => {
@@ -35,7 +40,7 @@ const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
                 </div>
                 <div className="mt-4">
                     <div className="flex justify-between items-center mb-4">
-                        <Button><HeartOutlined style={{fontSize: "25px"}} /></Button>
+                        <Button onClick={() => toggleFavorite(product.id)}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
                         <Button><ShoppingCartOutlined style={{fontSize: "25px"}} /></Button>
                     </div>
                     <div className="text-xl font-bold">{product.name}</div>
