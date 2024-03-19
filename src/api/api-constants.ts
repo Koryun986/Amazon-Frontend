@@ -22,4 +22,8 @@ export enum ApiConstants {
     SIZE_CREATE = "/sizes/create",
     SIZE_UPDATE = "/sizes/update",
     SIZE_DELETE = "/sizes/delete",
+    FAVORITES_GET_ALL = "/favorite-products/",
+    FAVORITE_ADD = "/favorite-products/add",
+    FAVORITE_ADD_MANY = "/favorite-products/add-many",
+    FAVORITE_REMOVE = "/favorite-products/remove"
 }
