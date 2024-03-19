@@ -6,14 +6,17 @@ import {useAppSelector} from "../hooks/store-hooks";
 
 const HeaderNav = () => {
     const favorites = useAppSelector(state => state.favorites.favorites);
-    console.log("favorites", favorites)
+    const cartItems = useAppSelector(state => state.cart_items.cartItems);
+
     return (
         <Flex align={"center"} gap={"middle"}>
             <Link href={"/cart-items"} >
-                <ShoppingOutlined style={{color: "white", fontSize: "25px"}} />
+                <Badge count={cartItems.length} showZero >
+                    <ShoppingOutlined style={{color: "white", fontSize: "25px"}} />
+                </Badge>
             </Link>
             <Link href={"/favorites"} >
-                <Badge count={favorites.length ? favorites.length : 0} showZero >
+                <Badge count={favorites.length} showZero >
                     <HeartOutlined style={{color: "white", fontSize: "25px"}} />
                 </Badge>
             </Link>

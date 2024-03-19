@@ -12,12 +12,14 @@ import type {IUser} from "../types/IUser";
 import {fetchAllProducts} from "../redux/slices/products-slice";
 import {useSearchParams} from "next/navigation";
 import useFavorites from "../hooks/favorite-hooks";
+import useCartItems from "../hooks/cart-item-hooks";
 
 const MainLayout = () => {
     const searchParams = useSearchParams();
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user.user);
     const {fetchFavorites} = useFavorites();
+    const {fetchCartItems} = useCartItems();
 
     const getUserDispatch = async () => {
         try {
@@ -39,7 +41,8 @@ const MainLayout = () => {
     }, []);
 
     useEffect(() => {
-        fetchFavorites()
+        fetchFavorites();
+        fetchCartItems();
     }, [user])
 
     useEffect(() => {
