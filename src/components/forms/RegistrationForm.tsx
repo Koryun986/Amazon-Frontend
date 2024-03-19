@@ -4,21 +4,25 @@ import { useRouter } from 'next/navigation'
 import {Button, Form, Input, Layout, message} from "antd";
 import {LoadingOutlined} from "@ant-design/icons";
 import {Content} from "antd/es/layout/layout";
-import api from "../api/index";
-import {ApiConstants} from "../api/api-constants";
-import {LocalStorageConstants} from "../constants/localstorage-constants";
-import type {AuthResponse} from "../types/response/auth-response";
-import {loginAccount} from "../api/requests/auth-requests";
+import api from "../../api/index";
+import {ApiConstants} from "../../api/api-constants";
+import {LocalStorageConstants} from "../../constants/localstorage-constants";
+import type {AuthResponse} from "../../types/response/auth-response";
+import type {NamePath} from "rc-field-form/es/interface";
+import {registerAccount} from "../../api/requests/auth-requests";
 
 type FieldType = {
+    first_name: string;
+    last_name: string;
     email: string;
     password: string;
+    confirm_password: string;
 };
 
 const {Item} = Form;
 const {Password} = Input;
 
-const LoginForm = () => {
+export const RegistrationForm = () => {
     const [messageApi, contextHolder] = message.useMessage()
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,8 +42,15 @@ const LoginForm = () => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await loginToAccount({email: data.email, password: data.password});
-            router.push("/");
+            await createAccount({first_name: data.first_name, last_name: data.last_name, email: data.email, password: data.password});
+            messageApi.open({
+                type: "success",
+                content: "Verify your email",
+                duration: 5
+            });
+            setTimeout(() => {
+                router.push("/");
+            }, 3);
         } catch (e) {
             messageApi.open({
                 type: "error",
@@ -52,8 +63,8 @@ const LoginForm = () => {
         }
     };
 
-    const loginToAccount = async (userData: FieldType) => {
-        const {data} = await loginAccount(userData);
+    const createAccount = async (userData: Omit<FieldType, "confirm_password">) => {
+        const {data} = await registerAccount(userData);
         localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
         console.log(data)
     };
@@ -63,7 +74,7 @@ const LoginForm = () => {
             {contextHolder}
             {isLoading && <LoadingOutlined spin style={{fontSize: "50px", position: "absolute", top: "50%", left: "50%"}} />}
             <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center"}}>
-                <h1 className="mx-auto mb-6 text-2xl font-bold">Login</h1>
+                <h1 className="mx-auto mb-6 text-2xl font-bold">Registration</h1>
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
@@ -72,6 +83,22 @@ const LoginForm = () => {
                     autoComplete="off"
                     initialValues={{ remember: true }}
                 >
+                    <Item<FieldType>
+                        label="First Name"
+                        name="first_name"
+                        rules={[{ required: true, message: 'Please input your first name!' }]}
+                    >
+                        <Input value={data.first_name} onChange={handleInputChange} name="first_name" />
+                    </Item>
+
+                    <Item<FieldType>
+                        label="Last Name"
+                        name="last_name"
+                        rules={[{ required: true, message: 'Please input your last name!' }]}
+                    >
+                        <Input value={data.last_name} onChange={handleInputChange} name="last_name" />
+                    </Item>
+
                     <Item<FieldType>
                         label="Email"
                         name="email"
@@ -100,6 +127,24 @@ const LoginForm = () => {
                         <Password value={data.password} onChange={handleInputChange} name="password" />
                     </Item>
 
+                    <Item<FieldType>
+                        label="Confirm Password"
+                        name="confirm_password"
+                        rules={[
+                            { required: true, message: 'Please input your password!' },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue("password" as NamePath) === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('The new password that you entered do not match!'));
+                                },
+                            }),
+                        ]}
+                    >
+                        <Password value={data.confirm_password} onChange={handleInputChange} name="confirm_password" />
+                    </Item>
+
                     <Item wrapperCol={{ offset: 8, span: 16 }}>
                         <Button type="primary" htmlType="submit" onClick={handleButtonSubmit}>
                             Submit
@@ -111,4 +156,4 @@ const LoginForm = () => {
     )
 };
 
-export default LoginForm;
+export default RegistrationForm;

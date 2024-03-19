@@ -1,4 +1,4 @@
-import RegistrationForm from "../../../components/RegistrationForm";
+import RegistrationForm from "../../../components/forms/RegistrationForm";
 
 const RegistrationPage = async () => {
     return (
