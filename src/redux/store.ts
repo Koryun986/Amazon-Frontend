@@ -6,6 +6,7 @@ import categorySlice from "./slices/category-slice";
 import colorSlice from "./slices/color-slice";
 import sizeSlice from "./slices/size-slice";
 import favoritesSlice from "./slices/favorites-slice";
+import cartItemsSlice from "./slices/cart-item-slice";
 
 const makeStore = () => {
     return configureStore({
@@ -17,6 +18,7 @@ const makeStore = () => {
             color: colorSlice,
             size: sizeSlice,
             favorites: favoritesSlice,
+            cart_items: cartItemsSlice,
         },
     })
 };
