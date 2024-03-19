@@ -27,7 +27,6 @@ const ProductItem = ({product}: ProductItemProps) => {
 
     const handleIncrease = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        console.log("increase")
         await addCartItem(product.id);
     }
 
