@@ -1,7 +1,7 @@
 "use client"
 import Sider from "antd/es/layout/Sider";
 import {useState} from "react";
-import {Button, Space} from "antd";
+import {Avatar, Button, Space} from "antd";
 import {useAppSelector} from "../hooks/store-hooks";
 import Link from "next/link";
 import {MenuOutlined} from "@ant-design/icons";
@@ -21,10 +21,13 @@ export const MainLayoutSideBar = () => {
                 {!collapsed ? (
                     <Space direction={"vertical"} size={"middle"}>
                         {user ? (
-                            <>
+                            <Space direction={"vertical"} align={"center"}>
+                                <Link href={"/account"}>
+                                    <Avatar size={"large"}>{user.first_name}</Avatar>
+                                </Link>
                                 <div className="text-lg font-bold">{user.first_name} {user.last_name}</div>
                                 <div className="text-md font-semibold">{user.email}</div>
-                            </>
+                            </Space>
                         ) : (
                             <>
                                 <Link href="/auth/login">
