@@ -14,6 +14,7 @@ export default function useFavorites() {
         if (user) {
             try {
                 favorites = await getFavorites();
+                favorites = favorites.map(favorite => favorite.product_id);
             } catch (e) {}
         } else {
             favorites = (localStorage.getItem(LocalStorageConstants.FAVORITES) ? JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES)!): []) as IFavorite[];

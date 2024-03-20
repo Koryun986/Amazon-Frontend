@@ -13,7 +13,6 @@ export default function useFilterByParams<T>(value: T | null | T[], param: strin
                 params.delete(param);
             } else {
                 for(const item of value) {
-                console.log("value", item)
                     params.append(param, item);
                 }
             }

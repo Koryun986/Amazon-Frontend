@@ -7,7 +7,7 @@ export async function getFavorites() {
 }
 
 export async function addFavoriteRequest(productId: number) {
-    return (await api.post(ApiConstants.FAVORITE_ADD, {product_id: productId})).data;
+    return (await api.post(ApiConstants.FAVORITE_ADD, {id: productId})).data;
 }
 
 export async function addManyFavoritesRequest(productIds: number[]) {

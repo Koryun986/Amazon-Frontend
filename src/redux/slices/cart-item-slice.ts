@@ -16,43 +16,31 @@ const cartItemsSlice = createSlice<CartItemsState>({
         setCartItems: (state: CartItemsState, action) => {
             state.cartItems = action.payload;
         },
-        addCartItem: (state: CartItemsState, action) => {
-            const item = state.cartItems.find(cartItem => cartItem.product_id === action.payload);
-            if (!item)  {
-                state.cartItems = [...state.cartItems, {product_id: action.payload, count: 0}];
+        setCartItem: (state: CartItemsState, action) => {
+            const cartItem = state.cartItems.find(item => item.product_id === action.payload.product_id);
+            if (cartItem) {
+                if (!action.payload.count) {
+                    state.cartItems = state.cartItems.filter(item => item.product_id !== cartItem.product_id);
+                    return;
+                }
+                state.cartItems = state.cartItems.map(item => {
+                    if (item.product_id !== cartItem.product_id) {
+                        return item;
+                    }
+                    return {
+                        ...item,
+                        count: action.payload.count,
+                    };
+                });
                 return;
             }
-            state.cartItems = state.cartItems.map(cartItem => {
-                if (cartItem.product_id !== action.payload) {
-                    return cartItem;
-                }
-                return {
-                    ...cartItem,
-                    count: cartItem.count + 1,
-                }
-            });
-        },
-        removeCartItem: (state: CartItemsState, action) =>{
-            const item = state.cartItems.find(cartItem => cartItem.product_id === action.payload);
-            if (!item) {
+            if (!action.payload.count) {
                 return;
             }
-            if (item.count <= 1) {
-                state.cartItems = state.cartItems.filter(cartItem => cartItem.product_id !== action.payload);
-                return;
-            }
-            state.cartItems = state.cartItems.map(cartItem => {
-                if (cartItem.product_id !== action.payload) {
-                    return cartItem;
-                }
-                return {
-                    ...cartItem,
-                    count: cartItem.count - 1,
-                }
-            });
-        },
+            state.cartItems = [...state.cartItems, action.payload];
+        }
     }
 });
 
-export const { setCartItems, addCartItem, removeCartItem } = cartItemsSlice.actions;
+export const { setCartItems, addCartItem, removeCartItem, setCartItem } = cartItemsSlice.actions;
 export default cartItemsSlice.reducer;

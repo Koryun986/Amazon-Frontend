@@ -29,5 +29,6 @@ export enum ApiConstants {
     CART_ITEMS_GET_ALL = "/cart-items/",
     CART_ITEM_ADD = "/cart-items/add",
     CART_ITEM_ADD_MANY = "/cart-items/add-many",
-    CART_ITEM_REMOVE = "/cart-items/remove"
+    CART_ITEM_REMOVE = "/cart-items/remove",
+    CART_ITEM_SET = "/cart-items/set-item"
 }

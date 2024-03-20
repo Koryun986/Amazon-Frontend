@@ -1,7 +1,7 @@
 "use client"
 import {FC} from "react";
 import {useRouter} from "next/navigation";
-import {Avatar, Button, FloatButton, Image} from "antd";
+import {Avatar, Button, FloatButton, Image, Space} from "antd";
 import {ApiConstants} from "../api/api-constants";
 import type {IProduct} from "../types/IProduct";
 import {
@@ -24,24 +24,13 @@ interface ProductItemPageProps {
 
 const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
     const favorites = useAppSelector(state => state.favorites.favorites);
-    const cartItems = useAppSelector(state => state.cart_items.cartItems);
     const { toggleFavorite } = useFavorites();
-    const { addCartItem, removeCartItem } = useCartItems();
+    const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(product.id);
     const isFavorite = favorites.includes(product.id);
     const router = useRouter();
 
     const handleGoBack = () => {
         router.push("/");
-    }
-
-    const handleIncrease = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        await addCartItem(product.id);
-    }
-
-    const handleDecrease = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        await removeCartItem(product.id);
     }
 
     return (
@@ -54,18 +43,21 @@ const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
                             <Image width={"100%"} height={"100%"} src={ApiConstants.PUBLIC_ASSETS_URL+product.main_image} alt={"Product Image"} />
                         </div>
                         {!!product.images.length && product.images.map(image => (
-                            <div className="h-full row-span-1"><Image width={"100%"} height={"100%"} className="mx-auto" src={ApiConstants.PUBLIC_ASSETS_URL+image} /></div>
+                            <div className="h-full row-span-1" key={image}><Image width={"100%"} height={"100%"} className="mx-auto" src={ApiConstants.PUBLIC_ASSETS_URL+image} /></div>
                         ))}
                     </PreviewGroup>
                 </div>
                 <div className="mt-4">
                     <div className="flex justify-between items-center mb-4">
                         <Button onClick={() => toggleFavorite(product.id)}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
-                        <div className="flex gap-4">
-                            <MinusCircleFilled style={{fontSize: "20px"}} onClick={handleDecrease}/>
-                            <div>{cartItems.find(cartItem => cartItem.product_id === product.id) ? cartItems.find(cartItem => cartItem.product_id === product.id).count : 0}</div>
-                            <PlusCircleFilled style={{fontSize: "20px"}} onClick={handleIncrease}/>
-                        </div>
+                        <Space direction={"vertical"} align={"center"}>
+                            <div className="flex gap-4">
+                                <MinusCircleFilled style={{fontSize: "20px"}} onClick={removeCartItem}/>
+                                <div>{cartItemCount}</div>
+                                <PlusCircleFilled style={{fontSize: "20px"}} onClick={addCartItem}/>
+                            </div>
+                            <Button onClick={setCartItem}>Add to Cart</Button>
+                        </Space>
                     </div>
                     <div className="text-xl font-bold">{product.name}</div>
                     <div className="mt-5 grid md:grid-cols-2 grid-cols-1">

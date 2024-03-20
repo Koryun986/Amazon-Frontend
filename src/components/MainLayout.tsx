@@ -43,6 +43,7 @@ const MainLayout = () => {
     useEffect(() => {
         fetchFavorites();
         fetchCartItems();
+        console.log("mount")
     }, [user])
 
     useEffect(() => {

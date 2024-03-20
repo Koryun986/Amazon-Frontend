@@ -1,13 +1,15 @@
 "use client"
 import Link from "next/link";
 import Image from "next/image";
-import {Avatar, Button, Card, Divider} from "antd";
+import {Avatar, Button, Card, Divider, Space} from "antd";
 import {ApiConstants} from "../api/api-constants";
 import {HeartFilled, HeartOutlined, MinusCircleFilled, PlusCircleFilled, ShoppingCartOutlined} from "@ant-design/icons";
 import {useAppSelector} from "../hooks/store-hooks";
 import useFavorites from "../hooks/favorite-hooks";
 import type {IProduct} from "../types/IProduct";
 import useCartItems from "../hooks/cart-item-hooks";
+import boolean from "async-validator/dist-types/validator/boolean";
+import {useEffect, useState} from "react";
 
 interface ProductItemProps {
     product: IProduct;
@@ -15,24 +17,28 @@ interface ProductItemProps {
 
 const ProductItem = ({product}: ProductItemProps) => {
     const favorites = useAppSelector(state => state.favorites.favorites);
-    const cartItems = useAppSelector(state => state.cart_items.cartItems);
     const { toggleFavorite } = useFavorites();
-    const { addCartItem, removeCartItem } = useCartItems();
-    const isFavorite = favorites.includes(product.id);
+    const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(product.id);
+    const isFavorite = favorites.includes(product.id)
 
     const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         await toggleFavorite(product.id);
     }
 
-    const handleIncrease = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleIncrease = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        await addCartItem(product.id);
+        addCartItem();
     }
 
-    const handleDecrease = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleDecrease = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        await removeCartItem(product.id);
+        removeCartItem();
+    }
+
+    const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        await setCartItem();
     }
 
     return (
@@ -52,11 +58,14 @@ const ProductItem = ({product}: ProductItemProps) => {
             >
                 <div className="flex justify-between items-center mb-4">
                     <Button onClick={handleToggleFavorite}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
-                    <div className="flex gap-4">
-                        <MinusCircleFilled style={{fontSize: "20px"}} onClick={handleDecrease}/>
-                        <div>{cartItems.find(cartItem => cartItem.product_id === product.id) ? cartItems.find(cartItem => cartItem.product_id === product.id).count : 0}</div>
-                        <PlusCircleFilled style={{fontSize: "20px"}} onClick={handleIncrease}/>
-                    </div>
+                    <Space direction={"vertical"} align={"center"}>
+                        <div className="flex gap-4">
+                            <MinusCircleFilled style={{fontSize: "20px"}} onClick={handleDecrease}/>
+                            <div>{cartItemCount}</div>
+                            <PlusCircleFilled style={{fontSize: "20px"}} onClick={handleIncrease}/>
+                        </div>
+                        <Button onClick={handleAddToCart}>Add to Cart</Button>
+                    </Space>
                 </div>
                 <div className="text-lg font-bold">{product.name}</div>
                 <div className="flex gap-4 justify-between items-center">
