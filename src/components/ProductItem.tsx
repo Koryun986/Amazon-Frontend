@@ -52,6 +52,7 @@ const ProductItem = ({product}: ProductItemProps) => {
                         width={0}
                         height={0}
                         unoptimized={true}
+                        priority
                         className="w-full aspect-video"
                     />
                 }
