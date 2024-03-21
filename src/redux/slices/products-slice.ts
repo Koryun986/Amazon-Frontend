@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import type {IProduct} from "../../types/IProduct";
-import {getAllProducts} from "../../api/requests/product-requests";
+import {getAccountProducts, getAllProducts} from "../../api/requests/product-requests";
 
 interface ProductsState {
     products: IProduct[];
@@ -14,6 +14,11 @@ export const fetchAllProducts = createAsyncThunk(
         const response = await getAllProducts(query);
         return response.data;
     }
+)
+
+export const fetchAccountProducts = createAsyncThunk(
+    "products/get-account-products",
+    async () => await getAccountProducts()
 )
 
 const initialState: ProductsState = {
@@ -38,6 +43,19 @@ const productsSlice = createSlice<ProductsState>({
             state.error = "Oops! Something went wrong";
         })
         builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.error = null;
+            state.products = action.payload;
+        })
+        builder.addCase(fetchAccountProducts.pending, (state) => {
+            state.isLoading = true;
+        })
+        builder.addCase(fetchAccountProducts.rejected, (state) => {
+            state.isLoading = false;
+            state.products = [];
+            state.error = "Oops! Something went wrong";
+        })
+        builder.addCase(fetchAccountProducts.fulfilled, (state, action) => {
             state.isLoading = false;
             state.error = null;
             state.products = action.payload;

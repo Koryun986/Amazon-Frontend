@@ -22,23 +22,12 @@ const LoginForm = () => {
     const [messageApi, contextHolder] = message.useMessage()
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [data, setData] = useState<FieldType>({
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        confirm_password: "",
-    });
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setData(prevState => ({...prevState, [event.target.name]: event.target.value}));
-    };
-
-    const handleButtonSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleButtonSubmit = async (value: any) => {
         try {
+            debugger
             setIsLoading(true);
-            await loginToAccount({email: data.email, password: data.password});
+            await loginToAccount(value);
             router.push("/");
         } catch (e) {
             messageApi.open({
@@ -61,7 +50,6 @@ const LoginForm = () => {
     return (
         <Layout style={{height: "100vh", position: "relative"}}>
             {contextHolder}
-            {isLoading && <LoadingOutlined spin style={{fontSize: "50px", position: "absolute", top: "50%", left: "50%"}} />}
             <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center"}}>
                 <h1 className="mx-auto mb-6 text-2xl font-bold">Login</h1>
                 <Form
@@ -70,6 +58,7 @@ const LoginForm = () => {
                     wrapperCol={{ span: 16 }}
                     style={{ width: "70%" }}
                     autoComplete="off"
+                    onFinish={handleButtonSubmit}
                     initialValues={{ remember: true }}
                 >
                     <Item<FieldType>
@@ -86,7 +75,7 @@ const LoginForm = () => {
                             }
                         ]}
                     >
-                        <Input value={data.email} onChange={handleInputChange} name="email" />
+                        <Input  />
                     </Item>
 
                     <Item<FieldType>
@@ -97,11 +86,11 @@ const LoginForm = () => {
                             { min: 4, message: "Password should be at least 4 character" },
                         ]}
                     >
-                        <Password value={data.password} onChange={handleInputChange} name="password" />
+                        <Password />
                     </Item>
 
                     <Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type="primary" htmlType="submit" onClick={handleButtonSubmit}>
+                        <Button type="primary" htmlType="submit" loading={isLoading}>
                             Submit
                         </Button>
                     </Item>

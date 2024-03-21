@@ -5,7 +5,7 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
         title: "Amazon Account",
         description: "Register and make orders easily"
-    };;
+    };
 }
 
 export default async function Page() {
