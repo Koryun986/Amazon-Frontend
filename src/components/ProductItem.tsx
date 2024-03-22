@@ -4,25 +4,38 @@ import Image from "next/image";
 import {Avatar, Button, Card, Divider, Space} from "antd";
 import {ApiConstants} from "../api/api-constants";
 import {HeartFilled, HeartOutlined, MinusCircleFilled, PlusCircleFilled} from "@ant-design/icons";
-import {useAppSelector} from "../hooks/store-hooks";
 import useFavorites from "../hooks/favorite-hooks";
 import type {IProduct} from "../types/IProduct";
 import useCartItems from "../hooks/cart-item-hooks";
+import {useEffect, useState} from "react";
 
 interface ProductItemProps {
     product: IProduct;
 }
 
 const ProductItem = ({product}: ProductItemProps) => {
+    const [isFavorite, setIsFavorite] = useState(false);
     const mainImage = product.images.find(image => image.is_main_image).image_url;
-    const favorites = useAppSelector(state => state.favorites.favorites);
-    const { toggleFavorite } = useFavorites();
+    const { toggleFavorite, isFavorite: isFavoriteCheck } = useFavorites();
     const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(product.id);
-    const isFavorite = favorites.includes(product.id)
+
+    const setInitialFavorite = async () => {
+        const isFavorite = await isFavoriteCheck(product.id);
+        setIsFavorite(isFavorite);
+    }
+
+    useEffect(() => {
+        setInitialFavorite();
+    }, [])
 
     const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        await toggleFavorite(product.id);
+        try {
+            await toggleFavorite(product.id);
+            setIsFavorite(prevState => !prevState);
+        } catch (e) {
+
+        }
     }
 
     const handleIncrease = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,7 +70,7 @@ const ProductItem = ({product}: ProductItemProps) => {
                 }
             >
                 <div className="flex justify-between items-center mb-4">
-                    <Button onClick={handleToggleFavorite}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
+                    <Button onClick={handleToggleFavorite}>{isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
                     <Space direction={"vertical"} align={"center"}>
                         <div className="flex gap-4">
                             <MinusCircleFilled style={{fontSize: "20px"}} onClick={handleDecrease}/>
