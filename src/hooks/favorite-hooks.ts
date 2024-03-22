@@ -3,11 +3,17 @@ import {LocalStorageConstants} from "../constants/localstorage-constants";
 import {IFavorite} from "../types/IFavorite";
 import {setFavorites, removeFavorite as removeFavoriteAction, addFavorite as addFavoriteAction} from "../redux/slices/favorites-slice";
 import {addFavoriteRequest, getFavorites, removeFavoriteRequest} from "../api/requests/favorite-requests";
+import {useEffect, useState} from "react";
 
 export default function useFavorites() {
+    const [favorites, setFavorites] = useState<number[]>([]);
     const user = useAppSelector(state => state.user.user);
     const favoritesStore = useAppSelector(state => state.favorites.favorites);
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        fetchFavorites();
+    }, []);
 
     const fetchFavorites = async () => {
         let favorites;
@@ -19,7 +25,8 @@ export default function useFavorites() {
         } else {
             favorites = (localStorage.getItem(LocalStorageConstants.FAVORITES) ? JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES)!): []) as IFavorite[];
         }
-        dispatch(setFavorites(favorites));
+        setFavorites(favorites);
+        // dispatch(setFavorites(favorites));
     }
 
     const addFavorite = async (id: number) => {
@@ -30,7 +37,8 @@ export default function useFavorites() {
         } else {
             localStorage.setItem(LocalStorageConstants.FAVORITES, JSON.stringify([...favoritesStore, id]))
         }
-        dispatch(addFavoriteAction(id));
+        await fetchFavorites();
+        // dispatch(addFavoriteAction(id));
     }
 
     const removeFavorite = async (id: number) => {
@@ -41,7 +49,8 @@ export default function useFavorites() {
         } else {
             localStorage.setItem(LocalStorageConstants.FAVORITES, JSON.stringify([favoritesStore.filter(favorite => favorite !== id)]));
         }
-        dispatch(removeFavoriteAction(id));
+        await fetchFavorites();
+        // dispatch(removeFavoriteAction(id));
     }
 
     const toggleFavorite = async (id: number) => {
@@ -53,6 +62,7 @@ export default function useFavorites() {
     }
 
     return {
+        favorites,
         fetchFavorites,
         addFavorite,
         removeFavorite,

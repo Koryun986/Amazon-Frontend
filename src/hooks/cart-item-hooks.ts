@@ -9,9 +9,9 @@ import {
 import type {ICartItem} from "../types/ICartItem";
 
 export default function useCartItems(productId?: number) {
+    const [cartItems, setCartItems] = useState<Omit<ICartItem, "id">[]>([]);
     const user = useAppSelector(state => state.user.user);
     const cartItemsStore = useAppSelector(state => state.cart_items.cartItems);
-    const dispatch = useAppDispatch();
     const [localCartItemCount, setLocalCartItemCount] = useState<number>(0);
 
     useEffect(() => {
@@ -21,18 +21,20 @@ export default function useCartItems(productId?: number) {
         if (productId) {
             setLocalCartItemCount(cartItemsStore.find(cartItem => cartItem.product_id === productId)?.count || 0);
         }
-    }, [cartItemsStore]);
+    }, []);
 
     const fetchCartItems = async () => {
         let cartItems;
         if (user) {
             try {
                 cartItems = await getCartItems();
-            } catch (e) {}
+            } catch (e) {
+                return;
+            }
         } else {
             cartItems = (localStorage.getItem(LocalStorageConstants.CART_ITEMS) ? JSON.parse(localStorage.getItem(LocalStorageConstants.CART_ITEMS)!): []) as Omit<ICartItem, "id">[];
         }
-        dispatch(setCartItems(cartItems));
+        setCartItems(cartItems);
     }
 
     const addCartItem = () => {
@@ -51,12 +53,15 @@ export default function useCartItems(productId?: number) {
         if (user) {
             try {
                 await setCartItemRequest(cartItem);
-            } catch (e) {}
+            } catch (e) {
+                return;
+            }
         }
-        dispatch(setCartItemAction(cartItem))
+        setCartItems(cartItems);
     }
 
     return {
+        cartItems,
         fetchCartItems,
         addCartItem,
         removeCartItem,

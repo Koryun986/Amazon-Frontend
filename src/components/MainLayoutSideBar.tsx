@@ -17,9 +17,9 @@ export const MainLayoutSideBar = () => {
             collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}
         >
-            <div className="text-white pl-5 mt-5">
+            <div className="text-white px-5 mt-5">
                 {!collapsed ? (
-                    <Space direction={"vertical"} size={"middle"}>
+                    <Space direction={"vertical"} size={"middle"} style={{width: "100%"}}>
                         {user ? (
                             <Space direction={"vertical"} align={"center"}>
                                 <Link href={"/account"}>

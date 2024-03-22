@@ -2,11 +2,12 @@
 import Link from "next/link";
 import {HeartOutlined, ShoppingOutlined} from "@ant-design/icons";
 import {Badge, Flex} from "antd";
-import {useAppSelector} from "../hooks/store-hooks";
+import useFavorites from "../hooks/favorite-hooks";
+import useCartItems from "../hooks/cart-item-hooks";
 
 const HeaderNav = () => {
-    const favorites = useAppSelector(state => state.favorites.favorites);
-    const cartItems = useAppSelector(state => state.cart_items.cartItems);
+    const {favorites} = useFavorites();
+    const { cartItems } = useCartItems();
 
     return (
         <Flex align={"center"} gap={"middle"}>

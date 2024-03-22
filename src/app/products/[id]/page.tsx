@@ -15,7 +15,7 @@ export async function generateMetadata({params: {id}}: {params: {id: string}}): 
         openGraph: {
             title: `${product.name} | Amazon`,
             description: product.description,
-            image: product.main_image,
+            image: product.images.find(image => image.is_main_image).image_url,
         }
     }
 }

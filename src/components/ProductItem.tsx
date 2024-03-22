@@ -3,19 +3,18 @@ import Link from "next/link";
 import Image from "next/image";
 import {Avatar, Button, Card, Divider, Space} from "antd";
 import {ApiConstants} from "../api/api-constants";
-import {HeartFilled, HeartOutlined, MinusCircleFilled, PlusCircleFilled, ShoppingCartOutlined} from "@ant-design/icons";
+import {HeartFilled, HeartOutlined, MinusCircleFilled, PlusCircleFilled} from "@ant-design/icons";
 import {useAppSelector} from "../hooks/store-hooks";
 import useFavorites from "../hooks/favorite-hooks";
 import type {IProduct} from "../types/IProduct";
 import useCartItems from "../hooks/cart-item-hooks";
-import boolean from "async-validator/dist-types/validator/boolean";
-import {useEffect, useState} from "react";
 
 interface ProductItemProps {
     product: IProduct;
 }
 
 const ProductItem = ({product}: ProductItemProps) => {
+    const mainImage = product.images.find(image => image.is_main_image).image_url;
     const favorites = useAppSelector(state => state.favorites.favorites);
     const { toggleFavorite } = useFavorites();
     const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(product.id);
@@ -47,7 +46,7 @@ const ProductItem = ({product}: ProductItemProps) => {
                 size="small"
                 cover={
                     <Image
-                        src={ApiConstants.PUBLIC_ASSETS_URL+product.main_image}
+                        src={ApiConstants.PUBLIC_ASSETS_URL+mainImage}
                         alt="Product Photo"
                         width={0}
                         height={0}

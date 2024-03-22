@@ -23,6 +23,8 @@ interface ProductItemPageProps {
 }
 
 const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
+    const main_image = product.images.find(image => image.is_main_image)?.image_url;
+    const images = product.images.filter(image => !image.is_main_image);
     const favorites = useAppSelector(state => state.favorites.favorites);
     const { toggleFavorite } = useFavorites();
     const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(product.id);
@@ -40,10 +42,10 @@ const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
                 <div className="md:h-[40%] grid gap-4 md:grid-cols-4 grid-cols-2 grid-rows-2">
                     <PreviewGroup>
                         <div className="col-start-1 col-span-2 row-start-1 row-span-2">
-                            <Image width={"100%"} height={"100%"} src={ApiConstants.PUBLIC_ASSETS_URL+product.main_image} alt={"Product Image"} />
+                            <Image width={"100%"} height={"100%"} src={ApiConstants.PUBLIC_ASSETS_URL+main_image} alt={"Product Image"} />
                         </div>
-                        {!!product.images.length && product.images.map(image => (
-                            <div className="h-full row-span-1" key={image}><Image width={"100%"} height={"100%"} className="mx-auto" src={ApiConstants.PUBLIC_ASSETS_URL+image} /></div>
+                        {!!images.length && product.images.map(image => (
+                            <div className="h-full row-span-1" key={image}><Image width={"100%"} height={"100%"} className="mx-auto" src={ApiConstants.PUBLIC_ASSETS_URL+image.image_url} /></div>
                         ))}
                     </PreviewGroup>
                 </div>
@@ -72,15 +74,15 @@ const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
                             </div>
                             <div className="mt-4">
                                 Color
-                                <div className="font-semibold">{product.color}</div>
+                                <div className="font-semibold">{product.color.name}</div>
                             </div>
                             <div className="mt-4">
                                 Size
-                                <div className="font-semibold">{product.size}</div>
+                                <div className="font-semibold">{product.size.name}</div>
                             </div>
                             <div className="mt-4">
                                 Category
-                                <div className="font-semibold">{product.category}</div>
+                                <div className="font-semibold">{product.category.name}</div>
                             </div>
                         </div>
                     </div>
