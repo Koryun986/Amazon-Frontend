@@ -8,14 +8,10 @@ const Products = dynamic<any, any>(() => import("../components/Products"), {
 });
 
 export default async function Home({searchParams}) {
-  const params = new URLSearchParams(searchParams);
-  const {data} = await getAllProducts(params.toString());
 
   return (
     <>
-      {data.length ? (
-          <Products products={data} />
-      ) : (<Empty />)}
+          <Products searchParams={searchParams} />
     </>
   );
 }

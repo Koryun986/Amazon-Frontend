@@ -3,7 +3,7 @@ import {ApiConstants} from "../api-constants";
 import type {IProduct} from "../../types/IProduct";
 
 export async function getAllProducts(query: string = "") {
-    return await api.get<IProduct[]>(`${ApiConstants.PRODUCTS_GET_ALL}${query ? `?${query}`: ""}`);
+    return (await api.get<IProduct[]>(`${ApiConstants.PRODUCTS_GET_ALL}${query ? `?${query}&limit=8`: "?limit=8"}`)).data;
 }
 
 export async function getProductById(id: string) {

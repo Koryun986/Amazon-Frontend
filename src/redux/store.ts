@@ -12,7 +12,7 @@ const makeStore = () => {
     return configureStore({
         reducer: {
             user: userSlice,
-            products: productsSlice,
+            // products: productsSlice,
             user_address: userAddressSlice,
             category: categorySlice,
             color: colorSlice,
