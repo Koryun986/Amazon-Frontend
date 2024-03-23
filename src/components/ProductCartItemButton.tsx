@@ -7,7 +7,7 @@ interface ProductCartItemProps {
   id: number;
 }
 
-const ProductCartItem: FC<ProductCartItemProps> = ({id}) => {
+const ProductCartItemButton: FC<ProductCartItemProps> = ({id}) => {
   const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(id);
 
   const handleIncrease = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,4 +36,4 @@ const ProductCartItem: FC<ProductCartItemProps> = ({id}) => {
   )
 };
 
-export default ProductCartItem;
+export default ProductCartItemButton;

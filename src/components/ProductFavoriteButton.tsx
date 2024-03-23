@@ -2,12 +2,14 @@ import {FC, useEffect, useState} from "react";
 import {Button} from "antd";
 import {HeartFilled, HeartOutlined} from "@ant-design/icons";
 import useFavorites from "../hooks/favorite-hooks";
+import {useAppSelector} from "../hooks/store-hooks";
 
 interface ProductFavoriteButtonProps {
   id: number;
 }
 
 const ProductFavoriteButton: FC<ProductFavoriteButtonProps> = ({id}) => {
+  const user = useAppSelector(state => state.user.user);
   const [isFavorite, setIsFavorite] = useState(false);
   const { toggleFavorite, isFavorite: isFavoriteCheck } = useFavorites();
 
@@ -18,7 +20,7 @@ const ProductFavoriteButton: FC<ProductFavoriteButtonProps> = ({id}) => {
 
   useEffect(() => {
     setInitialFavorite();
-  }, [])
+  }, [user]);
 
   const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

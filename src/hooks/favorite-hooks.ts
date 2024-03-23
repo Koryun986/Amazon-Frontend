@@ -7,6 +7,7 @@ import {
     setFavorites
 } from "../redux/slices/favorites-slice";
 import {addFavoriteRequest, getFavorites, removeFavoriteRequest} from "../api/requests/favorite-requests";
+import {useEffect} from "react";
 
 export default function useFavorites(id?: number) {
     const user = useAppSelector(state => state.user.user);
@@ -30,6 +31,10 @@ export default function useFavorites(id?: number) {
         const favorites = await getFavoritesFromStore();
         dispatch(setFavorites(favorites));
     }
+
+    useEffect(() => {
+        fetchFavorites();
+    }, [user]);
 
     const addFavorite = async (id: number) => {
         if (user) {

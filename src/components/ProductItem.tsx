@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {Avatar, Card, Divider} from "antd";
 import {ApiConstants} from "../api/api-constants";
-import ProductCartItem from "./ProductCartItem";
+import ProductCartItemButton from "./ProductCartItemButton";
 import type {IProduct} from "../types/IProduct";
 import ProductFavoriteButton from "./ProductFavoriteButton";
 
@@ -32,7 +32,7 @@ const ProductItem = ({product}: ProductItemProps) => {
             >
                 <div className="flex justify-between items-center mb-4">
                     <ProductFavoriteButton id={product.id} />
-                    <ProductCartItem id={product.id} />
+                    <ProductCartItemButton id={product.id} />
                 </div>
                 <div className="text-lg font-bold">{product.name}</div>
                 <div className="flex gap-4 justify-between items-center">

@@ -7,11 +7,12 @@ import {useEffect} from "react";
 
 const FavoritesBadge = () => {
   const {fetchFavorites} = useFavorites();
+  const user = useAppSelector(state => state.user.user);
   const favorites = useAppSelector(state => state.favorites.favorites);
 
   useEffect(() => {
     fetchFavorites();
-  }, []);
+  }, [user]);
 
   return (
     <Link href={"/favorites"} >

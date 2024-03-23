@@ -1,20 +1,12 @@
 "use client"
 import {FC} from "react";
 import {useRouter} from "next/navigation";
-import {Avatar, Button, FloatButton, Image, Space} from "antd";
+import {Avatar, FloatButton, Image} from "antd";
+import {LeftOutlined} from "@ant-design/icons";
 import {ApiConstants} from "../api/api-constants";
 import type {IProduct} from "../types/IProduct";
-import {
-    HeartFilled,
-    HeartOutlined,
-    LeftOutlined,
-    MinusCircleFilled,
-    PlusCircleFilled,
-    ShoppingCartOutlined
-} from "@ant-design/icons";
-import {useAppSelector} from "../hooks/store-hooks";
-import useFavorites from "../hooks/favorite-hooks";
-import useCartItems from "../hooks/cart-item-hooks";
+import ProductFavoriteButton from "./ProductFavoriteButton";
+import ProductCartItemButton from "./ProductCartItemButton";
 
 const {PreviewGroup} = Image;
 
@@ -25,10 +17,6 @@ interface ProductItemPageProps {
 const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
     const main_image = product.images.find(image => image.is_main_image)?.image_url;
     const images = product.images.filter(image => !image.is_main_image);
-    const favorites = useAppSelector(state => state.favorites.favorites);
-    const { toggleFavorite } = useFavorites();
-    const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(product.id);
-    const isFavorite = favorites.includes(product.id);
     const router = useRouter();
 
     const handleGoBack = () => {
@@ -51,15 +39,8 @@ const ProductItemPage: FC<ProductItemPageProps> = ({product}) => {
                 </div>
                 <div className="mt-4">
                     <div className="flex justify-between items-center mb-4">
-                        <Button onClick={() => toggleFavorite(product.id)}>{!isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
-                        <Space direction={"vertical"} align={"center"}>
-                            <div className="flex gap-4">
-                                <MinusCircleFilled style={{fontSize: "20px"}} onClick={removeCartItem}/>
-                                <div>{cartItemCount}</div>
-                                <PlusCircleFilled style={{fontSize: "20px"}} onClick={addCartItem}/>
-                            </div>
-                            <Button onClick={setCartItem}>Add to Cart</Button>
-                        </Space>
+                        <ProductFavoriteButton id={product.id} />
+                        <ProductCartItemButton id={product.id} />
                     </div>
                     <div className="text-xl font-bold">{product.name}</div>
                     <div className="mt-5 grid md:grid-cols-2 grid-cols-1">
