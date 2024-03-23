@@ -58,6 +58,7 @@ const SizeSelect = () => {
             theme={"dark"}
             selectedKeys={[filteredSize]}
             onClick={handleMenuItemClick}
+            triggerSubMenuAction={"click"}
         />
     );
 };

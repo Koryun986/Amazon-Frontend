@@ -64,6 +64,7 @@ const AddressMenu= () => {
               items={menuItems}
               theme={"dark"}
               selectable={false}
+              triggerSubMenuAction={"click"}
           />
           <Modal
               centered

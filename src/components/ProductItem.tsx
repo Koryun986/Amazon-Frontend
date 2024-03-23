@@ -1,57 +1,18 @@
 "use client"
 import Link from "next/link";
 import Image from "next/image";
-import {Avatar, Button, Card, Divider, Space} from "antd";
+import {Avatar, Card, Divider} from "antd";
 import {ApiConstants} from "../api/api-constants";
-import {HeartFilled, HeartOutlined, MinusCircleFilled, PlusCircleFilled} from "@ant-design/icons";
-import useFavorites from "../hooks/favorite-hooks";
+import ProductCartItem from "./ProductCartItem";
 import type {IProduct} from "../types/IProduct";
-import useCartItems from "../hooks/cart-item-hooks";
-import {useEffect, useState} from "react";
+import ProductFavoriteButton from "./ProductFavoriteButton";
 
 interface ProductItemProps {
     product: IProduct;
 }
 
 const ProductItem = ({product}: ProductItemProps) => {
-    const [isFavorite, setIsFavorite] = useState(false);
     const mainImage = product.images.find(image => image.is_main_image).image_url;
-    const { toggleFavorite, isFavorite: isFavoriteCheck } = useFavorites();
-    const { addCartItem, removeCartItem, setCartItem, cartItemCount } = useCartItems(product.id);
-
-    const setInitialFavorite = async () => {
-        const isFavorite = await isFavoriteCheck(product.id);
-        setIsFavorite(isFavorite);
-    }
-
-    useEffect(() => {
-        setInitialFavorite();
-    }, [])
-
-    const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        try {
-            await toggleFavorite(product.id);
-            setIsFavorite(prevState => !prevState);
-        } catch (e) {
-
-        }
-    }
-
-    const handleIncrease = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        addCartItem();
-    }
-
-    const handleDecrease = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        removeCartItem();
-    }
-
-    const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        await setCartItem();
-    }
 
     return (
         <Link href={`/products/${product.id}`}>
@@ -70,15 +31,8 @@ const ProductItem = ({product}: ProductItemProps) => {
                 }
             >
                 <div className="flex justify-between items-center mb-4">
-                    <Button onClick={handleToggleFavorite}>{isFavorite ? <HeartOutlined style={{fontSize: "20px"}}/> : <HeartFilled style={{fontSize: "20px"}} />}</Button>
-                    <Space direction={"vertical"} align={"center"}>
-                        <div className="flex gap-4">
-                            <MinusCircleFilled style={{fontSize: "20px"}} onClick={handleDecrease}/>
-                            <div>{cartItemCount}</div>
-                            <PlusCircleFilled style={{fontSize: "20px"}} onClick={handleIncrease}/>
-                        </div>
-                        <Button onClick={handleAddToCart}>Add to Cart</Button>
-                    </Space>
+                    <ProductFavoriteButton id={product.id} />
+                    <ProductCartItem id={product.id} />
                 </div>
                 <div className="text-lg font-bold">{product.name}</div>
                 <div className="flex gap-4 justify-between items-center">

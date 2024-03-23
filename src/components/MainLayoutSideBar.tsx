@@ -1,4 +1,5 @@
 "use client"
+import dynamic from "next/dynamic";
 import {useState} from "react";
 import {Avatar, Button, Space} from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -6,6 +7,8 @@ import {useAppSelector} from "../hooks/store-hooks";
 import Link from "next/link";
 import {MenuOutlined} from "@ant-design/icons";
 import SideBarMenu from "./SideBarMenu";
+
+const AddressMenu = dynamic(() => import("./AddressMenu"));
 
 export const MainLayoutSideBar = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -21,6 +24,7 @@ export const MainLayoutSideBar = () => {
                 {!collapsed ? (
                     <Space direction={"vertical"} size={"middle"} style={{width: "100%"}}>
                         {user ? (
+                          <>
                             <Space direction={"vertical"} align={"center"}>
                                 <Link href={"/account"}>
                                     <Avatar size={"large"}>{user.first_name}</Avatar>
@@ -28,6 +32,8 @@ export const MainLayoutSideBar = () => {
                                 <div className="text-lg font-bold">{user.first_name} {user.last_name}</div>
                                 <div className="text-md font-semibold">{user.email}</div>
                             </Space>
+                            <AddressMenu />
+                          </>
                         ) : (
                             <>
                                 <Link href="/auth/login">

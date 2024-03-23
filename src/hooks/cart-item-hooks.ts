@@ -9,33 +9,38 @@ import {
 import type {ICartItem} from "../types/ICartItem";
 
 export default function useCartItems(productId?: number) {
-    const [cartItems, setCartItems] = useState<Omit<ICartItem, "id">[]>([]);
     const user = useAppSelector(state => state.user.user);
-    const cartItemsStore = useAppSelector(state => state.cart_items.cartItems);
+    const dispatch = useAppDispatch();
     const [localCartItemCount, setLocalCartItemCount] = useState<number>(0);
 
-    useEffect(() => {
-        if (!user) {
-            localStorage.setItem(LocalStorageConstants.CART_ITEMS, JSON.stringify(cartItemsStore));
-        }
-        if (productId) {
-            setLocalCartItemCount(cartItemsStore.find(cartItem => cartItem.product_id === productId)?.count || 0);
-        }
-    }, []);
-
-    const fetchCartItems = async () => {
-        let cartItems;
+    const fetchCartItemsFromStore = async () => {
         if (user) {
             try {
-                cartItems = await getCartItems();
+                return await getCartItems();
             } catch (e) {
-                return;
+                return [];
             }
         } else {
-            cartItems = (localStorage.getItem(LocalStorageConstants.CART_ITEMS) ? JSON.parse(localStorage.getItem(LocalStorageConstants.CART_ITEMS)!): []) as Omit<ICartItem, "id">[];
+            return (localStorage.getItem(LocalStorageConstants.CART_ITEMS) ? JSON.parse(localStorage.getItem(LocalStorageConstants.CART_ITEMS)!): []) as Omit<ICartItem, "id">[];
         }
-        setCartItems(cartItems);
     }
+
+    const fetchCartItems = async () => {
+        const cartItems = await fetchCartItemsFromStore();
+        dispatch(setCartItems(cartItems));
+    }
+
+    const setInitialLocalCartItemCount = async () => {
+        const cartItems = await fetchCartItemsFromStore();
+        setLocalCartItemCount(cartItems?.find(cartItem => cartItem.product_id === productId)?.count || 0);
+    }
+
+    useEffect(() => {
+        fetchCartItems();
+        if (productId) {
+            setInitialLocalCartItemCount();
+        }
+    }, [user]);
 
     const addCartItem = () => {
         setLocalCartItemCount(prevCount => prevCount + 1);
@@ -56,12 +61,30 @@ export default function useCartItems(productId?: number) {
             } catch (e) {
                 return;
             }
+        } else {
+            const cartItems = (localStorage.getItem(LocalStorageConstants.CART_ITEMS) ? JSON.parse(localStorage.getItem(LocalStorageConstants.CART_ITEMS)!): []) as Omit<ICartItem, "id">[];
+            const currentItem = cartItems.find(item => item.product_id === productId);
+            let newCartItems;
+            if (currentItem) {
+                if (localCartItemCount) {
+                    newCartItems = cartItems.map(item => {
+                        if (item.product_id !== productId) {
+                            return item;
+                        }
+                        return cartItem;
+                    })
+                } else {
+                    newCartItems = cartItems.filter(item => item.product_id !== productId);
+                }
+            } else {
+                newCartItems = [...cartItems, cartItem];
+            }
+            localStorage.setItem(LocalStorageConstants.CART_ITEMS, JSON.stringify(newCartItems));
         }
-        setCartItems(cartItems);
+        dispatch(setCartItemAction(cartItem))
     }
 
     return {
-        cartItems,
         fetchCartItems,
         addCartItem,
         removeCartItem,

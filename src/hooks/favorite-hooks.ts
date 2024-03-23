@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "./store-hooks";
 import {LocalStorageConstants} from "../constants/localstorage-constants";
-import type{IFavorite} from "../types/IFavorite";
+import type {IFavorite} from "../types/IFavorite";
 import {
     removeFavorite as removeFavoriteAction,
     addFavorite as addFavoriteAction,
@@ -49,8 +49,8 @@ export default function useFavorites(id?: number) {
                 await removeFavoriteRequest(id);
             } catch (e) {}
         } else {
-            const favorites = JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES) || JSON.stringify([]));
-            localStorage.setItem(LocalStorageConstants.FAVORITES, JSON.stringify([favorites.filter(favorite => favorite !== id)]));
+            const favorites = JSON.parse(localStorage.getItem(LocalStorageConstants.FAVORITES) || "[]");
+            localStorage.setItem(LocalStorageConstants.FAVORITES, JSON.stringify(favorites.filter(favorite => favorite !== id)));
         }
         dispatch(removeFavoriteAction(id));
     }

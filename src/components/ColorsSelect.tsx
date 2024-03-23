@@ -57,6 +57,7 @@ const ColorsSelect = () => {
             theme={"dark"}
             selectedKeys={[filteredColor]}
             onClick={handleMenuItemClick}
+            triggerSubMenuAction={"click"}
         />
     );
 };
