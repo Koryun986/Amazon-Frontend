@@ -22,7 +22,6 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
         is_default_address: false,
     });
     const [form] = Form.useForm();
-    const dispatch = useAppDispatch();
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setLocalAddress(prevState => ({...prevState, [event.target.name]: event.target.value}));
@@ -35,7 +34,6 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
             } else {
                 await createAddress(localAddress);
             }
-            dispatch(fetchAddresses());
         } catch (e) {
             console.log(e)
         } finally {
@@ -45,8 +43,7 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
     
     const handleDeleteAddress = async () => {
         try {
-            await deleteAddress(address.id);
-            dispatch(fetchAddresses());
+            await deleteAddress(address?.id!);
         } catch (e) {
             console.log(e)
         } finally {

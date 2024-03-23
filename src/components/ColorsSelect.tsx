@@ -1,7 +1,9 @@
+import {useEffect, useState} from "react";
 import {Menu, MenuProps} from "antd";
-import {useAppSelector} from "../hooks/store-hooks";
-import {useState} from "react";
+import {AxiosResponse} from "axios";
 import useFilterByParams from "../hooks/filter-by-params-hook";
+import {getColors} from "../api/requests/color-request";
+import type {IColor} from "../types/IColor";
 
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -21,9 +23,20 @@ function getItem(
 }
 
 const ColorsSelect = () => {
+    const [colors, setColors] = useState<IColor[]>([]);
     const [filteredColor, setFilteredColor] = useState<number>(null)
-    const colors = useAppSelector(state => state.color.colors);
     useFilterByParams(filteredColor, "color");
+
+    const fetchColors = async () => {
+        try {
+             const {data: colors}: AxiosResponse<IColor[]> = await getColors();
+             setColors(colors);
+        } catch (e) {}
+    }
+
+    useEffect(() => {
+        fetchColors();
+    }, []);
 
     const menuItems: MenuItem[] = [
         getItem("Colors", "Colors", null, colors.map(color => getItem(color.name, color.id))),

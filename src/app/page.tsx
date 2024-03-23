@@ -1,17 +1,21 @@
-import {Empty} from "antd";
-import {getAllProducts} from "../api/requests/product-requests";
-import ProductsSkeleton from "../components/ProductsSkeleton";
-import dynamic from "next/dynamic";
-
-const Products = dynamic<any, any>(() => import("../components/Products"), {
-  loading: () => <ProductsSkeleton />
-});
+import Products from "../components/Products";
+import Header from "../components/Header";
+import {Layout} from "antd";
+import {MainLayoutSideBar} from "../components/MainLayoutSideBar";
+import {Content} from "antd/es/layout/layout";
 
 export default async function Home({searchParams}) {
-
   return (
     <>
-          <Products searchParams={searchParams} />
+      <Layout style={{minHeight: "100vh"}}>
+        <Header />
+        <Layout>
+          <MainLayoutSideBar />
+          <Content className={"p-5"}>
+            <Products searchParams={searchParams} />
+          </Content>
+        </Layout>
+      </Layout>
     </>
   );
 }

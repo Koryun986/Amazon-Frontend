@@ -1,9 +1,10 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {Button, Menu, MenuProps, Modal, Tag} from "antd";
+import {AxiosResponse} from "axios";
 import {IAddress} from "../types/IAddress";
 import useModal from "../hooks/modal-hook";
-import {useAppSelector} from "../hooks/store-hooks";
-import {Button, Menu, MenuProps, Modal, Tag} from "antd";
 import AddressForm from "./forms/AddressForm";
+import {getAddresses} from "../api/requests/address-requests";
 
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -22,55 +23,65 @@ function getItem(
     } as MenuItem;
 }
 
+const AddressMenu= () => {
+  const [addresses, setAddresses] = useState<IAddress[]>([]);
+  const [activeAddress, setActiveAddress] = useState<IAddress | null>(null);
+  const {isActive, openModal, closeModal} = useModal();
 
-const AddressMenu = () => {
-    const [activeAddress, setActiveAddress] = useState<IAddress | null>(null);
-    const {isActive, openModal, closeModal} = useModal();
-    const addresses = useAppSelector(state => state.user_address.addresses);
+  const getUserAddresses = async () => {
+    try {
+      const {data: addresses}: AxiosResponse<IAddress[]> = await getAddresses();
+      setAddresses(addresses);
+    } catch (e) {}
+  }
 
-    const addressItems: MenuItem[] = [
-        ...addresses.map(address => getItem((
-            <div
-                onClick={() => {
-                    openModal();
-                    setActiveAddress(address)
-                }}
-            >
-                {address.street_address} / {address.zip_code}   {address.is_default_address && <Tag style={{backgroundColor: "transparent", color: "gray"}}>main</Tag>}
-            </div>
-        ), address.id, null)),
-        getItem(<Button style={{width: "100%"}} onClick={openModal}>Add</Button>, "add-address"),
-    ];
+  useEffect(() => {
+    getUserAddresses();
+  }, []);
 
-    const menuItems: MenuItem[] = [
-        getItem( "Addresses", "Addresses", null, addressItems),
-    ];
+  const addressItems: MenuItem[] = [
+      ...addresses.map(address => getItem((
+          <div
+              onClick={() => {
+                  openModal();
+                  setActiveAddress(address)
+              }}
+          >
+              {address.street_address} / {address.zip_code}   {address.is_default_address && <Tag style={{backgroundColor: "transparent", color: "gray"}}>main</Tag>}
+          </div>
+      ), address.id, null)),
+      getItem(<Button style={{width: "100%"}} onClick={openModal}>Add</Button>, "add-address"),
+  ];
 
-    return (
-        <>
-            <Menu
-                mode={"vertical"}
-                items={menuItems}
-                theme={"dark"}
-                selectable={false}
-            />
-            <Modal
-                centered
-                open={isActive}
-                onCancel={closeModal}
-                footer={null}
-                destroyOnClose={true}
-            >
-                <AddressForm
-                    onCancel={() => {
-                        closeModal();
-                        setActiveAddress(null);
-                    }}
-                    address={activeAddress}
-                />
-            </Modal>
-        </>
-    );
+  const menuItems: MenuItem[] = [
+      getItem( "Addresses", "Addresses", null, addressItems),
+  ];
+
+  return (
+      <>
+          <Menu
+              mode={"vertical"}
+              items={menuItems}
+              theme={"dark"}
+              selectable={false}
+          />
+          <Modal
+              centered
+              open={isActive}
+              onCancel={closeModal}
+              footer={null}
+              destroyOnClose={true}
+          >
+              <AddressForm
+                  onCancel={() => {
+                      closeModal();
+                      setActiveAddress(null);
+                  }}
+                  address={activeAddress}
+              />
+          </Modal>
+      </>
+  );
 };
 
 export default AddressMenu;

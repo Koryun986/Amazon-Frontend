@@ -9,6 +9,7 @@ import {Empty, Layout} from "antd";
 import {MainLayoutSideBar} from "../components/MainLayoutSideBar";
 import {Content} from "antd/es/layout/layout";
 import Products from "../components/Products";
+import AntdStyledComponentsRegistry from "../providers/AntdStyledComponentsRegistry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,15 +28,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <AntdRegistry>
-            <Layout style={{minHeight: "100vh"}}>
-              <Header />
-              <Layout>
-                <MainLayoutSideBar />
-                <Content className={"p-5"}>
-                  {children}
-                </Content>
-              </Layout>
-            </Layout>
+            <AntdStyledComponentsRegistry>
+              {children}
+            </AntdStyledComponentsRegistry>
           </AntdRegistry>
         </StoreProvider>
       </body>

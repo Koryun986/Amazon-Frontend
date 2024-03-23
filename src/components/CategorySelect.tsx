@@ -1,14 +1,28 @@
+import {useEffect, useState} from "react";
 import {TreeSelect} from "antd";
+import {AxiosResponse} from "axios";
 import useFilterByParams from "../hooks/filter-by-params-hook";
-import {useState} from "react";
-import {ICategory} from "../types/ICategory";
-import {useAppSelector} from "../hooks/store-hooks";
+import {getAllCategories} from "../api/requests/category-request";
+import type {ICategory} from "../types/ICategory";
+
 const { SHOW_CHILD } = TreeSelect;
 
 const CategorySelect = () => {
+    const [categories, setCategories] = useState<ICategory[]>([]);
     const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
-    const categories = useAppSelector(state => state.category.categories);
     useFilterByParams(filteredCategories, "category");
+
+    const fetchCategories = async () => {
+        try {
+            const { data: categories }: AxiosResponse<ICategory[]> = await getAllCategories();
+            setCategories(categories);
+        } catch (e) {}
+    }
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
     function transformCategories(categories: ICategory[]) {
         return categories.map(category => {
             const transformedCategory = {

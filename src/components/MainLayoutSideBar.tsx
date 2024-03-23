@@ -1,7 +1,7 @@
 "use client"
-import Sider from "antd/es/layout/Sider";
 import {useState} from "react";
 import {Avatar, Button, Space} from "antd";
+import Sider from "antd/es/layout/Sider";
 import {useAppSelector} from "../hooks/store-hooks";
 import Link from "next/link";
 import {MenuOutlined} from "@ant-design/icons";
