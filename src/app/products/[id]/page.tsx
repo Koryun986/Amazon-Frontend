@@ -3,12 +3,13 @@ import {getProductById} from "../../../api/requests/product-requests";
 import {AxiosResponse} from "axios";
 import type {IProduct} from "../../../types/IProduct";
 import ProductItemPage from "../../../components/ProductItemPage";
+import {Spin} from "antd";
 
-let x
+let product: IProduct;
 
 export async function generateMetadata({params: {id}}: {params: {id: string}}): Promise<Metadata> {
-    const {data: product}: AxiosResponse<IProduct> = await getProductById(id);
-    x = product
+    const {data}: AxiosResponse<IProduct> = await getProductById(id);
+    product = data;
     return {
         title: `${product.name} | Amazon`,
         description: product.description,
@@ -21,9 +22,14 @@ export async function generateMetadata({params: {id}}: {params: {id: string}}): 
 }
 
 export default async function Page({params: {id}}: { params: { id: string }}) {
-    const {data: product}: AxiosResponse<IProduct> = await getProductById(id);
-    console.log(x, 'xxxxx');
+    if (!product) {
+        return (
+          <div className="h-screen flex justify-center items-center"><Spin /></div>
+        )
+    }
     return (
-        <ProductItemPage product={product} />
+        <>
+          {!!product && <ProductItemPage product={product} /> }
+        </>
     )
 }

@@ -1,3 +1,4 @@
+"use client"
 import {MinusCircleFilled, PlusCircleFilled} from "@ant-design/icons";
 import {Button, Space} from "antd";
 import {FC} from "react";
