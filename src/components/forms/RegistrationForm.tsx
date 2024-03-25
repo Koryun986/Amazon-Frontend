@@ -1,8 +1,7 @@
 "use client";
-import {ChangeEvent, useState} from "react";
+import {useState} from "react";
 import {useRouter} from 'next/navigation'
 import {Button, Form, Input, Layout, message} from "antd";
-import {LoadingOutlined} from "@ant-design/icons";
 import {Content} from "antd/es/layout/layout";
 import {LocalStorageConstants} from "../../constants/localstorage-constants";
 import type {NamePath} from "rc-field-form/es/interface";
@@ -25,36 +24,17 @@ export const RegistrationForm = () => {
   const [messageApi, contextHolder] = message.useMessage()
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<FieldType>({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    confirm_password: "",
-  });
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setData(prevState => ({...prevState, [event.target.name]: event.target.value}));
-  };
-
-  const handleButtonSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleButtonSubmit = async (data: FieldType) => {
     try {
       setIsLoading(true);
-      await createAccount({
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        password: data.password
-      });
-      messageApi.open({
+      const user = await createAccount(data);
+      await messageApi.open({
         type: "success",
-        content: "Verify your email",
+        content: `${user.first_name} ${user.last_name} please verify your email`,
         duration: 5
       });
-      setTimeout(() => {
-        router.push("/");
-      }, 3);
+      router.push("/");
     } catch (e) {
       messageApi.open({
         type: "error",
@@ -78,12 +58,12 @@ export const RegistrationForm = () => {
     if (cartItems) {
       await addManyCartItemsRequest(cartItems);
     }
+    return data;
   };
 
   return (
     <Layout style={{height: "100vh", position: "relative"}}>
       {contextHolder}
-      {isLoading && <LoadingOutlined spin style={{fontSize: "50px", position: "absolute", top: "50%", left: "50%"}}/>}
       <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center"}}>
         <h1 className="mx-auto mb-6 text-2xl font-bold">Registration</h1>
         <Form
@@ -92,6 +72,7 @@ export const RegistrationForm = () => {
           wrapperCol={{span: 16}}
           style={{width: "70%"}}
           autoComplete="off"
+          onFinish={handleButtonSubmit}
           initialValues={{remember: true}}
         >
           <Item<FieldType>
@@ -99,7 +80,7 @@ export const RegistrationForm = () => {
             name="first_name"
             rules={[{required: true, message: 'Please input your first name!'}]}
           >
-            <Input value={data.first_name} onChange={handleInputChange} name="first_name"/>
+            <Input />
           </Item>
 
           <Item<FieldType>
@@ -107,7 +88,7 @@ export const RegistrationForm = () => {
             name="last_name"
             rules={[{required: true, message: 'Please input your last name!'}]}
           >
-            <Input value={data.last_name} onChange={handleInputChange} name="last_name"/>
+            <Input />
           </Item>
 
           <Item<FieldType>
@@ -124,7 +105,7 @@ export const RegistrationForm = () => {
               }
             ]}
           >
-            <Input value={data.email} onChange={handleInputChange} name="email"/>
+            <Input />
           </Item>
 
           <Item<FieldType>
@@ -135,7 +116,7 @@ export const RegistrationForm = () => {
               {min: 4, message: "Password should be at least 4 character"},
             ]}
           >
-            <Password value={data.password} onChange={handleInputChange} name="password"/>
+            <Password />
           </Item>
 
           <Item<FieldType>
@@ -153,11 +134,11 @@ export const RegistrationForm = () => {
               }),
             ]}
           >
-            <Password value={data.confirm_password} onChange={handleInputChange} name="confirm_password"/>
+            <Password />
           </Item>
 
           <Item wrapperCol={{offset: 8, span: 16}}>
-            <Button type="primary" htmlType="submit" onClick={handleButtonSubmit}>
+            <Button type="primary" htmlType="submit" loading={isLoading}>
               Submit
             </Button>
           </Item>

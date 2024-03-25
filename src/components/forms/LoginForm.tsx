@@ -19,7 +19,7 @@ const LoginForm = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const handleButtonSubmit = async (value: any) => {
+    const handleButtonSubmit = async (value: FieldType) => {
         try {
             setIsLoading(true);
             const user = await loginToAccount(value);
