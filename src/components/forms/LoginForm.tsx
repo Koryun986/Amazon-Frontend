@@ -1,13 +1,9 @@
 "use client";
-import {ChangeEvent, useState} from "react";
+import {useState} from "react";
 import { useRouter } from 'next/navigation'
 import {Button, Form, Input, Layout, message} from "antd";
-import {LoadingOutlined} from "@ant-design/icons";
 import {Content} from "antd/es/layout/layout";
-import api from "../../api/index";
-import {ApiConstants} from "../../api/api-constants";
 import {LocalStorageConstants} from "../../constants/localstorage-constants";
-import type {AuthResponse} from "../../types/response/auth-response";
 import {loginAccount} from "../../api/requests/auth-requests";
 
 type FieldType = {
@@ -25,15 +21,19 @@ const LoginForm = () => {
 
     const handleButtonSubmit = async (value: any) => {
         try {
-            debugger
             setIsLoading(true);
-            await loginToAccount(value);
+            const user = await loginToAccount(value);
+            await messageApi.open({
+                type: "success",
+                content: `Welcome ${user.first_name} ${user.last_name}`,
+                duration: 3
+            });
             router.push("/");
         } catch (e) {
             messageApi.open({
                 type: "error",
                 content: e.message,
-                duration: 5
+                duration: 3
             });
             console.log(e);
         } finally {
@@ -44,7 +44,7 @@ const LoginForm = () => {
     const loginToAccount = async (userData: FieldType) => {
         const {data} = await loginAccount(userData);
         localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
-        console.log(data)
+        return data;
     };
 
     return (
