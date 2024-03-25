@@ -1,3 +1,4 @@
+import {Suspense} from "react";
 import {Metadata} from "next";
 import {getProductById} from "../../../api/requests/product-requests";
 import {AxiosResponse} from "axios";
@@ -21,14 +22,9 @@ export async function generateMetadata({params: {id}}: {params: {id: string}}): 
 export default async function Page({params: {id}}: { params: { id: string }}) {
     const {data: product}: AxiosResponse<IProduct> = await getProductById(id);
 
-    if (!product) {
-        return (
-          <div className="h-screen flex justify-center items-center"><Spin /></div>
-        )
-    }
     return (
-        <>
+        <Suspense fallback={<div className="h-screen flex justify-center items-center"><Spin /></div>}>
           {!!product && <ProductItemPage product={product} /> }
-        </>
+        </Suspense>
     )
 }
