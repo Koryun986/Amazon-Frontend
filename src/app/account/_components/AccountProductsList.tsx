@@ -1,25 +1,30 @@
 "use client"
 import {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../hooks/store-hooks";
-import {fetchAccountProducts} from "../../../redux/slices/products-slice";
 import {Empty, Modal, Space} from "antd";
 import AccountProductItem from "./AccountProductItem";
 import useModal from "../../../hooks/modal-hook";
-import {IProduct} from "../../../types/IProduct";
+import {getAccountProducts} from "../../../api/requests/product-requests";
+import type {IProduct} from "../../../types/IProduct";
 
 const AccountProductsList = () => {
     const [editableProduct, setEditableProduct] = useState<IProduct | null>(null);
-    const dispatch = useAppDispatch();
-    const {products} = useAppSelector(state => state.products);
+    const [products, setProducts] = useState<IProduct[]>([]);
     const {isActive, openModal, closeModal} = useModal();
 
     const onEdit = (product: IProduct) => {
         setEditableProduct(product);
         openModal();
+    };
+
+    const fetchProducts = async () => {
+      try {
+        const products = await getAccountProducts()
+        setProducts(products);
+      } catch (e) {}
     }
 
     useEffect(() => {
-        dispatch(fetchAccountProducts());
+      fetchProducts();
     }, []);
 
     return (
