@@ -1,5 +1,5 @@
 "use client"
-import {Avatar, Button, Card, Descriptions, Divider, Popconfirm, Space} from "antd";
+import {Button, Card, Descriptions, Popconfirm, Space} from "antd";
 import Image from "next/image";
 import {IProduct} from "../../../../types/IProduct";
 import {FC} from "react";
