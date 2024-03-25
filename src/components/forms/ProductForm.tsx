@@ -1,45 +1,111 @@
 "use client"
 
-import {Button, Flex, Form, Input, Popconfirm, Space, Switch} from "antd";
-import {IProduct} from "../../types/IProduct";
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
+import {Button, Flex, Form, Input, Select, Space, Switch, TreeDataNode, TreeSelect, Upload} from "antd";
+import type {IColor} from "../../types/IColor";
+import type {ISize} from "../../types/ISize";
+import type {ICategory} from "../../types/ICategory";
+import {AxiosResponse} from "axios";
+import {getColors} from "../../api/requests/color-request";
+import {getSizes} from "../../api/requests/size-requests";
+import {getAllCategories} from "../../api/requests/category-request";
+import transformCategories from "../../helpers/transform-categories";
+import {PlusOutlined} from "@ant-design/icons";
+import {addProduct} from "../../api/requests/product-requests";
 
 interface ProductFormProps {
-    product?: IProduct;
+    onCancel: () => void;
 }
 
-const ProductForm: FC<ProductFormProps> = ({product}) => {
-    const [localProduct, setLocalProduct] = useState<Omit<IProduct, "id" | "main_image" | "images" | "owner" | "total_earnings" | "time_bought">>(product || {
-        name: "",
-        description: "",
-        brand: "",
-        price: 0,
-        color: "",
-        size: "",
-        category: "",
-        is_published: false,
-    });
-    const [form] = Form.useForm();
+const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
+  const [error, setError] = useState(null);
+  const [colors, setColors] = useState<IColor[]>([]);
+  const [sizes, setSizes] = useState<ISize[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [form] = Form.useForm();
+
+  const fetchColors = async () => {
+    try {
+      const {data: colors}: AxiosResponse<IColor[]> = await getColors();
+      setColors(colors);
+    } catch (e) {
+      setError(e);
+    }
+  }
+
+  const fetchSizes = async () => {
+    try {
+      const { data: sizes }: AxiosResponse<ISize[]> = await getSizes();
+      setSizes(sizes);
+    } catch (e) {
+      setError(e);
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const { data: categories }: AxiosResponse<ICategory[]> = await getAllCategories();
+      setCategories(categories);
+    } catch (e) {
+      setError(e);
+    }
+  }
+
+  const callFetches = async () => {
+    await fetchColors();
+    await fetchSizes();
+    await fetchCategories();
+  }
+
+  useEffect(() => {
+    callFetches();
+  }, []);
+
+  const getFormDataFromObject = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("brand", data.brand);
+    formData.append("price", data.price);
+    formData.append("color", data.color);
+    formData.append("size", data.size);
+    formData.append("category", data.category);
+    formData.append("is_published", data.is_published);
+    formData.append("main-image", data["main-image"].fileList[0].originFileObj);
+    if (data.images) {
+      for(const image of data.images?.fileList) {
+        formData.append("images", image.originFileObj);
+      }
+    }
+    return formData;
+  }
+
+  const handleSubmit = async (data) => {
+    const formData = getFormDataFromObject(data);
+    onCancel();
+    try {
+      await addProduct(formData);
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
     return (
         <Form
             form={form}
             name="UserForm"
             labelCol={{
-                span: 4,
-            }}
-            wrapperCol={{
-                span: 20,
+                span: 6,
             }}
             style={{
                 maxWidth: 600,
             }}
             autoComplete="off"
+            onFinish={handleSubmit}
         >
             <Form.Item
                 label="Name"
                 name="name"
-                initialValue={localProduct.name}
                 rules={[
                     {
                         required: true,
@@ -47,13 +113,12 @@ const ProductForm: FC<ProductFormProps> = ({product}) => {
                     },
                 ]}
             >
-                <Input name="name" value={localProduct.name} onChange={handleInputChange}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="Brand"
                 name="brand"
-                initialValue={localProduct.brand}
                 rules={[
                     {
                         required: true,
@@ -62,79 +127,123 @@ const ProductForm: FC<ProductFormProps> = ({product}) => {
                 ]}
 
             >
-                <Input name="brand" value={localProduct.brand} onChange={handleInputChange}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="Price"
                 name="price"
-                initialValue={localProduct.price}
                 rules={[
                     {
                         required: true,
                         message: 'Please input price!',
                     },
-                    {
-                        type: "number"
-                    }
                 ]}
             >
-                <Input name="price" value={localProduct.price} onChange={handleInputChange}/>
+                <Input type={"number"} />
             </Form.Item>
 
             <Form.Item
-                label="Zip Code"
-                name="zip_code"
-                initialValue={localAddress.zip_code}
+                label="Description"
+                name="description"
                 rules={[
                     {
                         required: true,
-                        message: 'Please input zip code!',
+                        message: 'Please input description!',
                     },
                 ]}
             >
-                <Input name="zip_code" value={localAddress.zip_code} onChange={handleInputChange}/>
+                <Input.TextArea />
             </Form.Item>
 
             <Form.Item
-                label="Street Address"
-                name="street_address"
-                initialValue={localAddress.street_address}
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input street address!',
-                    },
-                ]}
+              label="Color"
+              name="color"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select color!"
+                }
+              ]}
             >
-                <Input name="street_address" value={localAddress.street_address} onChange={handleInputChange}/>
+              <Select>
+                {colors.map(color => <Select.Option value={color.name} key={color.id}>{color.name}</Select.Option> )}
+              </Select>
             </Form.Item>
 
-            <Space direction="vertical" className="mb-4">
-                <div>Is Main Address</div>
-                <Switch defaultValue={localAddress.is_default_address} onChange={(checked => setLocalAddress(prevState => ({...prevState, is_default_address: checked})))} />
-            </Space>
+          <Form.Item
+            label="Size"
+            name="size"
+            rules={[
+              {
+                required: true,
+                message: "Please select size!"
+              }
+            ]}
+          >
+            <Select>
+              {sizes.map(size => <Select.Option value={size.name} key={size.id}>{size.name}</Select.Option> )}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Category"
+            name="category"
+            rules={[
+              {
+                required: true,
+                message: "Please select category!"
+              }
+            ]}
+          >
+            <TreeSelect
+              treeData={transformCategories(categories)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="main-image"
+            label="Main Image"
+            rules={[
+              {
+                required: true,
+                message: "Please upload main image"
+              }
+            ]}
+          >
+            <Upload listType="picture-card" maxCount={1} multiple={false}>
+              <button style={{ border: 0, background: 'none' }} type="button">
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item name="images" label="Additional Images">
+            <Upload listType="picture-card" maxCount={4} multiple>
+              <button style={{ border: 0, background: 'none' }} type="button">
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item
+            name="is_published"
+            label="Is Published"
+          >
+            <Switch />
+          </Form.Item>
 
             <Flex justify={"space-between"}>
                 <Space>
                     <Button htmlType="button" onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button type="primary" htmlType="submit" onClick={handleSubmitButtonClick}>
-                        {address ? "Edit" : "Add"}
+                    <Button type="primary" htmlType="submit">
+                        Add
                     </Button>
                 </Space>
-                {!!address && (
-                    <Popconfirm
-                        title="Delete the address"
-                        description="Are you sure to delete this address?"
-                        okText="Yes"
-                        cancelText="No"
-                        onConfirm={handleDeleteAddress}
-                    >
-                        <Button danger>Delete</Button>
-                    </Popconfirm>
-                )}
             </Flex>
         </Form>
     )

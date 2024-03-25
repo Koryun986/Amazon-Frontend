@@ -1,51 +1,15 @@
 "use client"
-import {ReactNode, useEffect, useState} from "react";
-import {getUser} from "../../../api/requests/auth-requests";
-import {LocalStorageConstants} from "../../../constants/localstorage-constants";
-import {setUser} from "../../../redux/slices/user-slice";
-import {useAppDispatch, useAppSelector} from "../../../hooks/store-hooks";
 import Link from "next/link";
 import {Avatar, Button, Divider} from "antd";
 import {HeartFilled, ProductOutlined, ShoppingCartOutlined} from "@ant-design/icons";
-import type {IUser} from "../../../types/IUser";
-
-export type AccountPageList = "Favorites" | "Cart Items" | "Addresses" | "Products";
+import UnAuthorizedPage from "../../../shared/UnAuthorizedPage";
+import {useUser} from "../../../hooks/user-hook";
 
 const AccountPage = () => {
-    const user = useAppSelector(state => state.user.user);
-    const dispatch = useAppDispatch();
-
-    const getUserDispatch = async () => {
-        try {
-            const {data} = await getUser();
-            const user: IUser = {
-                first_name: data.first_name,
-                last_name: data.last_name,
-                email: data.email,
-            };
-            localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
-            dispatch(setUser(user));
-        } catch (e) {
-            dispatch(setUser(null));
-        }
-    };
-
-    useEffect(() => {
-        getUserDispatch()
-    }, []);
+    const user = useUser();
 
     if (!user) {
-        return (
-          <div className="h-screen flex justify center items-center flex-col gap-4">
-              <div className="text-3xl font-bold">Create account or log in</div>
-              <Link href="/auth/login">
-                  <Button>Login</Button>
-              </Link>
-              <Link href="/auth/registration">
-                  <Button>Registration</Button>
-              </Link>
-          </div>
-        )
+        return (<UnAuthorizedPage />)
     }
 
     return (

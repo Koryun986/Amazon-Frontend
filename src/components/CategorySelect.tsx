@@ -4,8 +4,7 @@ import {AxiosResponse} from "axios";
 import useFilterByParams from "../hooks/filter-by-params-hook";
 import {getAllCategories} from "../api/requests/category-request";
 import type {ICategory} from "../types/ICategory";
-
-const { SHOW_CHILD } = TreeSelect;
+import transformCategories from "../helpers/transform-categories";
 
 const CategorySelect = () => {
     const [categories, setCategories] = useState<ICategory[]>([]);
@@ -23,23 +22,6 @@ const CategorySelect = () => {
         fetchCategories();
     }, []);
 
-    function transformCategories(categories: ICategory[]) {
-        return categories.map(category => {
-            const transformedCategory = {
-                title: category.name,
-                value: category.id,
-                key: category.id,
-                children: []
-            };
-
-            if (category.children && category.children.length > 0) {
-                transformedCategory.children = transformCategories(category.children);
-            }
-
-            return transformedCategory;
-        });
-    }
-
     const handleCategoryChange = (newValue: string[]) => {
         setFilteredCategories(newValue);
     };
@@ -50,8 +32,7 @@ const CategorySelect = () => {
             placeholder={"Select categories"}
             treeData={transformCategories(categories)}
             onChange={handleCategoryChange}
-            showCheckedStrategy={SHOW_CHILD}
-            treeCheckable={true}
+            allowClear
         />
     );
 };

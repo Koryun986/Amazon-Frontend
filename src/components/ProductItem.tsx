@@ -12,7 +12,7 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({product}: ProductItemProps) => {
-    const mainImage = product.images.find(image => image.is_main_image).image_url;
+    const mainImage = product.images.find(image => image.is_main_image)?.image_url;
 
     return (
         <Link href={`/products/${product.id}`}>
@@ -26,7 +26,7 @@ const ProductItem = ({product}: ProductItemProps) => {
                         height={0}
                         unoptimized={true}
                         priority
-                        className="w-full aspect-video"
+                        className="w-full aspect-video object-contain"
                     />
                 }
             >
