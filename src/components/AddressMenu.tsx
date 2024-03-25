@@ -79,12 +79,14 @@ const AddressMenu = () => {
               footer={null}
               destroyOnClose={true}
           >
+            <div className="p-4">
               <AddressForm
                   onCancel={handleFormCancel}
                   address={activeAddress || undefined}
                   formType={activeAddress ? "edit" : "add"}
                   onSubmit={setAddressChangeTrigger}
               />
+            </div>
           </Modal>
       </>
   );

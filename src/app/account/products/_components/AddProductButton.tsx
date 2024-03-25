@@ -25,7 +25,9 @@ const AddProductButton: FC<AddProductButtonProps> = ({onAdd}) => {
         footer={null}
         destroyOnClose={true}
       >
-        <ProductForm onCancel={onCancel} />
+        <div className={"p-4"}>
+          <ProductForm onCancel={onCancel} />
+        </div>
       </Modal>
     </>
   )
