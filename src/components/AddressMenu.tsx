@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {Button, Menu, MenuProps, Modal, Tag} from "antd";
 import {AxiosResponse} from "axios";
-import {IAddress} from "../types/IAddress";
 import useModal from "../hooks/modal-hook";
 import AddressForm from "./forms/AddressForm";
 import {getAddresses} from "../api/requests/address-requests";
+import type {IAddress} from "../types/IAddress";
 
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -23,9 +23,10 @@ function getItem(
     } as MenuItem;
 }
 
-const AddressMenu= () => {
+const AddressMenu = () => {
   const [addresses, setAddresses] = useState<IAddress[]>([]);
   const [activeAddress, setActiveAddress] = useState<IAddress | null>(null);
+  const [addressChangeTrigger, setAddressChangeTrigger] = useState(false);
   const {isActive, openModal, closeModal} = useModal();
 
   const getUserAddresses = async () => {
@@ -37,7 +38,7 @@ const AddressMenu= () => {
 
   useEffect(() => {
     getUserAddresses();
-  }, []);
+  }, [addressChangeTrigger]);
 
   const addressItems: MenuItem[] = [
       ...addresses.map(address => getItem((
@@ -57,6 +58,11 @@ const AddressMenu= () => {
       getItem( "Addresses", "Addresses", null, addressItems),
   ];
 
+  const handleFormCancel = () => {
+    closeModal();
+    setActiveAddress(null);
+  }
+
   return (
       <>
           <Menu
@@ -69,16 +75,15 @@ const AddressMenu= () => {
           <Modal
               centered
               open={isActive}
-              onCancel={closeModal}
+              onCancel={handleFormCancel}
               footer={null}
               destroyOnClose={true}
           >
               <AddressForm
-                  onCancel={() => {
-                      closeModal();
-                      setActiveAddress(null);
-                  }}
-                  address={activeAddress}
+                  onCancel={handleFormCancel}
+                  address={activeAddress || undefined}
+                  formType={activeAddress ? "edit" : "add"}
+                  onSubmit={setAddressChangeTrigger}
               />
           </Modal>
       </>
