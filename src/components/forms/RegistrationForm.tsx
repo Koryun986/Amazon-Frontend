@@ -8,6 +8,7 @@ import type {NamePath} from "rc-field-form/es/interface";
 import {registerAccount} from "../../api/requests/auth-requests";
 import {addManyFavoritesRequest} from "../../api/requests/favorite-requests";
 import {addManyCartItemsRequest} from "../../api/requests/cart-item-requests";
+import Link from "next/link";
 
 type FieldType = {
   first_name: string;
@@ -64,7 +65,7 @@ export const RegistrationForm = () => {
   return (
     <Layout style={{height: "100vh", position: "relative"}}>
       {contextHolder}
-      <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center"}}>
+      <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center",  width: "50%", marginInline: "auto"}}>
         <h1 className="mx-auto mb-6 text-2xl font-bold">Registration</h1>
         <Form
           name="basic"
@@ -143,6 +144,7 @@ export const RegistrationForm = () => {
             </Button>
           </Item>
         </Form>
+        <div className="mx-auto">If you already have account <Link href={"/auth/login"}>Login</Link></div>
       </Content>
     </Layout>
   )

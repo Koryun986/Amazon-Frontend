@@ -5,6 +5,7 @@ import {Button, Form, Input, Layout, message} from "antd";
 import {Content} from "antd/es/layout/layout";
 import {LocalStorageConstants} from "../../constants/localstorage-constants";
 import {loginAccount} from "../../api/requests/auth-requests";
+import Link from "next/link";
 
 type FieldType = {
     email: string;
@@ -50,7 +51,7 @@ const LoginForm = () => {
     return (
         <Layout style={{height: "100vh", position: "relative"}}>
             {contextHolder}
-            <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center"}}>
+            <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", marginInline: "auto"}}>
                 <h1 className="mx-auto mb-6 text-2xl font-bold">Login</h1>
                 <Form
                     name="basic"
@@ -95,6 +96,7 @@ const LoginForm = () => {
                         </Button>
                     </Item>
                 </Form>
+                <div className="mx-auto">If you don't have an account, <Link href={"/auth/registration"}>Register now</Link></div>
             </Content>
         </Layout>
     )
