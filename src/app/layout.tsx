@@ -10,6 +10,7 @@ import {MainLayoutSideBar} from "../components/MainLayoutSideBar";
 import {Content} from "antd/es/layout/layout";
 import Products from "../components/Products";
 import AntdStyledComponentsRegistry from "../providers/AntdStyledComponentsRegistry";
+import AntdMessageProvider from "../providers/AntdMessageProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,9 @@ export default function RootLayout({
         <StoreProvider>
           <AntdRegistry>
             <AntdStyledComponentsRegistry>
-              {children}
+              <AntdMessageProvider>
+                {children}
+              </AntdMessageProvider>
             </AntdStyledComponentsRegistry>
           </AntdRegistry>
         </StoreProvider>
