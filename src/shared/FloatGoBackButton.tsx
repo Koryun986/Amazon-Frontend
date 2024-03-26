@@ -7,7 +7,7 @@ const FloatGoBackButton = () => {
   const router = useRouter();
 
   const handleGoBack = () => {
-    router.push("/");
+    router.back();
   }
   return (
     <FloatButton shape={"circle"} icon={<LeftOutlined />} onClick={handleGoBack} />

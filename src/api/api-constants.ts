@@ -6,6 +6,7 @@ export enum ApiConstants {
     AUTH_GET_USER = "/auth/get-user",
     PRODUCTS_GET_ALL = "/products/get",
     PRODUCTS_GET_YOURS = "/products/account-products",
+    PRODUCTS_GET_BY_IDS = "/products/get-by-ids",
     PRODUCT_ADD = "/products/create",
     PRODUCT_EDIT = "/products/edit",
     PRODUCT_DELETE = "/products/delete",
