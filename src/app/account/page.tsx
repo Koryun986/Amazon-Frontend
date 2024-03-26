@@ -4,6 +4,7 @@ import {Avatar, Button, Divider} from "antd";
 import {HeartFilled, ProductOutlined, ShoppingCartOutlined} from "@ant-design/icons";
 import {useUser} from "../../hooks/user-hook";
 import UnAuthorizedPage from "../../shared/UnAuthorizedPage";
+import AccountOption from "./_components/AccountOption";
 
 const AccountPage = () => {
     const user = useUser();
@@ -18,27 +19,11 @@ const AccountPage = () => {
               <Avatar size={50} style={{backgroundColor: "#001529", fontSize: "16px"}}>{user.first_name}</Avatar>
               <div className="text-2xl font-bold">{user.first_name} {user.last_name}</div>
               <div className="text-lg font-semibold">{user.email}</div>
-              <Link href="/account/products">
-                  <Button size={"large"} style={{height: "100%", display: "flex", alignItems: "center"}}>
-                      <ProductOutlined /> Your Products
-                  </Button>
-              </Link>
-              <Link href="/favorites" style={{height: "100%", display: "flex", alignItems: "center"}}>
-                  <Button size={"large"}>
-                      <HeartFilled /> Your Favorites
-                  </Button>
-              </Link>
-              <Link href="/cart-items">
-                  <Button size={"large"} style={{height: "100%", display: "flex", alignItems: "center"}}>
-                      <ShoppingCartOutlined /> Your Cart Items
-                  </Button>
-              </Link>
+              <AccountOption title={"Your Products"} href={"/account/products"} icon={<ProductOutlined />} />
+              <AccountOption title={"Your Favorites"} href={"/favorites"} icon={<HeartFilled />} />
+              <AccountOption title={"Your Cart Items"} href={"/cart-items"} icon={<ShoppingCartOutlined />} />
               <Divider />
-              <Link href="/auth/change-password">
-                  <Button size={"large"} style={{height: "100%", display: "flex", alignItems: "center"}}>
-                      Change Password
-                  </Button>
-              </Link>
+              <AccountOption title={"Change Password"} href={"/auth/change-password"} />
           </div>
       </div>
     )
