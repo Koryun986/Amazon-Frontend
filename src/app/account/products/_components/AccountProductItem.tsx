@@ -46,6 +46,7 @@ const AccountProductItem: FC<AccountProductItemProps> = ({product, onEdit, onCha
                         <Descriptions.Item label={"Category"}>{product.category.name}</Descriptions.Item>
                         <Descriptions.Item label={"Time Bought"}>{product.time_bought}</Descriptions.Item>
                         <Descriptions.Item label={"Total Earnings"}>${product.total_earnings}</Descriptions.Item>
+                        <Descriptions.Item label={"Is Published"}>{product.is_published ? "Yes": "No"}</Descriptions.Item>
                     </Descriptions>
                 </div>
                 <Space direction={"vertical"}>
