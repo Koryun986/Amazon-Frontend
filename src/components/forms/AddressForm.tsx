@@ -1,6 +1,6 @@
 "use client"
 import {FC} from "react";
-import {Button, Flex, Form, Input, Popconfirm, Space, Switch} from "antd";
+import {Button, Flex, Form, Input, Popconfirm, Space, Switch, message} from "antd";
 import {createAddress, deleteAddress, updateAddress} from "../../api/requests/address-requests";
 import type {IAddress} from "../../types/IAddress";
 
@@ -21,6 +21,7 @@ const defaultAddressValue = {
 };
 
 const AddressForm: FC<AddressFormProps> = ({address = defaultAddressValue, onCancel, formType, onSubmit}) => {
+    const [messageApi] = message.useMessage();
     const [form] = Form.useForm();
 
     const handleSubmitButtonClick = async (data: Omit<IAddress, "id">) => {
@@ -31,8 +32,9 @@ const AddressForm: FC<AddressFormProps> = ({address = defaultAddressValue, onCan
                 await createAddress(data);
             }
             onSubmit();
+            message.success(`Address has been successfully ${formType === "add" ? 'added' : "edited"}`)
         } catch (e) {
-            console.log(e)
+            message.error("Oops something went wrong");
         } finally {
             onCancel();
         }
@@ -42,8 +44,9 @@ const AddressForm: FC<AddressFormProps> = ({address = defaultAddressValue, onCan
         try {
             await deleteAddress(address?.id!);
             onSubmit();
+            message.success("Address has been successfully deleted")
         } catch (e) {
-            console.log(e)
+            message.error("Oops something went wrong");
         } finally {
             onCancel();
         }
