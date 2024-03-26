@@ -1,6 +1,6 @@
 "use client"
 import {FC} from "react";
-import {Button, Flex, Form, Input, Space, Switch} from "antd";
+import {Button, Flex, Form, Input, message, Space, Switch} from "antd";
 import {editProduct} from "../../api/requests/product-requests";
 
 interface EditProductFormProps {
@@ -16,6 +16,7 @@ interface EditProductFormProps {
 }
 
 const EditProductForm: FC<EditProductFormProps> = ({product, onCancel, onSubmit}) => {
+  const [messageApi] = message.useMessage();
   const [form] = Form.useForm();
 
   const handleSubmit = async (data) => {
@@ -23,8 +24,9 @@ const EditProductForm: FC<EditProductFormProps> = ({product, onCancel, onSubmit}
       await editProduct({...data, id: product.id});
       onSubmit();
       onCancel();
+      messageApi.success("Product has been successfully edited")
     } catch (e) {
-      console.log(e);
+      messageApi.error("Oops Something went wrong");
     }
   }
 

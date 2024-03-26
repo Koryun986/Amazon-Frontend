@@ -1,7 +1,7 @@
 "use client"
 
 import {FC, useEffect, useState} from "react";
-import {Button, Flex, Form, Input, Select, Space, Switch, TreeDataNode, TreeSelect, Upload} from "antd";
+import {Button, Flex, Form, Input, message, Select, Space, Switch, TreeDataNode, TreeSelect, Upload} from "antd";
 import type {IColor} from "../../types/IColor";
 import type {ISize} from "../../types/ISize";
 import type {ICategory} from "../../types/ICategory";
@@ -22,6 +22,7 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
   const [colors, setColors] = useState<IColor[]>([]);
   const [sizes, setSizes] = useState<ISize[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [messageApi] = message.useMessage();
   const [form] = Form.useForm();
 
   const fetchColors = async () => {
@@ -85,9 +86,9 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
     try {
       await addProduct(formData);
       onCancel();
+      messageApi.success("Product has been successfully created");
     } catch (e) {
       setError(e);
-      console.log(e)
     }
   }
 
