@@ -1,10 +1,11 @@
 "use client"
-import {useUser} from "../../../hooks/user-hook";
 import {useEffect, useState} from "react";
 import {Empty, Space} from "antd";
+import {useUser} from "../../../hooks/user-hook";
 import {getAccountProducts} from "../../../api/requests/product-requests";
 import AccountProductItem from "./_components/AccountProductItem";
 import AddProductButton from "./_components/AddProductButton";
+import UnAuthorizedPage from "../../../shared/UnAuthorizedPage";
 import type {IProduct} from "../../../types/IProduct";
 
 export default function AccountProducts() {
@@ -22,6 +23,10 @@ export default function AccountProducts() {
   useEffect(() => {
     fetchProducts();
   }, [user, productChangeTrigger]);
+
+  if (!user) {
+    return (<UnAuthorizedPage />)
+  }
 
   return (
     <div className="container mx-auto pt-10">

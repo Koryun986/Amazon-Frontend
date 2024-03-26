@@ -84,7 +84,7 @@ const AddressMenu = () => {
                   onCancel={handleFormCancel}
                   address={activeAddress || undefined}
                   formType={activeAddress ? "edit" : "add"}
-                  onSubmit={setAddressChangeTrigger}
+                  onSubmit={() => setAddressChangeTrigger(prevState => !prevState)}
               />
             </div>
           </Modal>

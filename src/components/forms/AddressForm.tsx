@@ -8,7 +8,7 @@ interface AddressFormProps {
     address: IAddress;
     onCancel: () => void;
     formType: "add" | "edit";
-    onSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+    onSubmit: () => void;
 }
 
 const defaultAddressValue = {
@@ -24,14 +24,13 @@ const AddressForm: FC<AddressFormProps> = ({address = defaultAddressValue, onCan
     const [form] = Form.useForm();
 
     const handleSubmitButtonClick = async (data: Omit<IAddress, "id">) => {
-        console.log("address data",data)
         try {
             if (formType === "edit")  {
                 await updateAddress({...data, id: address.id});
             } else {
                 await createAddress(data);
             }
-            onSubmit(prevState => !prevState);
+            onSubmit();
         } catch (e) {
             console.log(e)
         } finally {
@@ -42,7 +41,7 @@ const AddressForm: FC<AddressFormProps> = ({address = defaultAddressValue, onCan
     const handleDeleteAddress = async () => {
         try {
             await deleteAddress(address?.id!);
-            onSubmit(prevState => !prevState);
+            onSubmit();
         } catch (e) {
             console.log(e)
         } finally {
