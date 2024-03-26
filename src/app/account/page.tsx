@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 import {Avatar, Button, Divider} from "antd";
-import {HeartFilled, ProductOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import {HeartFilled, HomeOutlined, ProductOutlined, ShoppingCartOutlined} from "@ant-design/icons";
 import {useUser} from "../../hooks/user-hook";
 import UnAuthorizedPage from "../../shared/UnAuthorizedPage";
 import AccountOption from "./_components/AccountOption";
@@ -22,6 +22,7 @@ const AccountPage = () => {
               <AccountOption title={"Your Products"} href={"/account/products"} icon={<ProductOutlined />} />
               <AccountOption title={"Your Favorites"} href={"/favorites"} icon={<HeartFilled />} />
               <AccountOption title={"Your Cart Items"} href={"/cart-items"} icon={<ShoppingCartOutlined />} />
+              <AccountOption title={"Your Addresses"} href={"/account/addresses"} icon={<HomeOutlined />} />
               <Divider />
               <AccountOption title={"Change Password"} href={"/auth/change-password"} />
           </div>
