@@ -4,14 +4,14 @@ import ProductForm from "../../../../components/forms/ProductForm";
 import {FC} from "react";
 
 interface AddProductButtonProps {
-  onAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  onAdd: () => void;
 }
 
 const AddProductButton: FC<AddProductButtonProps> = ({onAdd}) => {
   const {openModal, closeModal, isActive} = useModal();
 
   const onCancel = () => {
-    onAdd(prevState => !prevState);
+    onAdd();
     closeModal();
   }
 

@@ -86,167 +86,174 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
     try {
       await addProduct(formData);
     } catch (e) {
+      setError(e);
       console.log(e)
     }
   }
 
+  if (error) {
     return (
-        <Form
-            form={form}
-            name="UserForm"
-            labelCol={{
-                span: 6,
-            }}
-            style={{
-                maxWidth: 600,
-            }}
-            autoComplete="off"
-            onFinish={handleSubmit}
-        >
-            <Form.Item
-                label="Name"
-                name="name"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input product name!',
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="Brand"
-                name="brand"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input brands name!',
-                    },
-                ]}
-
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="Price"
-                name="price"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input price!',
-                    },
-                ]}
-            >
-                <Input type={"number"} />
-            </Form.Item>
-
-            <Form.Item
-                label="Description"
-                name="description"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input description!',
-                    },
-                ]}
-            >
-                <Input.TextArea />
-            </Form.Item>
-
-            <Form.Item
-              label="Color"
-              name="color"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select color!"
-                }
-              ]}
-            >
-              <Select>
-                {colors.map(color => <Select.Option value={color.name} key={color.id}>{color.name}</Select.Option> )}
-              </Select>
-            </Form.Item>
-
-          <Form.Item
-            label="Size"
-            name="size"
-            rules={[
-              {
-                required: true,
-                message: "Please select size!"
-              }
-            ]}
-          >
-            <Select>
-              {sizes.map(size => <Select.Option value={size.name} key={size.id}>{size.name}</Select.Option> )}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="Category"
-            name="category"
-            rules={[
-              {
-                required: true,
-                message: "Please select category!"
-              }
-            ]}
-          >
-            <TreeSelect
-              treeData={transformCategories(categories)}
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="main-image"
-            label="Main Image"
-            rules={[
-              {
-                required: true,
-                message: "Please upload main image"
-              }
-            ]}
-          >
-            <Upload listType="picture-card" maxCount={1} multiple={false}>
-              <button style={{ border: 0, background: 'none' }} type="button">
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-              </button>
-            </Upload>
-          </Form.Item>
-
-          <Form.Item name="images" label="Additional Images">
-            <Upload listType="picture-card" maxCount={4} multiple>
-              <button style={{ border: 0, background: 'none' }} type="button">
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-              </button>
-            </Upload>
-          </Form.Item>
-
-          <Form.Item
-            name="is_published"
-            label="Is Published"
-          >
-            <Switch />
-          </Form.Item>
-
-            <Flex justify={"space-between"}>
-                <Space>
-                    <Button htmlType="button" onClick={onCancel}>
-                        Cancel
-                    </Button>
-                    <Button type="primary" htmlType="submit">
-                        Add
-                    </Button>
-                </Space>
-            </Flex>
-        </Form>
+      <div>Oops something went wrong</div>
     )
+  }
+
+  return (
+    <Form
+        form={form}
+        name="UserForm"
+        labelCol={{
+            span: 6,
+        }}
+        style={{
+            maxWidth: 600,
+        }}
+        autoComplete="off"
+        onFinish={handleSubmit}
+    >
+        <Form.Item
+            label="Name"
+            name="name"
+            rules={[
+                {
+                    required: true,
+                    message: 'Please input product name!',
+                },
+            ]}
+        >
+            <Input />
+        </Form.Item>
+
+        <Form.Item
+            label="Brand"
+            name="brand"
+            rules={[
+                {
+                    required: true,
+                    message: 'Please input brands name!',
+                },
+            ]}
+
+        >
+            <Input />
+        </Form.Item>
+
+        <Form.Item
+            label="Price"
+            name="price"
+            rules={[
+                {
+                    required: true,
+                    message: 'Please input price!',
+                },
+            ]}
+        >
+            <Input type={"number"} />
+        </Form.Item>
+
+        <Form.Item
+            label="Description"
+            name="description"
+            rules={[
+                {
+                    required: true,
+                    message: 'Please input description!',
+                },
+            ]}
+        >
+            <Input.TextArea />
+        </Form.Item>
+
+        <Form.Item
+          label="Color"
+          name="color"
+          rules={[
+            {
+              required: true,
+              message: "Please select color!"
+            }
+          ]}
+        >
+          <Select>
+            {colors.map(color => <Select.Option value={color.name} key={color.id}>{color.name}</Select.Option> )}
+          </Select>
+        </Form.Item>
+
+      <Form.Item
+        label="Size"
+        name="size"
+        rules={[
+          {
+            required: true,
+            message: "Please select size!"
+          }
+        ]}
+      >
+        <Select>
+          {sizes.map(size => <Select.Option value={size.name} key={size.id}>{size.name}</Select.Option> )}
+        </Select>
+      </Form.Item>
+
+      <Form.Item
+        label="Category"
+        name="category"
+        rules={[
+          {
+            required: true,
+            message: "Please select category!"
+          }
+        ]}
+      >
+        <TreeSelect
+          treeData={transformCategories(categories)}
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="main-image"
+        label="Main Image"
+        rules={[
+          {
+            required: true,
+            message: "Please upload main image"
+          }
+        ]}
+      >
+        <Upload listType="picture-card" maxCount={1} multiple={false}>
+          <button style={{ border: 0, background: 'none' }} type="button">
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+          </button>
+        </Upload>
+      </Form.Item>
+
+      <Form.Item name="images" label="Additional Images">
+        <Upload listType="picture-card" maxCount={4} multiple>
+          <button style={{ border: 0, background: 'none' }} type="button">
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+          </button>
+        </Upload>
+      </Form.Item>
+
+      <Form.Item
+        name="is_published"
+        label="Is Published"
+      >
+        <Switch />
+      </Form.Item>
+
+        <Flex justify={"space-between"}>
+          <Space>
+            <Button htmlType="button" onClick={onCancel}>
+                Cancel
+            </Button>
+            <Button type="primary" htmlType="submit">
+                Add
+            </Button>
+          </Space>
+        </Flex>
+    </Form>
+  )
 };
 
 export default ProductForm;

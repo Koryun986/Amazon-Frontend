@@ -27,7 +27,7 @@ export default function AccountProducts() {
     <div className="container mx-auto pt-10">
       <div className="flex justify-between items-center">
         <div className="text-2xl font-bold mb-4">Your Products</div>
-        <AddProductButton onAdd={setProductChangeTrigger} />
+        <AddProductButton onAdd={() => setProductChangeTrigger(prevState => !prevState)} />
       </div>
       <Space
         style={{width: "100%"}}
