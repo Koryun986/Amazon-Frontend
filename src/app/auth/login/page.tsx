@@ -15,7 +15,7 @@ type FieldType = {
 const {Item} = Form;
 const {Password} = Input;
 
-const loginpage = () => {
+const loginPage = () => {
     const [messageApi, contextHolder] = message.useMessage()
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -102,4 +102,4 @@ const loginpage = () => {
     )
 };
 
-export default loginpage;
+export default loginPage;

@@ -21,7 +21,7 @@ type FieldType = {
 const {Item} = Form;
 const {Password} = Input;
 
-const RegistrationPage = async () => {
+const RegistrationPage = () => {
     const [messageApi, contextHolder] = message.useMessage()
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
