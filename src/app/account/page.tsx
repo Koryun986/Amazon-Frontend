@@ -1,6 +1,5 @@
 "use client"
-import Link from "next/link";
-import {Avatar, Button, Divider} from "antd";
+import {Avatar, Divider} from "antd";
 import {HeartFilled, HomeOutlined, ProductOutlined, ShoppingCartOutlined} from "@ant-design/icons";
 import {useUser} from "../../hooks/user-hook";
 import UnAuthorizedPage from "../../shared/UnAuthorizedPage";
@@ -16,6 +15,7 @@ const AccountPage = () => {
     return (
       <div className="container mx-auto">
           <div className="pt-10 flex flex-col items-center gap-4">
+              <div className="text-3xl font-bold mb-5">Your Account</div>
               <Avatar size={50} style={{backgroundColor: "#001529", fontSize: "16px"}}>{user.first_name}</Avatar>
               <div className="text-2xl font-bold">{user.first_name} {user.last_name}</div>
               <div className="text-lg font-semibold">{user.email}</div>
