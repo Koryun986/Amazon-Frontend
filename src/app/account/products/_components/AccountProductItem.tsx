@@ -1,10 +1,11 @@
 "use client"
 import {Button, Card, Descriptions, Popconfirm, Space} from "antd";
 import Image from "next/image";
-import {IProduct} from "../../../../types/IProduct";
 import {FC} from "react";
 import {ApiConstants} from "../../../../api/api-constants";
 import {deleteProduct} from "../../../../api/requests/product-requests";
+import type {IProduct} from "../../../../types/IProduct";
+import EditProductButton from "./EditProductButton";
 
 interface AccountProductItemProps {
     product: IProduct;
@@ -50,7 +51,7 @@ const AccountProductItem: FC<AccountProductItemProps> = ({product, onEdit, onCha
                     </Descriptions>
                 </div>
                 <Space direction={"vertical"}>
-                    <Button onClick={onEdit}>Edit</Button>
+                    <EditProductButton onEdit={onChange} product={product} />
                     <Popconfirm
                         title="Delete the product"
                         description="Are you sure to delete this product?"

@@ -82,9 +82,9 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
 
   const handleSubmit = async (data) => {
     const formData = getFormDataFromObject(data);
-    onCancel();
     try {
       await addProduct(formData);
+      onCancel();
     } catch (e) {
       setError(e);
       console.log(e)

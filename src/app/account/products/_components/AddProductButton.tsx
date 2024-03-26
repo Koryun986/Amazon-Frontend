@@ -1,3 +1,4 @@
+"use client"
 import {Button, Modal} from "antd";
 import useModal from "../../../../hooks/modal-hook";
 import ProductForm from "../../../../components/forms/ProductForm";
@@ -11,8 +12,8 @@ const AddProductButton: FC<AddProductButtonProps> = ({onAdd}) => {
   const {openModal, closeModal, isActive} = useModal();
 
   const onCancel = () => {
-    onAdd();
     closeModal();
+    onAdd();
   }
 
   return (
