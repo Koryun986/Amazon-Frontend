@@ -1,20 +1,22 @@
 "use client"
 
-import {useAppSelector} from "../../hooks/store-hooks";
-import {Col, Empty, Row, Space} from "antd";
-import ProductItem from "../../components/ProductItem";
+import {Empty, Space} from "antd";
 import {useEffect, useState} from "react";
-import type {IProduct} from "../../types/IProduct";
 import {getProductsByIds} from "../../api/requests/product-requests";
 import FloatGoHomeButton from "../../shared/FloatGoHomeButtons";
+import {useAppSelector} from "../../hooks/store-hooks";
 import useCartItems from "../../hooks/cart-item-hooks";
 import CartListItem from "./_components/CartListItem";
+import type {IProduct} from "../../types/IProduct";
 
 export default function CartItemsPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const cartItems = useAppSelector(state => state.cart_items.cartItems);
   const totalPrice = cartItems.reduce((acc, cur) => {
     const product = products.find(product => product.id === cur.product_id);
+    if (!product) {
+      return acc;
+    }
     return acc + cur.count * product.price;
   },0);
   useCartItems();

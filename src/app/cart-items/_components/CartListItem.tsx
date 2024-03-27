@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import {Card} from "antd";
+import {Button, Card} from "antd";
 import {FC} from "react";
 import {ApiConstants} from "../../../api/api-constants";
 import type {IProduct} from "../../../types/IProduct";
@@ -37,7 +37,8 @@ const CartListItem: FC<CartListItemProps> = ({product, cartItem}) => {
         </div>
         <div className={"text-lg text-center"}>
           <div>Subtotal:</div>
-          <div className="font-bold">${product.price * cartItem.count}</div>
+          <div className="font-bold mb-4">${product.price * cartItem.count}</div>
+          <Button>Buy Now</Button>
         </div>
       </div>
     </Card>
