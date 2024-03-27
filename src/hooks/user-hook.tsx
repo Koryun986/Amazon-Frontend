@@ -16,6 +16,7 @@ export function useUser() {
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
+        isAdmin: data.isAdmin
       };
       localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, data.access_token);
       dispatch(setUser(user));

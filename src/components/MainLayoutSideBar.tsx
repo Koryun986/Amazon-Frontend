@@ -45,6 +45,11 @@ export const MainLayoutSideBar = () => {
                             </>
                         )}
                         <SideBarMenu />
+                        {user?.isAdmin && (
+                          <Link href={"/admin"}>
+                              <Button>Admin Page</Button>
+                          </Link>
+                        )}
                     </Space>
                 ): (
                     <MenuOutlined style={{fontSize: "30px", cursor: "pointer"}} onClick={() => setCollapsed(false)} />
