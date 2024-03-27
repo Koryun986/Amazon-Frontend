@@ -3,12 +3,13 @@
 import {ReactNode, useState, Suspense} from "react";
 import {useUser} from "../../hooks/user-hook";
 import AdminPageHeader from "./_components/AdminPageHeader";
-import UsersList from "./_components/UsersList";
+import UsersList from "./_components/users-list/UsersList";
+import ColorsList from "./_components/colors-list/ColorsList";
 
 export type AdminMenuPages = "users" | "colors" | "sizes" | "categories";
 const adminMenuPages: Record<AdminMenuPages, ReactNode> = {
   users:  (<UsersList />),
-  colors: null,
+  colors: (<ColorsList />),
   sizes: null,
   categories: null
 }

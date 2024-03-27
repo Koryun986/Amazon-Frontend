@@ -1,7 +1,7 @@
 import {Avatar, Button, Card, message, Popconfirm} from "antd";
-import type {IUser} from "../../../types/IUser";
+import type {IUser} from "../../../../types/IUser";
 import {FC} from "react";
-import {makeUserAdmin} from "../../../api/requests/auth-requests";
+import {makeUserAdmin} from "../../../../api/requests/auth-requests";
 
 interface UsersListItemProps {
   user: IUser;
@@ -16,7 +16,7 @@ const UsersListItem: FC<UsersListItemProps> = ({user, onChange}) => {
       onChange();
       messageApi.success("Success");
     } catch (e) {
-      messageApi.error("Something went wrong, can't make this user admin")
+      messageApi.error("Something went wrong, can't make this users-list admin")
     }
   }
 

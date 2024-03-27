@@ -1,8 +1,8 @@
 "use client"
 
 import {useEffect, useState} from "react";
-import type {IUser} from "../../../types/IUser";
-import {getAllUsers} from "../../../api/requests/auth-requests";
+import type {IUser} from "../../../../types/IUser";
+import {getAllUsers} from "../../../../api/requests/auth-requests";
 import {Empty, Space} from "antd";
 import UsersListItem from "./UsersListItem";
 
@@ -26,7 +26,7 @@ const UsersList = () => {
       <div className="text-lg font-bold">Users</div>
         {users.length ? (
           <Space style={{width: "100%"}} direction={"vertical"}>
-            {users.map(user => <UsersListItem user={user} onChange={() => setUsersChangeTrigger(prevState => !prevState)} />)}
+            {users.map(user => <UsersListItem key={user.email} user={user} onChange={() => setUsersChangeTrigger(prevState => !prevState)} />)}
           </Space>
         ) : (<Empty />)}
     </div>
