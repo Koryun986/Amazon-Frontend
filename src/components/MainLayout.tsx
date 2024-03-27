@@ -1,4 +1,5 @@
 "use client"
+
 import {useEffect} from "react";
 import {Layout} from "antd";
 import Header from "./Header";
@@ -9,7 +10,7 @@ import {getUser} from "../api/requests/auth-requests";
 import {LocalStorageConstants} from "../constants/localstorage-constants";
 import {setUser} from "../redux/slices/user-slice";
 import type {IUser} from "../types/IUser";
-import {fetchAllProducts} from "../redux/slices/products-slice";
+import {fetchAccountProducts, fetchAllProducts} from "../redux/slices/products-slice";
 import {useSearchParams} from "next/navigation";
 import useFavorites from "../hooks/favorite-hooks";
 import useCartItems from "../hooks/cart-item-hooks";

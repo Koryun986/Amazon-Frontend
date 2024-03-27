@@ -1,7 +1,9 @@
-import {useState} from "react";
-import {useAppSelector} from "../hooks/store-hooks";
-import useFilterByParams from "../hooks/filter-by-params-hook";
+import {useEffect, useState} from "react";
 import {Menu, MenuProps} from "antd";
+import {AxiosResponse} from "axios";
+import useFilterByParams from "../hooks/filter-by-params-hook";
+import {getSizes} from "../api/requests/size-requests";
+import type {ISize} from "../types/ISize";
 
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -22,9 +24,20 @@ function getItem(
 
 
 const SizeSelect = () => {
+    const [sizes, setSizes] = useState<ISize[]>([]);
     const [filteredSize, setFilteredSize] = useState<number>(null)
-    const sizes = useAppSelector(state => state.size.sizes);
     useFilterByParams(filteredSize, "size");
+
+    const fetchSizes = async () => {
+        try {
+            const { data: sizes }: AxiosResponse<ISize[]> = await getSizes();
+            setSizes(sizes);
+        } catch (e) {}
+    }
+
+    useEffect(() => {
+        fetchSizes();
+    }, []);
 
     const menuItems: MenuItem[] = [
         getItem("Sizes", "Sizes", null, sizes.map(size => getItem(size.name, size.id))),
@@ -45,6 +58,7 @@ const SizeSelect = () => {
             theme={"dark"}
             selectedKeys={[filteredSize]}
             onClick={handleMenuItemClick}
+            triggerSubMenuAction={"click"}
         />
     );
 };

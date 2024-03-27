@@ -3,6 +3,14 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "../providers/StoreProvider";
+import Home from "./page";
+import Header from "../components/Header";
+import {Empty, Layout} from "antd";
+import {MainLayoutSideBar} from "../components/MainLayoutSideBar";
+import {Content} from "antd/es/layout/layout";
+import Products from "../components/Products";
+import AntdStyledComponentsRegistry from "../providers/AntdStyledComponentsRegistry";
+import AntdMessageProvider from "../providers/AntdMessageProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AntdRegistry>
-          <StoreProvider>
-            {children}
-          </StoreProvider>
-        </AntdRegistry>
+        <StoreProvider>
+          <AntdRegistry>
+            <AntdStyledComponentsRegistry>
+              <AntdMessageProvider>
+                {children}
+              </AntdMessageProvider>
+            </AntdStyledComponentsRegistry>
+          </AntdRegistry>
+        </StoreProvider>
       </body>
     </html>
   );

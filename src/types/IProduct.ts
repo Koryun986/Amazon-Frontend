@@ -6,13 +6,21 @@ export interface IProduct {
     description: string;
     brand: string;
     price: number;
-    category: string;
-    color: string;
-    size: string;
+    category: {
+        name: string;
+    };
+    color: {
+        name: string;
+    };
+    size: {
+        name: string;
+    };
     total_earnings: number;
     time_bought: number;
     is_published: boolean;
-    main_image: string;
-    images: string[];
+    images: {
+        image_url: string;
+        is_main_image: boolean;
+    }[];
     owner: IUser;
 }

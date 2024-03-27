@@ -1,11 +1,14 @@
 "use client"
-import Sider from "antd/es/layout/Sider";
+import dynamic from "next/dynamic";
 import {useState} from "react";
-import {Button, Space} from "antd";
+import {Avatar, Button, Space} from "antd";
+import Sider from "antd/es/layout/Sider";
 import {useAppSelector} from "../hooks/store-hooks";
 import Link from "next/link";
 import {MenuOutlined} from "@ant-design/icons";
 import SideBarMenu from "./SideBarMenu";
+
+const AddressMenu = dynamic(() => import("./AddressMenu"));
 
 export const MainLayoutSideBar = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -17,14 +20,20 @@ export const MainLayoutSideBar = () => {
             collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}
         >
-            <div className="text-white pl-5 mt-5">
+            <div className="text-white px-5 mt-5">
                 {!collapsed ? (
-                    <Space direction={"vertical"} size={"middle"}>
+                    <Space direction={"vertical"} size={"middle"} style={{width: "100%"}}>
                         {user ? (
-                            <>
+                          <>
+                            <Space direction={"vertical"} align={"center"}>
+                                <Link href={"/account"}>
+                                    <Avatar size={"large"}>{user.first_name}</Avatar>
+                                </Link>
                                 <div className="text-lg font-bold">{user.first_name} {user.last_name}</div>
                                 <div className="text-md font-semibold">{user.email}</div>
-                            </>
+                            </Space>
+                            <AddressMenu />
+                          </>
                         ) : (
                             <>
                                 <Link href="/auth/login">

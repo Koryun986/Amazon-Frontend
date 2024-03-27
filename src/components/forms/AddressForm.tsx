@@ -1,43 +1,40 @@
 "use client"
-
-import {IAddress} from "../../types/IAddress";
-import {ChangeEvent, FC, useState} from "react";
-import {Button, Flex, Form, Input, Popconfirm, Space, Switch} from "antd";
-import {useAppDispatch} from "../../hooks/store-hooks";
+import {FC} from "react";
+import {Button, Flex, Form, Input, Popconfirm, Space, Switch, message} from "antd";
 import {createAddress, deleteAddress, updateAddress} from "../../api/requests/address-requests";
-import {fetchAddresses} from "../../redux/slices/user-address-slice";
+import type {IAddress} from "../../types/IAddress";
 
 interface AddressFormProps {
-    address?: IAddress;
+    address: IAddress;
     onCancel: () => void;
+    formType: "add" | "edit";
+    onSubmit: () => void;
 }
 
-const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
-    const [localAddress, setLocalAddress] = useState<Omit<IAddress, "id">>(address ? address : {
-        country: "",
-        state: "",
-        city: "",
-        zip_code: "",
-        street_address: "",
-        is_default_address: false,
-    });
+const defaultAddressValue = {
+    country: "",
+    state: "",
+    city: "",
+    zip_code: "",
+    street_address: "",
+    is_default_address: false,
+};
+
+const AddressForm: FC<AddressFormProps> = ({address = defaultAddressValue, onCancel, formType, onSubmit}) => {
+    const [messageApi] = message.useMessage();
     const [form] = Form.useForm();
-    const dispatch = useAppDispatch();
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setLocalAddress(prevState => ({...prevState, [event.target.name]: event.target.value}));
-    };
-
-    const handleSubmitButtonClick = async () => {
+    const handleSubmitButtonClick = async (data: Omit<IAddress, "id">) => {
         try {
-            if (address)  {
-                await updateAddress({...localAddress, id: address.id});
+            if (formType === "edit")  {
+                await updateAddress({...data, id: address.id});
             } else {
-                await createAddress(localAddress);
+                await createAddress(data);
             }
-            dispatch(fetchAddresses());
+            onSubmit();
+            message.success(`Address has been successfully ${formType === "add" ? 'added' : "edited"}`)
         } catch (e) {
-            console.log(e)
+            message.error("Oops something went wrong");
         } finally {
             onCancel();
         }
@@ -45,10 +42,11 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
     
     const handleDeleteAddress = async () => {
         try {
-            await deleteAddress(address.id);
-            dispatch(fetchAddresses());
+            await deleteAddress(address?.id!);
+            onSubmit();
+            message.success("Address has been successfully deleted")
         } catch (e) {
-            console.log(e)
+            message.error("Oops something went wrong");
         } finally {
             onCancel();
         }
@@ -68,11 +66,12 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                 maxWidth: 600,
             }}
             autoComplete="off"
+            onFinish={handleSubmitButtonClick}
         >
             <Form.Item
                 label="Country"
                 name="country"
-                initialValue={localAddress.country}
+                initialValue={address.country}
                 rules={[
                     {
                         required: true,
@@ -80,13 +79,13 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                     },
                 ]}
             >
-                <Input name="country" value={localAddress.country} onChange={handleInputChange}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="State"
                 name="state"
-                initialValue={localAddress.state}
+                initialValue={address.state}
                 rules={[
                     {
                         required: true,
@@ -95,13 +94,13 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                 ]}
 
             >
-                <Input name="state" value={localAddress.state} onChange={handleInputChange}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="City"
                 name="city"
-                initialValue={localAddress.city}
+                initialValue={address.city}
                 rules={[
                     {
                         required: true,
@@ -109,13 +108,13 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                     },
                 ]}
             >
-                <Input name="city" value={localAddress.city} onChange={handleInputChange}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="Zip Code"
                 name="zip_code"
-                initialValue={localAddress.zip_code}
+                initialValue={address.zip_code}
                 rules={[
                     {
                         required: true,
@@ -123,13 +122,14 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                     },
                 ]}
             >
-                <Input name="zip_code" value={localAddress.zip_code} onChange={handleInputChange}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="Street Address"
                 name="street_address"
-                initialValue={localAddress.street_address}
+                initialValue={address.street_address}
+                labelCol={10}
                 rules={[
                     {
                         required: true,
@@ -137,24 +137,28 @@ const AddressForm: FC<AddressFormProps> = ({address, onCancel}) => {
                     },
                 ]}
             >
-                <Input name="street_address" value={localAddress.street_address} onChange={handleInputChange}/>
+                <Input />
             </Form.Item>
 
-            <Space direction="vertical" className="mb-4">
-                <div>Is Main Address</div>
-                <Switch defaultValue={localAddress.is_default_address} onChange={(checked => setLocalAddress(prevState => ({...prevState, is_default_address: checked})))} />
-            </Space>
+            <Form.Item
+                label="Is Main Address"
+                name="is_default_address"
+                initialValue={false}
+                labelCol={10}
+            >
+                <Switch />
+            </Form.Item>
 
             <Flex justify={"space-between"}>
                 <Space>
                     <Button htmlType="button" onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button type="primary" htmlType="submit" onClick={handleSubmitButtonClick}>
-                        {address ? "Edit" : "Add"}
+                    <Button type="primary" htmlType="submit">
+                        {formType === "edit" ? "Edit" : "Add"}
                     </Button>
                 </Space>
-                {!!address && (
+                {formType === "edit" && (
                     <Popconfirm
                         title="Delete the address"
                         description="Are you sure to delete this address?"
