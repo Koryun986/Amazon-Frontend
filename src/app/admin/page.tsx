@@ -6,13 +6,14 @@ import AdminPageHeader from "./_components/AdminPageHeader";
 import UsersList from "./_components/users-list/UsersList";
 import ColorsList from "./_components/colors-list/ColorsList";
 import SizesList from "./_components/sizes-list/SizesList";
+import CategoryTree from "./_components/category-tree/CategoryTree";
 
 export type AdminMenuPages = "users" | "colors" | "sizes" | "categories";
 const adminMenuPages: Record<AdminMenuPages, ReactNode> = {
   users:  (<UsersList />),
   colors: (<ColorsList />),
   sizes: (<SizesList />),
-  categories: null
+  categories: (<CategoryTree />),
 }
 
 export default function AdminPage() {
