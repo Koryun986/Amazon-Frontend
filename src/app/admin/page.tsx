@@ -5,12 +5,13 @@ import {useUser} from "../../hooks/user-hook";
 import AdminPageHeader from "./_components/AdminPageHeader";
 import UsersList from "./_components/users-list/UsersList";
 import ColorsList from "./_components/colors-list/ColorsList";
+import SizesList from "./_components/sizes-list/SizesList";
 
 export type AdminMenuPages = "users" | "colors" | "sizes" | "categories";
 const adminMenuPages: Record<AdminMenuPages, ReactNode> = {
   users:  (<UsersList />),
   colors: (<ColorsList />),
-  sizes: null,
+  sizes: (<SizesList />),
   categories: null
 }
 

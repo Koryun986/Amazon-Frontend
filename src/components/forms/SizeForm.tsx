@@ -2,25 +2,25 @@
 
 import {FC} from "react";
 import {Button, Flex, Form, Input, message, Space} from "antd";
-import {createColor, updateColor} from "../../api/requests/color-request";
-import type {IColor} from "../../types/IColor";
+import {createSize, updateSize} from "../../api/requests/size-requests";
+import type {ISize} from "../../types/ISize";
 
-interface ColorFormProps {
-  color?: IColor;
+interface SizeFormProps {
+  size?: ISize;
   formType: "add" | "edit";
   onSubmit: () => void;
   onCancel: () => void;
 }
 
-const ColorForm: FC<ColorFormProps> = ({color, formType, onCancel, onSubmit}) => {
+const SizeForm: FC<SizeFormProps> = ({size, formType, onCancel, onSubmit}) => {
   const [form] = Form.useForm();
 
   const handleSubmitButtonClick = async (data: {name: string}) => {
     try {
       if (formType === "edit")  {
-        await updateColor({...data, id: color?.id!})
+        await updateSize({...data, id: size?.id!})
       } else {
-        await createColor(data.name);
+        await createSize(data.name);
       }
       onSubmit();
       message.success(`Size has been successfully ${formType === "add" ? 'added' : "edited"}`)
@@ -33,7 +33,7 @@ const ColorForm: FC<ColorFormProps> = ({color, formType, onCancel, onSubmit}) =>
   return (
     <Form
       form={form}
-      name="Color Form"
+      name="Size Form"
       labelCol={{
         span: 8,
       }}
@@ -47,13 +47,13 @@ const ColorForm: FC<ColorFormProps> = ({color, formType, onCancel, onSubmit}) =>
       onFinish={handleSubmitButtonClick}
     >
       <Form.Item
-        label="Color Name"
+        label="Size Name"
         name="name"
-        initialValue={color?.name || ""}
+        initialValue={size?.name || ""}
         rules={[
           {
             required: true,
-            message: 'Please input country name!',
+            message: 'Please input size name!',
           },
         ]}
       >
@@ -74,4 +74,4 @@ const ColorForm: FC<ColorFormProps> = ({color, formType, onCancel, onSubmit}) =>
   );
 };
 
-export default ColorForm;
+export default SizeForm;
