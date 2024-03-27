@@ -4,8 +4,8 @@ import CategoryAddButton from "./CategoryAddButton";
 import {useEffect, useState} from "react";
 import type {ICategory} from "../../../../types/ICategory";
 import {getAllCategories} from "../../../../api/requests/category-request";
-import {Empty, Tree} from "antd";
-import transformCategories from "../../../../helpers/transform-categories";
+import {Button, Empty, Tree} from "antd";
+import transformCategories, {transformCategoriesWithCustomTitle} from "../../../../helpers/transform-categories";
 
 const CategoryTree = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -30,11 +30,14 @@ const CategoryTree = () => {
       </div>
       {categories.length ? (
         <Tree
-          treeData={transformCategories(categories)}
+          treeData={transformCategoriesWithCustomTitle(categories, (category) => (
+            <div className="flex gap-4">
+              <span>{category.name}</span>
+              <Button>Edit</Button>
+              <Button danger>Delete</Button>
+            </div>
+            ))}
           defaultExpandAll
-          onClick={(e) => {
-
-          }}
         />
       ) : (<Empty />)}
     </>
