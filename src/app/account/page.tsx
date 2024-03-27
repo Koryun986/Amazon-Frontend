@@ -1,12 +1,21 @@
 "use client"
-import {Avatar, Divider} from "antd";
+import {Avatar, Button, Divider, Popconfirm} from "antd";
 import {HeartFilled, HomeOutlined, ProductOutlined, ShoppingCartOutlined} from "@ant-design/icons";
 import {useUser} from "../../hooks/user-hook";
 import UnAuthorizedPage from "../../shared/UnAuthorizedPage";
 import AccountOption from "./_components/AccountOption";
+import {LocalStorageConstants} from "../../constants/localstorage-constants";
+import {useAppDispatch} from "../../hooks/store-hooks";
+import {setUser} from "../../redux/slices/user-slice";
 
 const AccountPage = () => {
     const user = useUser();
+    const dispatch = useAppDispatch();
+
+    const handleUserLogOut = () => {
+        localStorage.removeItem(LocalStorageConstants.ACCESS_TOKEN);
+        dispatch(setUser(null));
+    }
 
     if (!user) {
         return (<UnAuthorizedPage />)
@@ -25,6 +34,15 @@ const AccountPage = () => {
               <AccountOption title={"Your Addresses"} href={"/account/addresses"} icon={<HomeOutlined />} />
               <Divider />
               <AccountOption title={"Change Password"} href={"/auth/change-password"} />
+              <Popconfirm
+                title="Log out"
+                description="Are you sure to log out?"
+                onConfirm={handleUserLogOut}
+                okText="Yes"
+                cancelText="No"
+              >
+                  <Button size={"large"}>Log out</Button>
+              </Popconfirm>
           </div>
       </div>
     )
