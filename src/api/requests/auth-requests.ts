@@ -18,3 +18,11 @@ export async function registerAccount(userData: {first_name: string, last_name: 
 export async function changePassword(data: {password: string, new_password: string}) {
     return (await api.post<AuthResponse>(ApiConstants.AUTH_CHANGE_PASSWORD, data)).data;
 }
+
+export async function getAllUsers() {
+    return (await api.get(ApiConstants.AUTH_GET_ALL_USERS)).data;
+}
+
+export async function makeUserAdmin(email: string) {
+    return (await api.post(ApiConstants.AUTH_MAKE_USER_ADMIN, {email})).data;
+}
