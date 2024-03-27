@@ -14,3 +14,7 @@ export async function registerAccount(userData: {first_name: string, last_name: 
     return await api.post<AuthResponse>(ApiConstants.AUTH_REGISTRATION, userData, {withCredentials: true});
 
 }
+
+export async function changePassword(data: {password: string, new_password: string}) {
+    return (await api.post<AuthResponse>(ApiConstants.AUTH_CHANGE_PASSWORD, data)).data;
+}
