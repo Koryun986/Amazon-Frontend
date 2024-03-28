@@ -36,7 +36,12 @@ const AdminPageHeader: FC<AdminPageHeaderProps> = ({currentItem, setCurrentItem}
   return (
     <div className="flex justify-between items-center py-4">
       <div className="text-xl font-bold">Amazon Admin</div>
-      <Menu selectedKeys={currentItem} onClick={(e) => setCurrentItem(e.key as AdminMenuPages)} mode={"horizontal"} items={items} />
+      <Menu
+        selectedKeys={currentItem}
+        onClick={(e) => setCurrentItem(e.key as AdminMenuPages)}
+        mode={"horizontal"}
+        items={items}
+      />
     </div>
   )
 };
