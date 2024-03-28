@@ -1,11 +1,12 @@
 "use client"
 
-import CategoryAddButton from "./CategoryAddButton";
 import {useEffect, useState} from "react";
-import type {ICategory} from "../../../../types/ICategory";
+import {Empty, Tree} from "antd";
+import CategoryAddButton from "./CategoryAddButton";
 import {getAllCategories} from "../../../../api/requests/category-request";
-import {Button, Empty, Tree} from "antd";
-import transformCategories, {transformCategoriesWithCustomTitle} from "../../../../helpers/transform-categories";
+import {transformCategoriesWithCustomTitle} from "../../../../helpers/transform-categories";
+import CategoryItem from "./CategoryItem";
+import type {ICategory} from "../../../../types/ICategory";
 
 const CategoryTree = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -26,17 +27,13 @@ const CategoryTree = () => {
     <>
       <div className="flex justify-between items-center mb-4">
         <div className="text-lg font-bold">Categories</div>
-        <CategoryAddButton />
+        <CategoryAddButton categories={categories} onChange={() => setCategoriesChangeTrigger(prevState => !prevState)}/>
       </div>
       {categories.length ? (
         <Tree
           treeData={transformCategoriesWithCustomTitle(categories, (category) => (
-            <div className="flex gap-4">
-              <span>{category.name}</span>
-              <Button>Edit</Button>
-              <Button danger>Delete</Button>
-            </div>
-            ))}
+            <CategoryItem categories={categories} category={category} onChange={() => setCategoriesChangeTrigger(prevState => !prevState)} />
+          ))}
           defaultExpandAll
         />
       ) : (<Empty />)}

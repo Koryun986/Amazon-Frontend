@@ -1,6 +1,6 @@
 import api from "../index";
 import {ApiConstants} from "../api-constants";
-import {ICategory} from "../../types/ICategory";
+import type {ICategory} from "../../types/ICategory";
 
 export async function getAllCategories() {
     return await api.get<ICategory[]>(ApiConstants.CATEGORIES_GET_ALL);
@@ -8,7 +8,7 @@ export async function getAllCategories() {
 
 type CategoryPostForm = {
     name: string;
-    parent_id: number;
+    parent_id: number | null;
 }
 
 export async function createCategory(category: CategoryPostForm) {

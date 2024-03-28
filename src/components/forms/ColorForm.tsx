@@ -26,7 +26,6 @@ const ColorForm: FC<ColorFormProps> = ({color, formType, onCancel, onSubmit}) =>
       message.success(`Size has been successfully ${formType === "add" ? 'added' : "edited"}`)
     } catch (e) {
       message.error("Oops something went wrong");
-    } finally {
     }
   };
 
