@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Inter } from "next/font/google";
-import "./globals.css";
 import StoreProvider from "../providers/StoreProvider";
-import Home from "./page";
-import Header from "../components/Header";
-import {Empty, Layout} from "antd";
-import {MainLayoutSideBar} from "../components/MainLayoutSideBar";
-import {Content} from "antd/es/layout/layout";
-import Products from "../components/Products";
 import AntdStyledComponentsRegistry from "../providers/AntdStyledComponentsRegistry";
 import AntdMessageProvider from "../providers/AntdMessageProvider";
 
+import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -29,11 +23,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <AntdRegistry>
-            <AntdStyledComponentsRegistry>
+            {/*<AntdStyledComponentsRegistry>*/}
               <AntdMessageProvider>
                 {children}
               </AntdMessageProvider>
-            </AntdStyledComponentsRegistry>
+            {/*</AntdStyledComponentsRegistry>*/}
           </AntdRegistry>
         </StoreProvider>
       </body>
