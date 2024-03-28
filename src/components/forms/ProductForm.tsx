@@ -101,7 +101,7 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
   return (
     <Form
         form={form}
-        name="UserForm"
+        name="Product Form"
         labelCol={{
             span: 6,
         }}

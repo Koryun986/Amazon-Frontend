@@ -21,7 +21,6 @@ const defaultAddressValue = {
 };
 
 const AddressForm: FC<AddressFormProps> = ({address = defaultAddressValue, onCancel, formType, onSubmit}) => {
-    const [messageApi] = message.useMessage();
     const [form] = Form.useForm();
 
     const handleSubmitButtonClick = async (data: Omit<IAddress, "id">) => {

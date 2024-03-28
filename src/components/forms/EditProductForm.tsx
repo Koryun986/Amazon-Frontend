@@ -16,7 +16,6 @@ interface EditProductFormProps {
 }
 
 const EditProductForm: FC<EditProductFormProps> = ({product, onCancel, onSubmit}) => {
-  const [messageApi] = message.useMessage();
   const [form] = Form.useForm();
 
   const handleSubmit = async (data) => {
@@ -24,16 +23,16 @@ const EditProductForm: FC<EditProductFormProps> = ({product, onCancel, onSubmit}
       await editProduct({...data, id: product.id});
       onSubmit();
       onCancel();
-      messageApi.success("Product has been successfully edited")
+      message.success("Product has been successfully edited")
     } catch (e) {
-      messageApi.error("Oops Something went wrong");
+      message.error("Oops Something went wrong");
     }
   }
 
   return (
     <Form
       form={form}
-      name="UserForm"
+      name="Edit Product Form"
       labelCol={{
         span: 6,
       }}

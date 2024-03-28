@@ -37,7 +37,7 @@ const CartListItem: FC<CartListItemProps> = ({product, cartItem}) => {
         </div>
         <div className={"text-lg text-center"}>
           <div>Subtotal:</div>
-          <div className="font-bold mb-4">${product.price * cartItem.count}</div>
+          <div className="font-bold mb-4">${product.price * cartItem?.count}</div>
           <Button>Buy Now</Button>
         </div>
       </div>

@@ -8,7 +8,6 @@ import Link from "next/link";
 import {MenuOutlined} from "@ant-design/icons";
 import SideBarMenu from "./SideBarMenu";
 
-const AddressMenu = dynamic(() => import("./AddressMenu"));
 
 export const MainLayoutSideBar = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -20,20 +19,19 @@ export const MainLayoutSideBar = () => {
             collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}
         >
-            <div className="text-white px-5 mt-5">
+            <div className="text-white px-3 mt-5">
                 {!collapsed ? (
                     <Space direction={"vertical"} size={"middle"} style={{width: "100%"}}>
                         {user ? (
-                          <>
-                            <Space direction={"vertical"} align={"center"}>
-                                <Link href={"/account"}>
-                                    <Avatar size={"large"}>{user.first_name}</Avatar>
-                                </Link>
-                                <div className="text-lg font-bold">{user.first_name} {user.last_name}</div>
-                                <div className="text-md font-semibold">{user.email}</div>
-                            </Space>
-                            <AddressMenu />
-                          </>
+                          <div className="text-center">
+                            <Link href={"/account"}>
+                                <Avatar size={"large"}>{user.first_name}</Avatar>
+                            </Link>
+                            <div className="text-lg font-bold my-3">{user.first_name[0]} {user.last_name[0]}</div>
+                              <Link href={"/account/addresses"}>
+                                <Button>Addresses</Button>
+                              </Link>
+                          </div>
                         ) : (
                             <>
                                 <Link href="/auth/login">
@@ -46,9 +44,11 @@ export const MainLayoutSideBar = () => {
                         )}
                         <SideBarMenu />
                         {user?.isAdmin && (
-                          <Link href={"/admin"}>
-                              <Button>Admin Page</Button>
-                          </Link>
+                          <div className="text-center">
+                              <Link href={"/admin"}>
+                                  <Button>Admin Page</Button>
+                              </Link>
+                          </div>
                         )}
                     </Space>
                 ): (

@@ -52,11 +52,12 @@ const AddressPage = () => {
         <div className="text-2xl font-bold mb-4">Your Addresses</div>
         <AddAddressButton onAdd={() => setAddressChangeTrigger(prevState => !prevState)} />
       </div>
-      <Space direction={"vertical"}>
-        {addresses?.length && (
+      <Space direction={"vertical"} style={{width: "100%"}}>
+        {!!addresses?.length ? (
           addresses.map(address => <AddressCard key={address.id} address={address} onChange={() => setAddressChangeTrigger(prevState => !prevState)} />)
-        )}
-        {!addresses?.length && <Empty />}
+        ) : (<div className="text-center">
+          <Empty />
+        </div>)}
       </Space>
     </div>
   )
