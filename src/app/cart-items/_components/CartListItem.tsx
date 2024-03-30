@@ -13,7 +13,7 @@ interface CartListItemProps {
 }
 
 const CartListItem: FC<CartListItemProps> = ({product, cartItem}) => {
-  const mainImage = product.images.find(image => image.is_main_image)?.image_url;
+  const mainImage = product.main_image.image_url;
 
   return (
     <Card>
