@@ -68,10 +68,14 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
     formData.append("description", data.description);
     formData.append("brand", data.brand);
     formData.append("price", data.price);
-    formData.append("color", data.color);
-    formData.append("size", data.size);
     formData.append("category", data.category);
     formData.append("is_published", data.is_published);
+    for(const color of data.colors) {
+      formData.append("colors", color);
+    }
+    for(const size of data.sizes) {
+      formData.append("sizes", size);
+    }
     formData.append("main-image", data["main-image"].fileList[0].originFileObj);
     if (data.images) {
       for(const image of data.images?.fileList) {
@@ -166,7 +170,7 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
 
         <Form.Item
           label="Color"
-          name="color"
+          name="colors"
           rules={[
             {
               required: true,
@@ -174,14 +178,19 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
             }
           ]}
         >
-          <Select>
-            {colors.map(color => <Select.Option value={color.name} key={color.id}>{color.name}</Select.Option> )}
-          </Select>
+          <TreeSelect
+            multiple
+            treeData={colors.map(color => ({
+              title: color.name,
+              value: color.name,
+              key: color.id
+            }))}
+          />
         </Form.Item>
 
       <Form.Item
         label="Size"
-        name="size"
+        name="sizes"
         rules={[
           {
             required: true,
@@ -189,9 +198,14 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
           }
         ]}
       >
-        <Select>
-          {sizes.map(size => <Select.Option value={size.name} key={size.id}>{size.name}</Select.Option> )}
-        </Select>
+        <TreeSelect
+          multiple
+          treeData={sizes.map(size => ({
+            title: size.name,
+            value: size.name,
+            key: size.id
+          }))}
+        />
       </Form.Item>
 
       <Form.Item

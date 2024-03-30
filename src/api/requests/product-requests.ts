@@ -12,7 +12,7 @@ export async function getProductById(id: string) {
 }
 
 export async function getAccountProducts() {
-    return (await api.get<IProduct[]>(ApiConstants.PRODUCTS_GET_YOURS, {withCredentials: true})).data;
+    return (await api.get<IProduct[]>("/v2/"+ApiConstants.PRODUCTS_GET_YOURS, {withCredentials: true})).data;
 }
 
 export async function getProductsByIds(ids: number[]) {
@@ -25,13 +25,13 @@ export async function addProduct(data) {
             "Content-Type": "multipart/form-data"
         },
     };
-    return (await api.post(ApiConstants.PRODUCT_ADD, data, config)).data;
+    return (await api.post("/v2"+ApiConstants.PRODUCT_ADD, data, config)).data;
 }
 
 export async function editProduct(data: {id: number, name: string, description: string, price: number, is_published: boolean}) {
-    return (await api.put(ApiConstants.PRODUCT_EDIT, data)).data;
+    return (await api.put("/v2"+ApiConstants.PRODUCT_EDIT, data)).data;
 }
 
 export async function deleteProduct(id: number) {
-    return (await api.delete(`${ApiConstants.PRODUCT_DELETE}/${id}`)).data;
+    return (await api.delete(`/v2/${ApiConstants.PRODUCT_DELETE}/${id}`)).data;
 }
