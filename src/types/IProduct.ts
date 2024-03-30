@@ -11,16 +11,19 @@ export interface IProduct {
     };
     color: {
         name: string;
-    };
+    }[];
     size: {
         name: string;
-    };
+    }[];
     total_earnings: number;
     time_bought: number;
     is_published: boolean;
     images: {
         image_url: string;
-        is_main_image: boolean;
+        id: number;
     }[];
+    main_image: {
+        image_url: string;
+    }
     owner: IUser;
 }

@@ -4,7 +4,7 @@ import type {IProduct} from "../../types/IProduct";
 import {AxiosRequestConfig} from "axios";
 
 export async function getAllProducts(query: string = "") {
-    return (await api.get<IProduct[]>(`${ApiConstants.PRODUCTS_GET_ALL}${query ? `?${query}&limit=8`: "?limit=8"}`)).data;
+    return (await api.get<IProduct[]>(`/v2/${ApiConstants.PRODUCTS_GET_ALL}${query ? `?${query}&limit=8`: "?limit=8"}`)).data;
 }
 
 export async function getProductById(id: string) {

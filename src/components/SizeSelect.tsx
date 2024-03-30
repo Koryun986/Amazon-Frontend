@@ -25,8 +25,8 @@ function getItem(
 
 const SizeSelect = () => {
     const [sizes, setSizes] = useState<ISize[]>([]);
-    const [filteredSize, setFilteredSize] = useState<number>(null)
-    useFilterByParams(filteredSize, "size");
+    const [filteredSizes, setFilteredSizes] = useState<number[]>(null)
+    useFilterByParams(filteredSizes, "size");
 
     const fetchSizes = async () => {
         try {
@@ -43,12 +43,8 @@ const SizeSelect = () => {
         getItem("Sizes", "Sizes", null, sizes.map(size => getItem(size.name, size.id))),
     ];
 
-    const handleMenuItemClick = ({key}) => {
-        if (filteredSize === key) {
-            setFilteredSize(null);
-            return;
-        }
-        setFilteredSize(key);
+    const handleMenuItemChange = ({selectedKeys}) => {
+        setFilteredSizes(selectedKeys);
     }
 
     return (
@@ -56,8 +52,10 @@ const SizeSelect = () => {
             mode={"vertical"}
             items={menuItems}
             theme={"dark"}
-            selectedKeys={[filteredSize]}
-            onClick={handleMenuItemClick}
+            multiple
+            selectedKeys={filteredSizes}
+            onSelect={handleMenuItemChange}
+            onDeselect={handleMenuItemChange}
             triggerSubMenuAction={"click"}
         />
     );

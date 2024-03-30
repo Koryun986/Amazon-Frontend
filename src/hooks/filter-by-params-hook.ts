@@ -9,9 +9,8 @@ export default function useFilterByParams<T>(value: T | null | T[], param: strin
     const handleDebouncedValueChange = () => {
         const params = new URLSearchParams(searchParams);
         if (Array.isArray(value)) {
-            if (!value.length) {
                 params.delete(param);
-            } else {
+            if (value.length) {
                 for(const item of value) {
                     params.append(param, item);
                 }

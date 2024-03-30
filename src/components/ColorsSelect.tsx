@@ -24,8 +24,8 @@ function getItem(
 
 const ColorsSelect = () => {
     const [colors, setColors] = useState<IColor[]>([]);
-    const [filteredColor, setFilteredColor] = useState<number>(null)
-    useFilterByParams(filteredColor, "color");
+    const [filteredColors, setFilteredColors] = useState<number[]>(null)
+    useFilterByParams(filteredColors, "color");
 
     const fetchColors = async () => {
         try {
@@ -42,12 +42,8 @@ const ColorsSelect = () => {
         getItem("Colors", "Colors", null, colors.map(color => getItem(color.name, color.id))),
     ];
 
-    const handleMenuItemClick = ({key}) => {
-        if (filteredColor === key) {
-            setFilteredColor(null);
-            return;
-        }
-        setFilteredColor(key);
+    const handleMenuItemChange = ({selectedKeys}) => {
+        setFilteredColors(selectedKeys);
     }
 
     return (
@@ -55,8 +51,10 @@ const ColorsSelect = () => {
             mode={"vertical"}
             items={menuItems}
             theme={"dark"}
-            selectedKeys={[filteredColor]}
-            onClick={handleMenuItemClick}
+            multiple
+            selectedKeys={filteredColors}
+            onSelect={handleMenuItemChange}
+            onDeselect={handleMenuItemChange}
             triggerSubMenuAction={"click"}
         />
     );

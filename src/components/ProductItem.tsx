@@ -12,7 +12,6 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({product}: ProductItemProps) => {
-    const mainImage = product.images.find(image => image.is_main_image)?.image_url;
 
     return (
         <Link href={`/products/${product.id}`}>
@@ -20,7 +19,7 @@ const ProductItem = ({product}: ProductItemProps) => {
                 size="small"
                 cover={
                     <Image
-                        src={ApiConstants.PUBLIC_ASSETS_URL+mainImage}
+                        src={ApiConstants.PUBLIC_ASSETS_URL+product.main_image.image_url}
                         alt="Product Photo"
                         width={0}
                         height={0}
