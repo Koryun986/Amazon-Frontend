@@ -9,10 +9,10 @@ export interface IProduct {
     category: {
         name: string;
     };
-    color: {
+    colors: {
         name: string;
     }[];
-    size: {
+    sizes: {
         name: string;
     }[];
     total_earnings: number;

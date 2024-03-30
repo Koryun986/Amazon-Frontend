@@ -3,7 +3,7 @@ import {Metadata} from "next";
 import {getProductById} from "../../../api/requests/product-requests";
 import {AxiosResponse} from "axios";
 import type {IProduct} from "../../../types/IProduct";
-import {Avatar, Spin} from "antd";
+import {Avatar, Spin, Tag} from "antd";
 import FloatGoBackButton from "../../../shared/FloatGoBackButton";
 import ProductImageGroup from "./_components/ProductImageGroup";
 import ProductFavoriteButton from "../../../components/ProductFavoriteButton";
@@ -17,7 +17,7 @@ export async function generateMetadata({params: {id}}: {params: {id: string}}): 
         openGraph: {
             title: `${product.name} | Amazon`,
             description: product.description,
-            image: product.images.find(image => image.is_main_image).image_url,
+            image: product.main_image.image_url,
         }
     }
 }
@@ -25,8 +25,7 @@ export async function generateMetadata({params: {id}}: {params: {id: string}}): 
 export default async function Page({params: {id}}: { params: { id: string }}) {
     const {data: product}: AxiosResponse<IProduct> = await getProductById(id);
 
-    const main_image = product.images.find(image => image.is_main_image)?.image_url;
-    const images = product.images.filter(image => !image.is_main_image).map(image => image.image_url);
+    const images = product.images.map(image => image.image_url);
 
 
     return (
@@ -35,7 +34,7 @@ export default async function Page({params: {id}}: { params: { id: string }}) {
                 <FloatGoBackButton />
                 <div className="h-screen py-10">
                     <div className="md:h-[40%] grid gap-4 md:grid-cols-4 grid-cols-2 grid-rows-2">
-                        <ProductImageGroup main_image={main_image} images={images} />
+                        <ProductImageGroup main_image={product.main_image.image_url} images={product.images} />
                     </div>
                     <div className="mt-4">
                         <div className="flex justify-between items-center mb-4">
@@ -54,12 +53,12 @@ export default async function Page({params: {id}}: { params: { id: string }}) {
                                     <div className="font-semibold">{product.brand}</div>
                                 </div>
                                 <div className="mt-4">
-                                    Color
-                                    <div className="font-semibold">{product.color.name}</div>
+                                    Colors
+                                    <div className="font-semibold">{product.colors.map((color) => <Tag>{color.name}</Tag>)}</div>
                                 </div>
                                 <div className="mt-4">
                                     Size
-                                    <div className="font-semibold">{product.size.name}</div>
+                                    <div className="font-semibold">{product.sizes.map(size => <Tag>{size.name}</Tag>)}</div>
                                 </div>
                                 <div className="mt-4">
                                     Category

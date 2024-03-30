@@ -8,7 +8,7 @@ export async function getAllProducts(query: string = "") {
 }
 
 export async function getProductById(id: string) {
-    return await api.get<IProduct>(`${ApiConstants.PRODUCTS_GET_ALL}/${id}`);
+    return await api.get<IProduct>(`/v2/${ApiConstants.PRODUCTS_GET_ALL}/${id}`);
 }
 
 export async function getAccountProducts() {
