@@ -7,9 +7,9 @@ import {MainLayoutSideBar} from "../components/MainLayoutSideBar";
 export default async function Home({searchParams}) {
   return (
     <>
-      <Layout style={{minHeight: "100vh"}}>
+      <Layout style={{minHeight: "100vh"}} >
         <Header />
-        <Layout>
+        <Layout hasSider>
           <MainLayoutSideBar />
           <Content className={"p-5"}>
             <Products searchParams={searchParams} />

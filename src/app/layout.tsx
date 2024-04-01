@@ -23,11 +23,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <AntdRegistry>
-            {/*<AntdStyledComponentsRegistry>*/}
+            <AntdStyledComponentsRegistry>
               <AntdMessageProvider>
                 {children}
               </AntdMessageProvider>
-            {/*</AntdStyledComponentsRegistry>*/}
+            </AntdStyledComponentsRegistry>
           </AntdRegistry>
         </StoreProvider>
       </body>

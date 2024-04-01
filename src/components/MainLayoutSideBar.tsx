@@ -10,7 +10,7 @@ import SideBarMenu from "./SideBarMenu";
 
 
 export const MainLayoutSideBar = () => {
-    const [collapsed, setCollapsed] = useState<boolean>(false);
+    const [collapsed, setCollapsed] = useState<boolean>(true);
     const user = useAppSelector(state => state.user.user);
 
     return (
