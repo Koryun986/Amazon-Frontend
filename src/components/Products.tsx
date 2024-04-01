@@ -6,9 +6,12 @@ import type {IProduct} from "../types/IProduct";
 
 const Products = async ({searchParams}) => {
   const params = new URLSearchParams(searchParams);
+  let count = 0;
   let products: IProduct[];
   try {
-    products = await getAllProducts(params.toString()) as IProduct[];
+    const data: {products: IProduct[], count: number} = await getAllProducts(params.toString());
+    products = data.products;
+    count = data.count;
   } catch (e) {
     products = [];
   }
@@ -19,7 +22,7 @@ const Products = async ({searchParams}) => {
           {products.map(product => (<Col xs={{span: 24}} md={{span: 12}} lg={{span: 6}} key={product.id}><ProductItem product={product} /></Col> ))}
       </Row>
       {!products.length && <Empty />}
-      <ProductsPagination />
+      <ProductsPagination count={count} />
     </>
   )
 };
