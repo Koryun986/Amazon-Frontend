@@ -7,6 +7,7 @@ import UsersList from "./_components/users-list/UsersList";
 import ColorsList from "./_components/colors-list/ColorsList";
 import SizesList from "./_components/sizes-list/SizesList";
 import CategoryTree from "./_components/category-tree/CategoryTree";
+import FloatGoHomeButton from "../../shared/FloatGoHomeButtons";
 
 export type AdminMenuPages = "users" | "colors" | "sizes" | "categories";
 const adminMenuPages: Record<AdminMenuPages, ReactNode> = {
@@ -26,11 +27,14 @@ export default function AdminPage() {
     )
   }
   return (
-    <div className="container mx-auto">
-      <AdminPageHeader currentItem={currentPage} setCurrentItem={setCurrentPage} />
-      <Suspense>
-        {adminMenuPages[currentPage]}
-      </Suspense>
-    </div>
+    <>
+      <div className="container mx-auto">
+        <AdminPageHeader currentItem={currentPage} setCurrentItem={setCurrentPage} />
+        <Suspense>
+          {adminMenuPages[currentPage]}
+        </Suspense>
+      </div>
+      <FloatGoHomeButton />
+    </>
   )
 }
