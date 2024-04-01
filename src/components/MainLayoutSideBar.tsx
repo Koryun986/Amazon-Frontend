@@ -6,16 +6,14 @@ import {useAppSelector} from "../hooks/store-hooks";
 import Link from "next/link";
 import {MenuOutlined} from "@ant-design/icons";
 import SideBarMenu from "./SideBarMenu";
-import {LocalStorageConstants} from "../constants/localstorage-constants";
 
 
 export const MainLayoutSideBar = () => {
-    const [collapsed, setCollapsed] = useState<boolean>(localStorage?.getItem(LocalStorageConstants.SIDE_BAR_COLLAPSED) ? JSON.parse(localStorage.getItem(LocalStorageConstants.SIDE_BAR_COLLAPSED)!) : true);
+    const [collapsed, setCollapsed] = useState<boolean>(true);
     const user = useAppSelector(state => state.user.user);
 
     const handleCollapse = (value: boolean) => {
         setCollapsed(value);
-        localStorage.setItem(LocalStorageConstants.SIDE_BAR_COLLAPSED, JSON.stringify(value));
     }
 
     return (
