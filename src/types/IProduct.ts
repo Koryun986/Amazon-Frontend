@@ -7,12 +7,15 @@ export interface IProduct {
     brand: string;
     price: number;
     category: {
+        id: number
         name: string;
     };
     colors: {
+        id: number;
         name: string;
     }[];
     sizes: {
+        id: number;
         name: string;
     }[];
     total_earnings: number;

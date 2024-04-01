@@ -28,7 +28,7 @@ export async function addProduct(data) {
     return (await api.post(ApiConstants.PRODUCT_ADD, data, config)).data;
 }
 
-export async function editProduct(data: {id: number, name: string, description: string, price: number, is_published: boolean}) {
+export async function editProduct(data: {id: number, name: string, description: string, price: number, colors: string[], sizes: string[], category: number, is_published: boolean}) {
     return (await api.put(ApiConstants.PRODUCT_EDIT, data)).data;
 }
 

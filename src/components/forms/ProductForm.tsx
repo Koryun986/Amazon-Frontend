@@ -1,17 +1,17 @@
 "use client"
 
 import {FC, useEffect, useState} from "react";
-import {Button, Flex, Form, Input, message, Select, Space, Switch, TreeDataNode, TreeSelect, Upload} from "antd";
-import type {IColor} from "../../types/IColor";
-import type {ISize} from "../../types/ISize";
-import type {ICategory} from "../../types/ICategory";
+import {Button, Flex, Form, Input, message, Space, Switch, TreeSelect, Upload} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
 import {AxiosResponse} from "axios";
 import {getColors} from "../../api/requests/color-request";
 import {getSizes} from "../../api/requests/size-requests";
 import {getAllCategories} from "../../api/requests/category-request";
 import transformCategories from "../../helpers/transform-categories";
-import {PlusOutlined} from "@ant-design/icons";
 import {addProduct} from "../../api/requests/product-requests";
+import type {IColor} from "../../types/IColor";
+import type {ISize} from "../../types/ISize";
+import type {ICategory} from "../../types/ICategory";
 
 interface ProductFormProps {
     onCancel: () => void;
@@ -22,40 +22,32 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
   const [colors, setColors] = useState<IColor[]>([]);
   const [sizes, setSizes] = useState<ISize[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [messageApi] = message.useMessage();
   const [form] = Form.useForm();
 
   const fetchColors = async () => {
-    try {
-      const {data: colors}: AxiosResponse<IColor[]> = await getColors();
-      setColors(colors);
-    } catch (e) {
-      setError(e);
-    }
+    const {data: colors}: AxiosResponse<IColor[]> = await getColors();
+    setColors(colors);
   }
 
   const fetchSizes = async () => {
-    try {
-      const { data: sizes }: AxiosResponse<ISize[]> = await getSizes();
-      setSizes(sizes);
-    } catch (e) {
-      setError(e);
-    }
+    const { data: sizes }: AxiosResponse<ISize[]> = await getSizes();
+    setSizes(sizes);
   }
 
   const fetchCategories = async () => {
-    try {
-      const { data: categories }: AxiosResponse<ICategory[]> = await getAllCategories();
-      setCategories(categories);
-    } catch (e) {
-      setError(e);
-    }
+    const { data: categories }: AxiosResponse<ICategory[]> = await getAllCategories();
+    setCategories(categories);
   }
 
   const callFetches = async () => {
-    await fetchColors();
-    await fetchSizes();
-    await fetchCategories();
+    try {
+      await fetchColors();
+      await fetchSizes();
+      await fetchCategories();
+    } catch (e) {
+      setError(e);
+      message.error("Oops something went wrong");
+    }
   }
 
   useEffect(() => {
@@ -90,7 +82,7 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
     try {
       await addProduct(formData);
       onCancel();
-      messageApi.success("Product has been successfully created");
+      message.success("Product has been successfully created");
     } catch (e) {
       setError(e);
     }
@@ -183,7 +175,7 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
             treeData={colors.map(color => ({
               title: color.name,
               value: color.name,
-              key: color.id
+              key: color.name
             }))}
           />
         </Form.Item>
@@ -203,7 +195,7 @@ const ProductForm: FC<ProductFormProps> = ({onCancel}) => {
           treeData={sizes.map(size => ({
             title: size.name,
             value: size.name,
-            key: size.id
+            key: size.name
           }))}
         />
       </Form.Item>

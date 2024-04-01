@@ -49,11 +49,11 @@ const AccountProductItem: FC<AccountProductItemProps> = ({product, onEdit, onCha
                     </Descriptions>
                     <div className="mt-4">
                         Colors
-                        <div className="font-semibold">{product.colors.map((color) => <Tag>{color.name}</Tag>)}</div>
+                        <div className="font-semibold">{product.colors.map((color) => <Tag key={color.name}>{color.name}</Tag>)}</div>
                     </div>
                     <div className="mt-4">
                         Size
-                        <div className="font-semibold">{product.sizes.map(size => <Tag>{size.name}</Tag>)}</div>
+                        <div className="font-semibold">{product.sizes.map(size => <Tag key={size.name}>{size.name}</Tag>)}</div>
                     </div>
                 </div>
                 <Space direction={"vertical"}>

@@ -1,5 +1,5 @@
-import type {ICategory} from "../types/ICategory";
 import {ReactNode} from "react";
+import type {ICategory} from "../types/ICategory";
 
 export default function transformCategories(categories: ICategory[]) {
   return categories.map(category => {
