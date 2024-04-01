@@ -10,7 +10,7 @@ import {LocalStorageConstants} from "../constants/localstorage-constants";
 
 
 export const MainLayoutSideBar = () => {
-    const [collapsed, setCollapsed] = useState<boolean>(localStorage.getItem(LocalStorageConstants.SIDE_BAR_COLLAPSED) ? JSON.parse(localStorage.getItem(LocalStorageConstants.SIDE_BAR_COLLAPSED)!) : true);
+    const [collapsed, setCollapsed] = useState<boolean>(localStorage?.getItem(LocalStorageConstants.SIDE_BAR_COLLAPSED) ? JSON.parse(localStorage.getItem(LocalStorageConstants.SIDE_BAR_COLLAPSED)!) : true);
     const user = useAppSelector(state => state.user.user);
 
     const handleCollapse = (value: boolean) => {
