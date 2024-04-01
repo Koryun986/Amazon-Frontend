@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Inter } from "next/font/google";
 import StoreProvider from "../providers/StoreProvider";
-import AntdStyledComponentsRegistry from "../providers/AntdStyledComponentsRegistry";
 import AntdMessageProvider from "../providers/AntdMessageProvider";
 
 import "./globals.css";
@@ -23,11 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <AntdRegistry>
-            <AntdStyledComponentsRegistry>
-              <AntdMessageProvider>
-                {children}
-              </AntdMessageProvider>
-            </AntdStyledComponentsRegistry>
+            <AntdMessageProvider>
+              {children}
+            </AntdMessageProvider>
           </AntdRegistry>
         </StoreProvider>
       </body>
