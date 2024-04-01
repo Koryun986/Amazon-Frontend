@@ -30,19 +30,19 @@ const RegistrationPage = () => {
         try {
             setIsLoading(true);
             const user = await createAccount(data);
-            await messageApi.open({
+            messageApi.open({
                 type: "success",
                 content: `${user.first_name} ${user.last_name} please verify your email`,
                 duration: 5
+            }).then(() => {
+                router.push("/");
             });
-            router.push("/");
         } catch (e) {
             messageApi.open({
                 type: "error",
                 content: e.message,
                 duration: 5
             });
-            console.log(e);
         } finally {
             setIsLoading(false);
         }

@@ -6,6 +6,7 @@ import {getAccountProducts} from "../../../api/requests/product-requests";
 import AccountProductItem from "./_components/AccountProductItem";
 import AddProductButton from "./_components/AddProductButton";
 import UnAuthorizedPage from "../../../shared/UnAuthorizedPage";
+import FloatGoBackButton from "../../../shared/FloatGoBackButton";
 import type {IProduct} from "../../../types/IProduct";
 
 export default function AccountProducts() {
@@ -29,17 +30,20 @@ export default function AccountProducts() {
   }
 
   return (
-    <div className="container mx-auto pt-10">
-      <div className="flex justify-between items-center">
-        <div className="text-2xl font-bold mb-4">Your Products</div>
-        <AddProductButton onAdd={() => setProductChangeTrigger(prevState => !prevState)} />
+    <>
+      <div className="container mx-auto pt-10">
+        <div className="flex justify-between items-center">
+          <div className="text-2xl font-bold mb-4">Your Products</div>
+          <AddProductButton onAdd={() => setProductChangeTrigger(prevState => !prevState)} />
+        </div>
+        <Space
+          style={{width: "100%"}}
+          direction={"vertical"}
+        >
+          {products.length ? products.map(product => (<AccountProductItem product={product} key={product.id} onChange={() => setProductChangeTrigger(prevState => !prevState)} />)) : <Empty />}
+        </Space>
       </div>
-      <Space
-        style={{width: "100%"}}
-        direction={"vertical"}
-      >
-        {products.length ? products.map(product => (<AccountProductItem product={product} key={product.id} onChange={() => setProductChangeTrigger(prevState => !prevState)} />)) : <Empty />}
-      </Space>
-    </div>
+      <FloatGoBackButton />
+    </>
   )
 };

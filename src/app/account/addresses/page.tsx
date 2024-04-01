@@ -10,6 +10,7 @@ import AddAddressButton from "./_components/AddAddressButton";
 import AddressCard from "./_components/AddressCard";
 import {Empty, Space, Spin} from "antd";
 import {is} from "immer/src/utils/common";
+import FloatGoBackButton from "../../../shared/FloatGoBackButton";
 
 const AddressPage = () => {
   const [addresses, setAddresses] = useState<IAddress[]>(null);
@@ -47,19 +48,22 @@ const AddressPage = () => {
   }
 
   return (
-    <div className="container mx-auto pt-10">
-      <div className="flex justify-between items-center">
-        <div className="text-2xl font-bold mb-4">Your Addresses</div>
-        <AddAddressButton onAdd={() => setAddressChangeTrigger(prevState => !prevState)} />
+    <>
+      <div className="container mx-auto pt-10">
+        <div className="flex justify-between items-center">
+          <div className="text-2xl font-bold mb-4">Your Addresses</div>
+          <AddAddressButton onAdd={() => setAddressChangeTrigger(prevState => !prevState)} />
+        </div>
+        <Space direction={"vertical"} style={{width: "100%"}}>
+          {!!addresses?.length ? (
+            addresses.map(address => <AddressCard key={address.id} address={address} onChange={() => setAddressChangeTrigger(prevState => !prevState)} />)
+          ) : (<div className="text-center">
+            <Empty />
+          </div>)}
+        </Space>
       </div>
-      <Space direction={"vertical"} style={{width: "100%"}}>
-        {!!addresses?.length ? (
-          addresses.map(address => <AddressCard key={address.id} address={address} onChange={() => setAddressChangeTrigger(prevState => !prevState)} />)
-        ) : (<div className="text-center">
-          <Empty />
-        </div>)}
-      </Space>
-    </div>
+      <FloatGoBackButton />
+    </>
   )
 };
 
