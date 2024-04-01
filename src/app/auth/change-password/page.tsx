@@ -24,21 +24,20 @@ export default function ChangePasswordPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const user = useUser();
   const router = useRouter();
-  const [messageApi, contextHolder] = message.useMessage()
 
   const handleButtonSubmit = async (data: FieldType) => {
     try {
       setIsLoading(true);
       const user = await changePassword({password: data.password, new_password: data.new_password});
       localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, user.access_token);
-      await messageApi.open({
+      await message.open({
         type: "success",
         content: `Password has been successfully changed`,
         duration: 3
       });
       router.back();
     } catch (e) {
-      messageApi.error(e.message)
+      message.error(e.message)
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +50,6 @@ export default function ChangePasswordPage() {
   return (
     <>
       <Layout style={{height: "100vh", position: "relative"}}>
-        {contextHolder}
         <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", marginInline: "auto"}}>
           <h1 className="mx-auto mb-6 text-2xl font-bold">Change Password</h1>
           <Form

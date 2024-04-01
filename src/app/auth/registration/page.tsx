@@ -23,7 +23,6 @@ const {Item} = Form;
 const {Password} = Input;
 
 const RegistrationPage = () => {
-    const [messageApi, contextHolder] = message.useMessage()
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -31,7 +30,7 @@ const RegistrationPage = () => {
         try {
             setIsLoading(true);
             const user = await createAccount(data);
-            messageApi.open({
+            message.open({
                 type: "success",
                 content: `${user.first_name} ${user.last_name} please verify your email`,
                 duration: 5
@@ -39,7 +38,7 @@ const RegistrationPage = () => {
                 router.push("/");
             });
         } catch (e) {
-            messageApi.open({
+            message.open({
                 type: "error",
                 content: e.message,
                 duration: 5
@@ -66,7 +65,6 @@ const RegistrationPage = () => {
     return (
       <>
           <Layout style={{height: "100vh", position: "relative"}}>
-              {contextHolder}
               <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center",  width: "50%", marginInline: "auto"}}>
                   <h1 className="mx-auto mb-6 text-2xl font-bold">Registration</h1>
                   <Form

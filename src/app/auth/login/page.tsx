@@ -18,7 +18,6 @@ const {Item} = Form;
 const {Password} = Input;
 
 const loginPage = () => {
-    const [messageApi, contextHolder] = message.useMessage()
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -26,14 +25,14 @@ const loginPage = () => {
         try {
             setIsLoading(true);
             const user = await loginToAccount(value);
-            await messageApi.open({
+            await message.open({
                 type: "success",
                 content: `Welcome ${user.first_name} ${user.last_name}`,
                 duration: 3
             });
             router.push("/");
         } catch (e) {
-            messageApi.open({
+            message.open({
                 type: "error",
                 content: e.message,
                 duration: 3
@@ -53,7 +52,6 @@ const loginPage = () => {
     return (
       <>
           <Layout style={{height: "100vh", position: "relative"}}>
-              {contextHolder}
               <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", marginInline: "auto"}}>
                   <h1 className="mx-auto mb-6 text-2xl font-bold">Login</h1>
                   <Form
