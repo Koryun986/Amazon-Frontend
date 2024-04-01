@@ -6,6 +6,8 @@ import {useState} from "react";
 import {Button, Form, Input, Layout, message} from "antd";
 import {loginAccount} from "../../../api/requests/auth-requests";
 import {LocalStorageConstants} from "../../../constants/localstorage-constants";
+import FloatGoBackButton from "../../../shared/FloatGoBackButton";
+import FloatGoHomeButton from "../../../shared/FloatGoHomeButtons";
 
 type FieldType = {
     email: string;
@@ -49,56 +51,59 @@ const loginPage = () => {
     };
 
     return (
-      <Layout style={{height: "100vh", position: "relative"}}>
-          {contextHolder}
-          <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", marginInline: "auto"}}>
-              <h1 className="mx-auto mb-6 text-2xl font-bold">Login</h1>
-              <Form
-                name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                style={{ width: "70%" }}
-                autoComplete="off"
-                onFinish={handleButtonSubmit}
-                initialValues={{ remember: true }}
-              >
-                  <Item<FieldType>
-                    label="Email"
-                    name="email"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your email!'
-                        },
-                        {
-                            type: "email",
-                            message: "Input correct email"
-                        }
-                    ]}
+      <>
+          <Layout style={{height: "100vh", position: "relative"}}>
+              {contextHolder}
+              <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", marginInline: "auto"}}>
+                  <h1 className="mx-auto mb-6 text-2xl font-bold">Login</h1>
+                  <Form
+                    name="basic"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                    style={{ width: "70%" }}
+                    autoComplete="off"
+                    onFinish={handleButtonSubmit}
+                    initialValues={{ remember: true }}
                   >
-                      <Input  />
-                  </Item>
+                      <Item<FieldType>
+                        label="Email"
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your email!'
+                            },
+                            {
+                                type: "email",
+                                message: "Input correct email"
+                            }
+                        ]}
+                      >
+                          <Input  />
+                      </Item>
 
-                  <Item<FieldType>
-                    label="Password"
-                    name="password"
-                    rules={[
-                        { required: true, message: 'Please input your password!' },
-                        { min: 4, message: "Password should be at least 4 character" },
-                    ]}
-                  >
-                      <Password />
-                  </Item>
+                      <Item<FieldType>
+                        label="Password"
+                        name="password"
+                        rules={[
+                            { required: true, message: 'Please input your password!' },
+                            { min: 4, message: "Password should be at least 4 character" },
+                        ]}
+                      >
+                          <Password />
+                      </Item>
 
-                  <Item wrapperCol={{ offset: 8, span: 16 }}>
-                      <Button type="primary" htmlType="submit" loading={isLoading}>
-                          Submit
-                      </Button>
-                  </Item>
-              </Form>
-              <div className="mx-auto">If you don't have an account, <Link href={"/auth/registration"}>Register now</Link></div>
-          </Content>
-      </Layout>
+                      <Item wrapperCol={{ offset: 8, span: 16 }}>
+                          <Button type="primary" htmlType="submit" loading={isLoading}>
+                              Submit
+                          </Button>
+                      </Item>
+                  </Form>
+                  <div className="mx-auto">If you don't have an account, <Link href={"/auth/registration"}>Register now</Link></div>
+              </Content>
+          </Layout>
+          <FloatGoHomeButton />
+      </>
     )
 };
 

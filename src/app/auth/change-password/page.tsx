@@ -9,6 +9,7 @@ import {useUser} from "../../../hooks/user-hook";
 import UnAuthorizedPage from "../../../shared/UnAuthorizedPage";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
+import FloatGoBackButton from "../../../shared/FloatGoBackButton";
 
 type FieldType = {
   password: string;
@@ -48,63 +49,66 @@ export default function ChangePasswordPage() {
   }
 
   return (
-    <Layout style={{height: "100vh", position: "relative"}}>
-      {contextHolder}
-      <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", marginInline: "auto"}}>
-        <h1 className="mx-auto mb-6 text-2xl font-bold">Change Password</h1>
-        <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ width: "70%" }}
-          autoComplete="off"
-          onFinish={handleButtonSubmit}
-          initialValues={{ remember: true }}
-        >
-          <Item<FieldType>
-            label="Password"
-            name="password"
-            rules={[
-              { required: true, message: 'Please input your password!' },
-              { min: 4, message: "Password should be at least 4 character" },
-            ]}
+    <>
+      <Layout style={{height: "100vh", position: "relative"}}>
+        {contextHolder}
+        <Content style={{padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", marginInline: "auto"}}>
+          <h1 className="mx-auto mb-6 text-2xl font-bold">Change Password</h1>
+          <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ width: "70%" }}
+            autoComplete="off"
+            onFinish={handleButtonSubmit}
+            initialValues={{ remember: true }}
           >
-            <Password />
-          </Item>
-          <Item<FieldType>
-            label="New Password"
-            name="new_password"
-            rules={[
-              { required: true, message: 'Please input your new password!' },
-              { min: 4, message: "Password should be at least 4 character" },
-            ]}
-          >
-            <Password />
-          </Item>
-          <Item<FieldType>
-            label="Confirm New Password"
-            name="confirm_new_password"
-            rules={[
-              {required: true, message: 'Please confirm your new password!'},
-              ({getFieldValue}) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("new_password" as NamePath) === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error('The new password that you entered do not match!'));
-                },
-              }),
-            ]}
-          >
-            <Password />
-          </Item>
-          <Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit" loading={isLoading}>
-              Submit
-            </Button>
-          </Item>
-        </Form>
-      </Content>
-    </Layout>
+            <Item<FieldType>
+              label="Password"
+              name="password"
+              rules={[
+                { required: true, message: 'Please input your password!' },
+                { min: 4, message: "Password should be at least 4 character" },
+              ]}
+            >
+              <Password />
+            </Item>
+            <Item<FieldType>
+              label="New Password"
+              name="new_password"
+              rules={[
+                { required: true, message: 'Please input your new password!' },
+                { min: 4, message: "Password should be at least 4 character" },
+              ]}
+            >
+              <Password />
+            </Item>
+            <Item<FieldType>
+              label="Confirm New Password"
+              name="confirm_new_password"
+              rules={[
+                {required: true, message: 'Please confirm your new password!'},
+                ({getFieldValue}) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("new_password" as NamePath) === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The new password that you entered do not match!'));
+                  },
+                }),
+              ]}
+            >
+              <Password />
+            </Item>
+            <Item wrapperCol={{ offset: 8, span: 16 }}>
+              <Button type="primary" htmlType="submit" loading={isLoading}>
+                Submit
+              </Button>
+            </Item>
+          </Form>
+        </Content>
+      </Layout>
+      <FloatGoBackButton />
+    </>
   )
 }
