@@ -65,8 +65,8 @@ const EditProductForm: FC<EditProductFormProps> = ({product, onCancel, onSubmit}
         name: data.name,
         description: data.description,
         price: data.price,
-        colors: data.edited_colors,
-        sizes: data.edited_sizes,
+        colors: Array.isArray(data.edited_colors) ? data.edited_colors : [data.edited_colors],
+        sizes: Array.isArray(data.edited_sizes)? data.edited_sizes : [data.edited_sizes],
         category: data.edited_category,
         is_published: data.is_published
       };

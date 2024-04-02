@@ -1,11 +1,13 @@
 "use client"
 import Image from "next/image";
-import {Button, Card} from "antd";
-import {FC} from "react";
+import {Button, Card, message, Spin} from "antd";
+import {FC, useEffect} from "react";
 import {ApiConstants} from "../../../api/api-constants";
-import type {IProduct} from "../../../types/IProduct";
 import ProductCartItemButton from "../../../components/ProductCartItemButton";
+import {buyProduct} from "../../../api/requests/product-requests";
+import type {IProduct} from "../../../types/IProduct";
 import type {ICartItem} from "../../../types/ICartItem";
+import Link from "next/link";
 
 interface CartListItemProps {
   product: IProduct;
@@ -14,6 +16,28 @@ interface CartListItemProps {
 
 const CartListItem: FC<CartListItemProps> = ({product, cartItem}) => {
   const mainImage = product.main_image.image_url;
+
+  const handleProductOrder = async () => {
+    try {
+      await buyProduct({id: product.id, times: cartItem.count});
+    } catch (e) {
+      message.error("Oops something went wrong");
+    }
+  }
+
+
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get("success")) {
+      message.success("Product has been successfully ordered");
+   }
+
+    if (query.get("canceled")) {
+      message.error("Order canceled");
+    }
+  }, []);
 
   return (
     <Card>
@@ -38,7 +62,9 @@ const CartListItem: FC<CartListItemProps> = ({product, cartItem}) => {
         <div className={"text-lg text-center"}>
           <div>Subtotal:</div>
           <div className="font-bold mb-4">${product.price * cartItem?.count}</div>
-          <Button>Buy Now</Button>
+          <Link href={`/buy-product?id=${product.id}&count=${cartItem.count}`}>
+            <Button>Buy Now</Button>
+          </Link>
         </div>
       </div>
     </Card>

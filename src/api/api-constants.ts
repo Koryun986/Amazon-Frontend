@@ -13,6 +13,8 @@ export enum ApiConstants {
     PRODUCT_ADD = "/products/create",
     PRODUCT_EDIT = "/products/edit",
     PRODUCT_DELETE = "/products/delete",
+    PRODUCT_BUY = "/products/buy",
+    PRODUCT_BUY_CLIENT_SECRET = "/products/buy-product-client-secret",
     PUBLIC_ASSETS_URL = BASE_URL + "/public/",
     ADDRESSES_GET_ALL = "/addresses/get-addresses",
     ADDRESS_UPDATE = "/addresses/update",
