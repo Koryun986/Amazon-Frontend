@@ -15,8 +15,8 @@ export async function getAccountProducts() {
     return (await api.get<IProduct[]>(ApiConstants.PRODUCTS_GET_YOURS, {withCredentials: true})).data;
 }
 
-export async function getProductsByIds(ids: number[]) {
-    return (await api.post<IProduct[]>(ApiConstants.PRODUCTS_GET_BY_IDS, {ids})).data;
+export async function getProductsByIds(ids: number[], query: string = "") {
+    return (await api.post<IProduct[]>(`${ApiConstants.PRODUCTS_GET_BY_IDS}?${query}`, {ids})).data;
 }
 
 export async function addProduct(data) {

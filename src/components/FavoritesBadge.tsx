@@ -15,7 +15,7 @@ const FavoritesBadge = () => {
   }, [user]);
 
   return (
-    <Link href={"/favorites"} >
+    <Link href={"/home/favorites"} >
       <Badge count={favorites?.length} showZero >
         <HeartOutlined style={{color: "white", fontSize: "25px"}} />
       </Badge>
