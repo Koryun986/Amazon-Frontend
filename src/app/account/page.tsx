@@ -31,8 +31,8 @@ const AccountPage = () => {
                   <div className="text-2xl font-bold">{user.first_name} {user.last_name}</div>
                   <div className="text-lg font-semibold">{user.email}</div>
                   <AccountOption title={"Your Products"} href={"/account/products"} icon={<ProductOutlined />} />
-                  <AccountOption title={"Your Favorites"} href={"/favorites"} icon={<HeartFilled />} />
-                  <AccountOption title={"Your Cart Items"} href={"/cart-items"} icon={<ShoppingCartOutlined />} />
+                  <AccountOption title={"Your Favorites"} href={"/home/favorites"} icon={<HeartFilled />} />
+                  <AccountOption title={"Your Cart Items"} href={"/home/cart-items"} icon={<ShoppingCartOutlined />} />
                   <AccountOption title={"Your Addresses"} href={"/account/addresses"} icon={<HomeOutlined />} />
                   <Divider />
                   <AccountOption title={"Change Password"} href={"/auth/change-password"} />
