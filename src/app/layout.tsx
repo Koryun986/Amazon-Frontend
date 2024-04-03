@@ -13,21 +13,21 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+   children,
+ }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <StoreProvider>
-          <AntdRegistry>
-            <AntdMessageProvider>
-              {children}
-            </AntdMessageProvider>
-          </AntdRegistry>
-        </StoreProvider>
-      </body>
+    <body className={inter.className}>
+    <StoreProvider>
+      <AntdRegistry>
+        <AntdMessageProvider>
+          {children}
+        </AntdMessageProvider>
+      </AntdRegistry>
+    </StoreProvider>
+    </body>
     </html>
   );
 }
