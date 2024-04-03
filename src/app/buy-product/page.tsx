@@ -1,26 +1,36 @@
 "use client"
 
 import {useSearchParams} from "next/navigation";
-import {useCallback} from "react";
-import {EmbeddedCheckoutProvider, EmbeddedCheckout} from "@stripe/react-stripe-js";
+import {useCallback, useEffect, useState} from "react";
+import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
-import {buyProductClientSecret} from "../../api/requests/product-requests";
+import {buyProduct, buyProductClientSecret} from "../../api/requests/product-requests";
 import {useUser} from "../../hooks/user-hook";
 import UnAuthorizedPage from "../../shared/UnAuthorizedPage";
+import CheckoutForm from "./_components/CheckoutForm";
+import ProductOrderCard from "./_components/ProductOrderCard";
+import type {IProduct} from "../../types/IProduct";
+import FloatGoHomeButton from "../../shared/FloatGoHomeButtons";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function BuyProductPage() {
+  const [clientSecret, setClientSecret] = useState("");
+  const [product, setProduct] = useState<IProduct & {count: number, amount: number}>(null);
   const user = useUser();
   const searchParams = useSearchParams();
 
-  const fetchClientSecret = useCallback(() => {
+  const fetchClientSecret = useCallback(async () => {
     const id = Number.parseInt(searchParams.get("id") || "");
     const count = Number.parseInt(searchParams.get("count") || "");
-    return buyProductClientSecret({id, count});
+    const {data} = await buyProductClientSecret({id, count});
+    setClientSecret(data.clientSecret)
+    setProduct({...data.product, count, amount: data.amount});
   }, []);
 
-  const options = {fetchClientSecret};
+  useEffect(() => {
+    fetchClientSecret();
+  }, []);
 
   if (!user) {
     return (
@@ -29,13 +39,25 @@ export default function BuyProductPage() {
   }
 
   return (
-    <div id="checkout">
-      <EmbeddedCheckoutProvider
-        stripe={stripePromise}
-        options={options}
-      >
-        <EmbeddedCheckout />
-      </EmbeddedCheckoutProvider>
+    <div id="checkout" className="container mx-auto pt-10">
+      <div className="text-2xl font-bold">Buy Product</div>
+      {!!clientSecret && (
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+          <ProductOrderCard product={product} />
+          <Elements
+            options={{
+              clientSecret,
+              appearance: {
+                theme: "stripe"
+              }
+            }}
+            stripe={stripePromise}
+          >
+            <CheckoutForm />
+          </Elements>
+        </div>
+      )}
+      <FloatGoHomeButton />
     </div>
   )
 }
