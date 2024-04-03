@@ -9,6 +9,7 @@ import {setUser} from "../redux/slices/user-slice";
 import {useEffect} from "react";
 import {useAppDispatch} from "../hooks/store-hooks";
 import {useUser} from "../hooks/user-hook";
+import Link from "next/link";
 
 const { Header: HeaderAntd } = Layout;
 const { Title } = Typography;
@@ -18,7 +19,10 @@ const Header = () => {
 
   return (
       <HeaderAntd style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-          <Title level={1} style={{color: "white"}}>Amazon</Title>
+          <Link href={"/home"}>
+            <Title level={1} style={{color: "white"}}>Amazon</Title>
+
+          </Link>
           <ProductsSearch />
           <div className={"text-white"}>
               <HeaderNav />
