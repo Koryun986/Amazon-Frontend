@@ -27,15 +27,17 @@ const AccountProductItem: FC<AccountProductItemProps> = ({product, onEdit, onCha
     return (
         <Card>
             <div className="flex flex-col items-center  sm:flex-row h-full gap-4 ">
-                <Image
-                    src={ApiConstants.PUBLIC_ASSETS_URL+product.main_image.image_url}
-                    alt="Product Photo"
-                    width={0}
-                    height={0}
-                    unoptimized={true}
-                    priority
-                    className="h-[200px] w-[300px]"
-                />
+                <div className="inline min-w-[300px]">
+                    <Image
+                        src={ApiConstants.PUBLIC_ASSETS_URL+product.main_image.image_url}
+                        alt="Product Photo"
+                        width={0}
+                        height={0}
+                        unoptimized
+                        priority
+                        className="h-[200px] w-auto mx-auto"
+                    />
+                </div>
                 <div>
                     <div className="text-lg font-bold">{product.name}</div>
                     <Descriptions column={3} size={"small"} contentStyle={{fontSize: "20px"}} labelStyle={{fontSize: "16px", verticalAlign: "middle"}}>
