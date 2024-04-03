@@ -35,7 +35,6 @@ export default function FavoritePage() {
   return (
     <>
       <div className="text-2xl font-bold mb-4">Your Favorites</div>
-      <FloatGoHomeButton />
       {favorites.length ? (
         <Row gutter={[16, 16]}>
           {products.map(product => (<Col xs={{span: 24}} md={{span: 12}} lg={{span: 6}} key={product.id}><ProductItem product={product} /></Col> ))}

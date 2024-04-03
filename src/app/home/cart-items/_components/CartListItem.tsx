@@ -2,11 +2,11 @@
 import Image from "next/image";
 import {Button, Card, message, Spin} from "antd";
 import {FC, useEffect} from "react";
-import {ApiConstants} from "../../../api/api-constants";
-import ProductCartItemButton from "../../../components/ProductCartItemButton";
-import {buyProduct} from "../../../api/requests/product-requests";
-import type {IProduct} from "../../../types/IProduct";
-import type {ICartItem} from "../../../types/ICartItem";
+import {ApiConstants} from "../../../../api/api-constants";
+import ProductCartItemButton from "../../../../components/ProductCartItemButton";
+import {buyProduct} from "../../../../api/requests/product-requests";
+import type {IProduct} from "../../../../types/IProduct";
+import type {ICartItem} from "../../../../types/ICartItem";
 import Link from "next/link";
 
 interface CartListItemProps {

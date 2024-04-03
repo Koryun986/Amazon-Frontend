@@ -7,7 +7,7 @@ const CartItemsBadge = () => {
   const cartItems = useAppSelector(state => state.cart_items.cartItems);
 
   return (
-    <Link href={"/cart-items"} >
+    <Link href={"/home/cart-items"} >
       <Badge count={cartItems?.length || 0} showZero >
         <ShoppingOutlined style={{color: "white", fontSize: "25px"}} />
       </Badge>
