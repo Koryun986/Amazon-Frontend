@@ -61,7 +61,7 @@ export default function useFavorites(id?: number) {
     }
     const isFavorite = async (id: number) => {
         const favoritesStore = await getFavoritesFromStore();
-        return favoritesStore.includes(id);
+        return favoritesStore?.includes(id);
     }
 
     const toggleFavorite = async (id: number) => {
