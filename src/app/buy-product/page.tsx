@@ -57,7 +57,7 @@ export default function BuyProductPage() {
             }}
             stripe={stripePromise}
           >
-            <CheckoutForm return_url={`http://localhost:3000/buy-product/action?id=${[productId}&count=${productCount}`} />
+            <CheckoutForm return_url={`http://localhost:3000/buy-product/action?id=${productId}&count=${productCount}`} />
           </Elements>
         </div>
       )}
