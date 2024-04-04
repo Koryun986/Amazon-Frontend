@@ -4,7 +4,7 @@ import {useSearchParams} from "next/navigation";
 import {useCallback, useEffect, useState} from "react";
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
-import {buyProduct, buyProductClientSecret} from "../../api/requests/product-requests";
+import {buyProductClientSecret} from "../../api/requests/product-requests";
 import {useUser} from "../../hooks/user-hook";
 import UnAuthorizedPage from "../../shared/UnAuthorizedPage";
 import CheckoutForm from "./_components/CheckoutForm";
@@ -17,12 +17,16 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 export default function BuyProductPage() {
   const [clientSecret, setClientSecret] = useState("");
   const [product, setProduct] = useState<IProduct & {count: number, amount: number}>(null);
+  const [productId, setProductId] = useState<number>(null);
+  const [productCount, setProductCount] = useState(0);
   const user = useUser();
   const searchParams = useSearchParams();
 
   const fetchClientSecret = useCallback(async () => {
     const id = Number.parseInt(searchParams.get("id") || "");
     const count = Number.parseInt(searchParams.get("count") || "");
+    setProductId(id);
+    setProductCount(count);
     const {data} = await buyProductClientSecret({id, count});
     setClientSecret(data.clientSecret)
     setProduct({...data.product, count, amount: data.amount});
@@ -53,7 +57,7 @@ export default function BuyProductPage() {
             }}
             stripe={stripePromise}
           >
-            <CheckoutForm />
+            <CheckoutForm return_url={`http://localhost:3000/buy-product/action?id=${[productId}&count=${productCount}`} />
           </Elements>
         </div>
       )}

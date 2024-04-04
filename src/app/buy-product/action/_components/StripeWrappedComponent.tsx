@@ -4,20 +4,20 @@ import {useEffect} from "react";
 import {useStripe} from "@stripe/react-stripe-js";
 import {useRouter, useSearchParams} from "next/navigation";
 import {message} from "antd";
-import {buyProduct} from "../../../../api/requests/product-requests";
 
-export default function StripeWrappedComponent() {
+interface StripeWrappedComponentProps {
+  onSuccess: () => Promise<void>;
+}
+
+export default function StripeWrappedComponent({onSuccess}: StripeWrappedComponentProps) {
   const stripe = useStripe();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const paymentSuccess = async () => {
     try {
-      const id = Number.parseInt(searchParams.get("id") || "");
-      const count = Number.parseInt(searchParams.get("count") || "");
-      await buyProduct({id, count})
+      await onSuccess();
       message.success("Payment has been successfully completed")
-
     } catch (e) {
       console.log(e, "error");
       message.error("Oops something went wrong");

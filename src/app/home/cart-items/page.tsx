@@ -1,6 +1,6 @@
 "use client"
 
-import {Empty, Space} from "antd";
+import {Button, Empty, Space} from "antd";
 import {useEffect, useState} from "react";
 import {getProductsByIds} from "../../../api/requests/product-requests";
 import FloatGoHomeButton from "../../../shared/FloatGoHomeButtons";
@@ -9,6 +9,7 @@ import useCartItems from "../../../hooks/cart-item-hooks";
 import CartListItem from "./_components/CartListItem";
 import type {IProduct} from "../../../types/IProduct";
 import {useSearchParams} from "next/navigation";
+import Link from "next/link";
 
 export default function CartItemsPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -41,7 +42,14 @@ export default function CartItemsPage() {
     <>
       <div className="flex justify-between items-center">
         <div className="text-2xl font-bold mb-4">Your Cart</div>
-        <div className="text-lg">Total: <span className="font-bold">${totalPrice}</span></div>
+        <div>
+          <div className="text-lg">Total: <span className="font-bold">${totalPrice}</span></div>
+          {!!cartItems.length && (
+            <Link href={"/buy-product/all-cart"}>
+              <Button style={{marginBottom: "20px"}}>Buy All</Button>
+            </Link>
+          )}
+        </div>
       </div>
       {cartItems.length ? (
         <Space direction="vertical" style={{width: "100%"}}>

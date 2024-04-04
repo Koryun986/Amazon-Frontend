@@ -8,12 +8,15 @@ import {
 import {Button} from "antd";
 import {useSearchParams} from "next/navigation";
 
-export default function CheckoutForm() {
+interface CheckoutFormProps {
+  return_url: string;
+}
+
+export default function CheckoutForm({return_url}: CheckoutFormProps) {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
-  const searchParams = useSearchParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,12 +26,10 @@ export default function CheckoutForm() {
     }
 
     setIsLoading(true);
-    const id = Number.parseInt(searchParams.get("id") || "");
-    const count = Number.parseInt(searchParams.get("count") || "");
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `http://localhost:3000/buy-product/action?id=${id}&count=${count}`,
+        return_url,
       },
     });
     if (error.type === "card_error" || error.type === "validation_error") {
