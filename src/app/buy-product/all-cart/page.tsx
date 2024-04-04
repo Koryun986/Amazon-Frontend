@@ -22,7 +22,6 @@ export default function BuyAllCartProductsPage() {
 
   const fetchClientSecret = useCallback(async () => {
     const {data} = await buyCartProductsCheckout();
-    console.log("data", data)
     setClientSecret(data.clientSecret)
     const changedProducts = data.products.map(product => {
       const cartItem = data.cartItems.find(item => item.product_id === product.id);
