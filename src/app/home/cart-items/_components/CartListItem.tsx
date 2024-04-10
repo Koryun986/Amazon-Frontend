@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import {Button, Card, message, Spin} from "antd";
-import {FC, useEffect} from "react";
+import {ExoticComponent, FC, ReactNode, SuspenseProps, useEffect} from "react";
 import {ApiConstants} from "../../../../api/api-constants";
 import ProductCartItemButton from "../../../../components/ProductCartItemButton";
 import {buyProduct} from "../../../../api/requests/product-requests";
@@ -24,8 +24,6 @@ const CartListItem: FC<CartListItemProps> = ({product, cartItem}) => {
       message.error("Oops something went wrong");
     }
   }
-
-
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
