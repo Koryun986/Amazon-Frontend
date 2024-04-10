@@ -17,14 +17,6 @@ interface CartListItemProps {
 const CartListItem: FC<CartListItemProps> = ({product, cartItem}) => {
   const mainImage = product.main_image.image_url;
 
-  const handleProductOrder = async () => {
-    try {
-      await buyProduct({id: product.id, times: cartItem.count});
-    } catch (e) {
-      message.error("Oops something went wrong");
-    }
-  }
-
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
 
