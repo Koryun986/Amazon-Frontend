@@ -36,20 +36,12 @@ export async function deleteProduct(id: number) {
     return (await api.delete(`${ApiConstants.PRODUCT_DELETE}/${id}`)).data;
 }
 
-export async function buyProduct(data: {id: number, count: number}) {
-    return (await api.post(ApiConstants.PRODUCT_BUY, data));
-}
-
 export async function buyProductClientSecret(data: {id: number, count: number}) {
     return (await api.post(ApiConstants.PRODUCT_BUY_CLIENT_SECRET, data));
 }
 
 export async function buyCartProductsCheckout() {
     return (await api.post(ApiConstants.PRODUCT_BUY_CART_CHECKOUT));
-}
-
-export async function buyCartProducts() {
-    return await api.post(ApiConstants.PRODUCT_BUY_CART);
 }
 
 export async function fetchOrders() {

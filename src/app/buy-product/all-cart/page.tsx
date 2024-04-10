@@ -10,28 +10,42 @@ import {buyCartProductsCheckout} from "../../../api/requests/product-requests";
 import type {IProduct} from "../../../types/IProduct";
 import CheckoutForm from "../_components/CheckoutForm";
 import ProductOrderCard from "./_components/ProductOrderCard";
-import {Space} from "antd";
+import {message, Space} from "antd";
+import {useSearchParams} from "next/navigation";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function BuyAllCartProductsPage() {
   const [clientSecret, setClientSecret] = useState("");
-  const [products, setProducts] = useState<IProduct & {count: number}[]>(null);
+  const [products, setProducts] = useState<(IProduct & {count: number})[]>([]);
   const [amount, setAmount] = useState(0);
   const user = useUser();
+  const searchParams = useSearchParams();
 
   const fetchClientSecret = useCallback(async () => {
-    const {data} = await buyCartProductsCheckout();
-    setClientSecret(data.clientSecret)
-    const changedProducts = data.products.map(product => {
-      const cartItem = data.cartItems.find(item => item.product_id === product.id);
-      if (!cartItem) {
-        return {...product, count: 0}
+    try {
+      const clientSecret = new URLSearchParams(searchParams).get(
+        "payment_intent_client_secret"
+      );
+
+      if (clientSecret) {
+        setClientSecret(clientSecret);
+        return;
       }
-      return {...product, count: cartItem.count};
-    });
-    setProducts(changedProducts);
-    setAmount(data.amount);
+      const {data} = await buyCartProductsCheckout();
+      setClientSecret(data.clientSecret)
+      const changedProducts = data.products.map(product => {
+        const cartItem = data.cartItems.find(item => item.product_id === product.id);
+        if (!cartItem) {
+          return {...product, count: 0}
+        }
+        return {...product, count: cartItem.count};
+      });
+      setProducts(changedProducts);
+      setAmount(data.amount);
+    } catch (e) {
+      message.error("something went wrong");
+    }
   }, []);
 
   useEffect(() => {
@@ -64,7 +78,7 @@ export default function BuyAllCartProductsPage() {
             }}
             stripe={stripePromise}
           >
-            <CheckoutForm return_url={"http://localhost:3000/buy-product/all-cart/action"} />
+            <CheckoutForm return_url={"http://localhost:3000/buy-product/all-cart/"} />
           </Elements>
         </div>
       )}

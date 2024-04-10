@@ -23,6 +23,14 @@ export default function BuyProductPage() {
   const searchParams = useSearchParams();
 
   const fetchClientSecret = useCallback(async () => {
+    const clientSecret = new URLSearchParams(searchParams).get(
+      "payment_intent_client_secret"
+    );
+
+    if (clientSecret) {
+      setClientSecret(clientSecret);
+      return;
+    }
     const id = Number.parseInt(searchParams.get("id") || "");
     const count = Number.parseInt(searchParams.get("count") || "");
     setProductId(id);
@@ -47,7 +55,7 @@ export default function BuyProductPage() {
       <div className="text-2xl font-bold">Buy Product</div>
       {!!clientSecret && (
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-          <ProductOrderCard product={product} />
+          {!!product && <ProductOrderCard product={product}/>}
           <Elements
             options={{
               clientSecret,
@@ -57,7 +65,7 @@ export default function BuyProductPage() {
             }}
             stripe={stripePromise}
           >
-            <CheckoutForm return_url={`http://localhost:3000/buy-product/action?id=${productId}&count=${productCount}`} />
+            <CheckoutForm return_url={`http://localhost:3000/buy-product/?id=${productId}&count=${productCount}`} />
           </Elements>
         </div>
       )}
