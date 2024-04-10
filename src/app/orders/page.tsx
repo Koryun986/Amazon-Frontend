@@ -10,7 +10,7 @@ import OrderItem from "./_components/OrderItem";
 import FloatGoBackButton from "../../shared/FloatGoBackButton";
 
 export default function OrderPage() {
-  const [orders, setOrders] = useState<(IProduct & {count: number, date: number, status: string})[]>([]);
+  const [orders, setOrders] = useState<(IProduct & {count: number, date: number, status: string, payment_id: string})[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>(null);
   const user = useUser();
@@ -61,7 +61,7 @@ export default function OrderPage() {
         <>
           {orders.length ? (
             <Space direction="vertical" style={{width: "100%"}}>
-              {orders.map((order, index) => <OrderItem order={order} key={index} />)}
+              {orders.map((order, index) => <OrderItem order={order} key={order.payment_id + order.id} />)}
             </Space>
           ) : (
             <Empty />

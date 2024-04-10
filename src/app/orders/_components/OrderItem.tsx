@@ -1,14 +1,17 @@
 import {FC} from "react";
-import {Card} from "antd";
+import {Button, Card} from "antd";
 import Image from "next/image";
 import {ApiConstants} from "../../../api/api-constants";
 import type {IProduct} from "../../../types/IProduct";
+import Link from "next/link";
 
 interface OrderItemProps {
-  order: IProduct & {count: number, date: number, status: string};
+  order: IProduct & {count: number, date: number, status: string, payment_id: string};
 }
 
 const OrderItem: FC<OrderItemProps> = ({order: product}) => {
+  const isSucceeded = product.status === "succeeded";
+
   return (
     <Card>
       <div className="flex justify-between">
@@ -31,7 +34,14 @@ const OrderItem: FC<OrderItemProps> = ({order: product}) => {
           </div>
         </div>
         <div className={"text-md font-semibold mb-5 text-center"}>Price<div className="text-lg font-bold">${product.price}</div></div>
-        <div className={"text-md font-semibold mb-5 text-center"}>Count<div className="text-lg font-bold">{product.count}</div></div>
+        <div className="flex flex-col justify-between">
+          <div className={"text-md font-semibold mb-5 text-center"}>Count<div className="text-lg font-bold">{product.count}</div></div>
+          {!isSucceeded && (
+            <Link href={`/buy-product?id=${product.id}&count=${product.count}&payment_id=${product.payment_id}`}>
+              <Button>Buy</Button>
+            </Link>
+          )}
+        </div>
       </div>
     </Card>
   )

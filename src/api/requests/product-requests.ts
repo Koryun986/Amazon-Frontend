@@ -36,7 +36,7 @@ export async function deleteProduct(id: number) {
     return (await api.delete(`${ApiConstants.PRODUCT_DELETE}/${id}`)).data;
 }
 
-export async function buyProductClientSecret(data: {id: number, count: number}) {
+export async function buyProductClientSecret(data: {id: number, count: number, payment_id?: string}) {
     return (await api.post(ApiConstants.PRODUCT_BUY_CLIENT_SECRET, data));
 }
 

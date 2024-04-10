@@ -33,9 +33,10 @@ export default function BuyProductPage() {
     }
     const id = Number.parseInt(searchParams.get("id") || "");
     const count = Number.parseInt(searchParams.get("count") || "");
+    const paymentId = searchParams.get("payment_id");
     setProductId(id);
     setProductCount(count);
-    const {data} = await buyProductClientSecret({id, count});
+    const {data} = await buyProductClientSecret({id, count, payment_id: paymentId});
     setClientSecret(data.clientSecret)
     setProduct({...data.product, count, amount: data.amount});
   }, []);
