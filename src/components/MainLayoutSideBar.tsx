@@ -31,9 +31,14 @@ export const MainLayoutSideBar = () => {
                                 <Avatar size={"large"}>{user.first_name}</Avatar>
                             </Link>
                             <div className="text-lg font-bold my-3">{user.first_name[0]} {user.last_name[0]}</div>
-                              <Link href={"/account/addresses"}>
-                                <Button>Addresses</Button>
-                              </Link>
+                              <Space direction="vertical">
+                                  <Link href={"/account/addresses"}>
+                                    <Button>Addresses</Button>
+                                  </Link>
+                                  <Link href={"/orders"}>
+                                    <Button>Your Orders</Button>
+                                  </Link>
+                              </Space>
                           </div>
                         ) : (
                             <>

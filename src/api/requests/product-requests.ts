@@ -51,3 +51,7 @@ export async function buyCartProductsCheckout() {
 export async function buyCartProducts() {
     return await api.post(ApiConstants.PRODUCT_BUY_CART);
 }
+
+export async function fetchOrders() {
+    return await api.get(ApiConstants.PRODUCTS_GET_ORDERS);
+}
