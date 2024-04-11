@@ -38,6 +38,9 @@ export const MainLayoutSideBar = () => {
                                   <Link href={"/payments"}>
                                     <Button>Your Payments</Button>
                                   </Link>
+                                  <Link href={"/orders"}>
+                                    <Button>Your Orders</Button>
+                                  </Link>
                               </Space>
                           </div>
                         ) : (
