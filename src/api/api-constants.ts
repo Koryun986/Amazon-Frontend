@@ -13,7 +13,7 @@ export enum ApiConstants {
     PRODUCT_ADD = "/products/create",
     PRODUCT_EDIT = "/products/edit",
     PRODUCT_DELETE = "/products/delete",
-    PRODUCTS_GET_ORDERS = "/products/get-orders",
+    PRODUCTS_GET_PAYMENTS = "/products/get-payments",
     PRODUCT_BUY_CLIENT_SECRET = "/products/buy-product-client-secret",
     PRODUCT_BUY_CART_CHECKOUT = "/products//buy-all-cart-items-checkout",
     PRODUCTS_TRY_BUY_AGAIN = "/products/try-payment-again",

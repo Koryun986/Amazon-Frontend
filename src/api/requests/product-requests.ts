@@ -45,7 +45,7 @@ export async function buyCartProductsCheckout(paymentId?: string) {
 }
 
 export async function fetchPayments() {
-    return await api.get(ApiConstants.PRODUCTS_GET_ORDERS);
+    return await api.get(ApiConstants.PRODUCTS_GET_PAYMENTS);
 }
 
 export async function tryBuyAgain(paymentId: string) {
