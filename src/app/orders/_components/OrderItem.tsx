@@ -37,7 +37,7 @@ const OrderItem: FC<OrderItemProps> = ({order: product}) => {
         <div className="flex flex-col justify-between">
           <div className={"text-md font-semibold mb-5 text-center"}>Count<div className="text-lg font-bold">{product.count}</div></div>
           {!isSucceeded && (
-            <Link href={`/buy-product?id=${product.id}&count=${product.count}&payment_id=${product.payment_id}`}>
+            <Link href={`/buy-product/all-cart?payment_id=${product.payment_id}`}>
               <Button>Buy</Button>
             </Link>
           )}

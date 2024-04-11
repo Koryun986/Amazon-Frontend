@@ -6,7 +6,7 @@ import {loadStripe} from "@stripe/stripe-js";
 import {useUser} from "../../../hooks/user-hook";
 import UnAuthorizedPage from "../../../shared/UnAuthorizedPage";
 import FloatGoHomeButton from "../../../shared/FloatGoHomeButtons";
-import {buyCartProductsCheckout} from "../../../api/requests/product-requests";
+import {buyCartProductsCheckout, tryBuyAgain} from "../../../api/requests/product-requests";
 import type {IProduct} from "../../../types/IProduct";
 import CheckoutForm from "../_components/CheckoutForm";
 import ProductOrderCard from "./_components/ProductOrderCard";
@@ -32,7 +32,15 @@ export default function BuyAllCartProductsPage() {
         setClientSecret(clientSecret);
         return;
       }
-      const {data} = await buyCartProductsCheckout();
+      const paymentId = searchParams.get("payment_id");
+      let data;
+      if (paymentId) {
+        const response = await tryBuyAgain(paymentId);
+        data= response.data;
+      } else {
+        const response = await buyCartProductsCheckout();
+        data = response.data;
+      }
       setClientSecret(data.clientSecret)
       const changedProducts = data.products.map(product => {
         const cartItem = data.cartItems.find(item => item.product_id === product.id);
@@ -65,7 +73,7 @@ export default function BuyAllCartProductsPage() {
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
           <div>
             <div className="text-lg">Amount: <span className="font-bold">{(amount / 100).toLocaleString("en-US", {style:"currency", currency:"USD"})}</span></div>
-            <Space direction="vertical">
+            <Space direction="vertical" style={{width: "100%"}}>
               {products.map(product => (<ProductOrderCard product={product} />))}
             </Space>
           </div>

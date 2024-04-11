@@ -40,10 +40,14 @@ export async function buyProductClientSecret(data: {id: number, count: number, p
     return (await api.post(ApiConstants.PRODUCT_BUY_CLIENT_SECRET, data));
 }
 
-export async function buyCartProductsCheckout() {
-    return (await api.post(ApiConstants.PRODUCT_BUY_CART_CHECKOUT));
+export async function buyCartProductsCheckout(paymentId?: string) {
+    return (await api.post(ApiConstants.PRODUCT_BUY_CART_CHECKOUT, {payment_id: paymentId}));
 }
 
 export async function fetchOrders() {
     return await api.get(ApiConstants.PRODUCTS_GET_ORDERS);
+}
+
+export async function tryBuyAgain(paymentId: string) {
+    return await api.post(ApiConstants.PRODUCTS_TRY_BUY_AGAIN, {payment_id: paymentId});
 }

@@ -16,6 +16,7 @@ export enum ApiConstants {
     PRODUCTS_GET_ORDERS = "/products/get-orders",
     PRODUCT_BUY_CLIENT_SECRET = "/products/buy-product-client-secret",
     PRODUCT_BUY_CART_CHECKOUT = "/products//buy-all-cart-items-checkout",
+    PRODUCTS_TRY_BUY_AGAIN = "/products/try-payment-again",
     PUBLIC_ASSETS_URL = BASE_URL + "/public/",
     ADDRESSES_GET_ALL = "/addresses/get-addresses",
     ADDRESS_UPDATE = "/addresses/update",
