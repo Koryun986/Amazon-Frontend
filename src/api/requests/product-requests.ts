@@ -48,6 +48,10 @@ export async function fetchPayments() {
     return await api.get(ApiConstants.PRODUCTS_GET_PAYMENTS);
 }
 
+export async function fetchOrders() {
+    return await api.get(ApiConstants.PRODUCTS_GET_ORDERS);
+}
+
 export async function tryBuyAgain(paymentId: string) {
     return await api.post(ApiConstants.PRODUCTS_TRY_BUY_AGAIN, {payment_id: paymentId});
 }
