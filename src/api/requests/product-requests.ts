@@ -44,7 +44,7 @@ export async function buyCartProductsCheckout(paymentId?: string) {
     return (await api.post(ApiConstants.PRODUCT_BUY_CART_CHECKOUT, {payment_id: paymentId}));
 }
 
-export async function fetchOrders() {
+export async function fetchPayments() {
     return await api.get(ApiConstants.PRODUCTS_GET_ORDERS);
 }
 

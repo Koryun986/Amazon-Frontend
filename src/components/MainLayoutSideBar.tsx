@@ -35,8 +35,8 @@ export const MainLayoutSideBar = () => {
                                   <Link href={"/account/addresses"}>
                                     <Button>Addresses</Button>
                                   </Link>
-                                  <Link href={"/orders"}>
-                                    <Button>Your Orders</Button>
+                                  <Link href={"/payments"}>
+                                    <Button>Your Payments</Button>
                                   </Link>
                               </Space>
                           </div>

@@ -3,36 +3,36 @@
 import {useEffect, useState} from "react";
 import {useUser} from "../../hooks/user-hook";
 import UnAuthorizedPage from "../../shared/UnAuthorizedPage";
-import {fetchOrders} from "../../api/requests/product-requests";
+import {fetchPayments} from "../../api/requests/product-requests";
 import type {IProduct} from "../../types/IProduct";
 import {Empty, Space, Spin} from "antd";
-import OrderItem from "./_components/OrderItem";
+import PaymentProductItem from "./_components/PaymentProductItem";
 import FloatGoBackButton from "../../shared/FloatGoBackButton";
 
-export default function OrderPage() {
-  const [orders, setOrders] = useState<(IProduct & {count: number, date: number, status: string, payment_id: string})[]>([]);
+export default function PaymentsPage() {
+  const [payments, setOrders] = useState<(IProduct & {count: number, date: number, status: string, payment_id: string})[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>(null);
   const user = useUser();
 
-  const getOrdersFromResult = (data: {products: IProduct[], info: {id: number, count: number}[]}) => {
-    const orders = [];
+  const getPaymentsFromResult = (data: {products: IProduct[], info: {id: number, count: number}[]}) => {
+    const payments = [];
     for (const productInfo of data.info) {
       const product = data.products.find(product => product.id === productInfo.id);
       if (!product) {
         continue;
       }
-      orders.push({...product, ...productInfo});
+      payments.push({...product, ...productInfo});
     }
-    return orders;
+    return payments;
   }
 
-  const getOrders = async () => {
+  const getPayments = async () => {
     try {
       setIsLoading(true);
-      const {data} = await fetchOrders();
-      const orders = getOrdersFromResult(data);
-      setOrders(orders);
+      const {data} = await fetchPayments();
+      const payments = getPaymentsFromResult(data);
+      setOrders(payments);
     } catch (e) {
       setError("Something went wrong");
     } finally {
@@ -41,9 +41,8 @@ export default function OrderPage() {
   }
 
   useEffect(() => {
-    getOrders();
+    getPayments();
   }, [user]);
-
 
   if (!user) {
     return (<UnAuthorizedPage />)
@@ -51,7 +50,7 @@ export default function OrderPage() {
 
   return (
     <div className="container mx-auto pt-5">
-      <div className="text-2xl font-bold mb-4">Your Orders</div>
+      <div className="text-2xl font-bold mb-4">Your Payments</div>
       <FloatGoBackButton />
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
@@ -59,9 +58,9 @@ export default function OrderPage() {
         </div>
       ) : (
         <>
-          {orders.length ? (
+          {payments.length ? (
             <Space direction="vertical" style={{width: "100%"}}>
-              {orders.map((order, index) => <OrderItem order={order} key={order.payment_id + order.id} />)}
+              {payments.map((payment, index) => <PaymentProductItem payment={payment} key={payment.payment_id + payment.id} />)}
             </Space>
           ) : (
             <Empty />

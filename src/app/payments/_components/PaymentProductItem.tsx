@@ -1,15 +1,15 @@
 import {FC} from "react";
 import {Button, Card} from "antd";
+import Link from "next/link";
 import Image from "next/image";
 import {ApiConstants} from "../../../api/api-constants";
 import type {IProduct} from "../../../types/IProduct";
-import Link from "next/link";
 
-interface OrderItemProps {
-  order: IProduct & {count: number, date: number, status: string, payment_id: string};
+interface PaymentProductItem {
+  payment: IProduct & {count: number, date: number, status: string, payment_id: string};
 }
 
-const OrderItem: FC<OrderItemProps> = ({order: product}) => {
+const PaymentProductItem: FC<PaymentProductItem> = ({payment: product}) => {
   const isSucceeded = product.status === "succeeded";
 
   return (
@@ -47,4 +47,4 @@ const OrderItem: FC<OrderItemProps> = ({order: product}) => {
   )
 };
 
-export default OrderItem;
+export default PaymentProductItem;
