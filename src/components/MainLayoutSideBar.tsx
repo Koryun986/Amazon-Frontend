@@ -41,6 +41,9 @@ export const MainLayoutSideBar = () => {
                                   <Link href={"/orders"}>
                                     <Button>Your Orders</Button>
                                   </Link>
+                                  <Link href={"/subscriptions/get-products"}>
+                                    <Button>Your Subscription</Button>
+                                  </Link>
                               </Space>
                           </div>
                         ) : (

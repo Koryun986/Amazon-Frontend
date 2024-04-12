@@ -42,5 +42,7 @@ export enum ApiConstants {
     CART_ITEMS_GET_ALL = "/cart-items/",
     CART_ITEM_ADD_MANY = "/cart-items/add-many",
     CART_ITEM_SET = "/cart-items/set-item",
-    SUBSCRIBE_PRODUCT = "/subscriptions/product"
+    SUBSCRIBE_PRODUCT = "/subscriptions/product",
+    SUBSCRIPTION_GET_PRODUCTS = "/subscriptions/get-products",
+    SUBSCRIPTION_PRODUCT_CANCEL = "/subscriptions/cancel"
 }
