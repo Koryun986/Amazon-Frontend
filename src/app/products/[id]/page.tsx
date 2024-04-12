@@ -3,11 +3,12 @@ import {Metadata} from "next";
 import {getProductById} from "../../../api/requests/product-requests";
 import {AxiosResponse} from "axios";
 import type {IProduct} from "../../../types/IProduct";
-import {Avatar, Spin, Tag} from "antd";
+import {Avatar, Button, Spin, Tag} from "antd";
 import FloatGoBackButton from "../../../shared/FloatGoBackButton";
 import ProductImageGroup from "./_components/ProductImageGroup";
 import ProductFavoriteButton from "../../../components/ProductFavoriteButton";
 import ProductCartItemButton from "../../../components/ProductCartItemButton";
+import Link from "next/link";
 
 export async function generateMetadata({params: {id}}: {params: {id: string}}): Promise<Metadata> {
     const {data: product}: AxiosResponse<IProduct> = await getProductById(id);
@@ -25,9 +26,6 @@ export async function generateMetadata({params: {id}}: {params: {id: string}}): 
 export default async function Page({params: {id}}: { params: { id: string }}) {
     const {data: product}: AxiosResponse<IProduct> = await getProductById(id);
 
-    const images = product.images.map(image => image.image_url);
-
-
     return (
         <Suspense fallback={<div className="h-screen flex justify-center items-center"><Spin /></div>}>
             <div className="container mx-auto px-4 md:px-0">
@@ -41,7 +39,10 @@ export default async function Page({params: {id}}: { params: { id: string }}) {
                             <ProductFavoriteButton id={product.id} />
                             <ProductCartItemButton id={product.id} />
                         </div>
-                        <div className="text-xl font-bold">{product.name}</div>
+                        <Link href={`/subscriptions/product?id=${product.id}`}>
+                            <Button>Buy Subscription</Button>
+                        </Link>
+                        <div className="text-xl font-bold mt-4">{product.name}</div>
                         <div className="mt-5 grid md:grid-cols-2 grid-cols-1">
                             <div>
                                 <span className="font-semibold">Description</span>
